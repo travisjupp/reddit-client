@@ -21,6 +21,13 @@ Import Bootstrap CSS in the src/index.js file:
 Import required reactstrap components within src/App.js file or your custom component files:
 `import { Button } from 'reactstrap';`
 
+Add Jest for testing:
+```sh
+npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react react-test-renderer
+```
+
+
+https://jestjs.io/docs/tutorial-react
 https://create-react-app.dev/docs/getting-started
 https://reactstrap.github.io/?path=/story/home-installation--page
 https://github.com/reactstrap/reactstrap
