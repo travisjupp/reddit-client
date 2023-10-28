@@ -1,13 +1,27 @@
 # reddit-client
+## Description
+Reddit client built with React/Redux using the undocumented [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON) 
 
-Reddit clone built with React/Redux using the undocumented [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON) 
+## Setup
+
+Run `npm install` to install dependencies.
+
+Start the server with `npm start` and visit http://localhost:3000/
 
 
 ## Wireframes
 
 
 ## Technologies used
-Bootstrap (reactstrap)
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "reactstrap": "^9.2.0",
+    "web-vitals": "^2.1.4"
 
 
 ## Features
@@ -15,44 +29,3 @@ Bootstrap (reactstrap)
 
 ## Future work
 
----
-
-## Notes
-
-### Setup
-
-Create React App:
-```sh
-npx create-react-app my-app
-cd my-app/
-npm start
-```
-
-Add Reactstrap:
-```sh
-npm i bootstrap
-npm i reactstrap react react-dom
-```
-
-Import Bootstrap CSS in the src/index.js file:
-`import 'bootstrap/dist/css/bootstrap.css';`
-
-Import required reactstrap components within src/App.js file or your custom component files:
-`import { Button } from 'reactstrap';`
-
-https://create-react-app.dev/docs/getting-started
-https://reactstrap.github.io/?path=/story/home-installation--page
-https://github.com/reactstrap/reactstrap
-
-
-
-
-
-### jq
-https://jqlang.github.io/jq/manual/  
-```sh
-# select post by title
-jq '.data.children[] | select(.data.title == "Gratefulness")' ./popular.json
-# view all titles
-jq '.data.children[].data.title'  ./popular.json
-```
