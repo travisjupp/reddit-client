@@ -11,20 +11,22 @@ Start the server with `npm start` and visit http://localhost:3000/
 
 ## Wireframes
 
+Wireframing bootstrap components [Figma](https://www.figma.com/file/L8qdk7mzh4GnUN0HOkTpii/reddit-client?type=design&node-id=0%3A1&mode=design&t=uZ60SM6BRez8vcfv-1)
+
 
 ## Technologies used
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.3.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "reactstrap": "^9.2.0",
-    "web-vitals": "^2.1.4"
 
+- React
+- Redux
+- Bootstrap
+- React-bootstrap
+- React-icons
+- HolderJS
+- Jest
+- DiceBear/identicon
 
 ## Features
+
 
 
 ## Future work
