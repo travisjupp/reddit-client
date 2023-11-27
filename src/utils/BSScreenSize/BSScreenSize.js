@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 
-function ScreenSize() {
+function BSScreenSize() {
     const [hidden, setHidden] = useState(false);
 
     useEffect(() => {
@@ -169,4 +169,4 @@ function ScreenSize() {
     )
 }
 
-export default ScreenSize;
+export default BSScreenSize;
