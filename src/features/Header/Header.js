@@ -7,6 +7,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import InputGroup from 'react-bootstrap/InputGroup';
+import { BsSearch } from "react-icons/bs";
 
 const nbToggle = {
     border: 'none',
@@ -17,6 +19,17 @@ function Header(props) {
         <>
             <style type='text/css'>
                 {`
+                {Navbar toggler}
+                    .navbar-toggler:focus {
+                        box-shadow: none;
+                    }
+
+                    {Form control}
+                    .form-control:focus {
+                        box-shadow: none;
+                        border-color: transparent;
+                    }
+
                 {Offcanvas drawer}
                 
                     #offcanvasNavbar-expand-sm[role="dialog"] .offcanvas-header {
@@ -57,6 +70,17 @@ function Header(props) {
                             <Nav className="justify-content-start flex-grow-1 pe-3">
                                 <Nav.Link href="#action1">Home</Nav.Link>
                             </Nav>
+                            <Form className="d-flex">
+                  <InputGroup>
+                      <Form.Control
+                        type="search"
+                        placeholder="placeholder"
+                        className=""
+                        aria-label="Search"
+                      />
+                  <Button variant="secondary"><BsSearch /></Button>
+                  </InputGroup>
+                </Form>
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>
                 </Container>
