@@ -70,17 +70,17 @@ function Header(props) {
                             <Nav className="justify-content-start flex-grow-1 pe-3">
                                 <Nav.Link href="#action1">Home</Nav.Link>
                             </Nav>
-                            <Form className="d-flex">
-                  <InputGroup>
-                      <Form.Control
-                        type="search"
-                        placeholder="placeholder"
-                        className=""
-                        aria-label="Search"
-                      />
-                  <Button variant="secondary"><BsSearch /></Button>
-                  </InputGroup>
-                </Form>
+                            <Form className="d-flex" aria-label='Search' id='searchForm'>
+                                <InputGroup>
+                                    <Form.Control
+                                        type="search"
+                                        placeholder="placeholder"
+                                        className=""
+                                        aria-labelledby='searchForm'
+                                    />
+                                    <Button variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
+                                </InputGroup>
+                            </Form>
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>
                 </Container>
