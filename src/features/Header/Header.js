@@ -67,10 +67,10 @@ function Header(props) {
                         <Offcanvas.Body style={{
                             // border: 'solid 1px red'
                         }}>
-                            <Nav className="justify-content-start flex-grow-1 pe-3">
+                            <Nav className="justify-content-start pe-3">
                                 <Nav.Link href="#action1">Home</Nav.Link>
                             </Nav>
-                            <Form className="d-flex" aria-label='Search' id='searchForm'>
+                            <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm'>
                                 <InputGroup>
                                     <Form.Control
                                         type="search"
