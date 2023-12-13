@@ -1,4 +1,5 @@
 # reddit-client
+
 ## Description
 Reddit client built with React/Redux using the undocumented [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON) 
 
