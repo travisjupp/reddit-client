@@ -32,7 +32,39 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
+/* React-Bootstrap Navbar Styles  */
+
+/* Navbar toggler */
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Form control */
+.form-control:focus {
+  box-shadow: none;
+  border-color: transparent;
+}
+
+/* Offcanvas drawer */
+#offcanvasNavbar-expand-sm[role="dialog"] .offcanvas-header {
+  background-color: goldenrod;
+}
+
+#offcanvasNavbar-expand-sm[role="dialog"] .offcanvas-body {
+  background-color: cornflowerblue;
+}
+
+#offcanvasNavbar-expand-sm[role="dialog"] .navbar-nav {
+  background-color: yellow;
+  align-items: center;
+}
+
+/* #offcanvasNavbar-expand-sm[role="dialog"] .nav-link { 
+                     background-color: lightgrey;
+                  } */

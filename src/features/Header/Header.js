@@ -19,42 +19,10 @@ const nbToggle = {
 function Header(props) {
     return (
         <>
-            <style type='text/css'>
-                {`
-                {Navbar toggler}
-                    .navbar-toggler:focus {
-                        box-shadow: none;
-                    }
-
-                    {Form control}
-                    .form-control:focus {
-                        box-shadow: none;
-                        border-color: transparent;
-                    }
-
-                {Offcanvas drawer}
-                
-                    #offcanvasNavbar-expand-sm[role="dialog"] .offcanvas-header {
-                        background-color: goldenrod;
-                    }
-                    
-                    #offcanvasNavbar-expand-sm[role="dialog"] .offcanvas-body {
-                        background-color: cornflowerblue;
-                    }
-                    
-                    #offcanvasNavbar-expand-sm[role="dialog"] .navbar-nav {
-                    background-color: yellow;
-                    align-items: center;
-                    }
-
-                //     #offcanvasNavbar-expand-sm[role="dialog"] .nav-link {
-                //     background-color: lightgrey;
-                // }
-            `}
-            </style>
+            
             <Container fluid className='justify-content-start'>
                 <Row>
-                    <Navbar key={'sm'} expand='sm' variant='dark' bg='dark' collapseOnSelect>
+                    <Navbar key='md' expand='md' variant='dark' bg='dark' collapseOnSelect>
                         <Col xs={3} className='d-flex' style={{ border: "1px solid red" }}>
 
                             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} />
