@@ -1,8 +1,8 @@
 
 import './App.css';
-import Header from './features/Header/Header';
-import Post from './features/Post/Post';
-import BSScreenSize from './utils/BSScreenSize/BSScreenSize';
+import Header from './features/Header/Header.js';
+import Post from './features/Post/Post.js';
+import BSScreenSize from './utils/BSScreenSize/BSScreenSize.js';
 
 function App() {
 
