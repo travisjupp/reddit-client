@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Avatar from "../Avatar/Avatar";
+import Avatar from "../Avatar/Avatar.js";
 import 'holderjs';
 
 
