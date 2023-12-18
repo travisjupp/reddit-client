@@ -7,7 +7,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.2",
-    "mocha": "^10.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
@@ -18,7 +17,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "mocha",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -40,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.23.6",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@dicebear/collection": "^7.0.1",
     "@dicebear/core": "^7.0.1",
