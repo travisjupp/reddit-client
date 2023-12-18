@@ -65,6 +65,14 @@
   align-items: center;
 }
 
+/* Search form */
+
+/* Search button .nav-link overrides */
+form#searchForm a[role="button"] {
+  padding: 0.375rem 0.75rem;
+  background-color: rgb(108, 117, 125);
+}
+
 /* #offcanvasNavbar-expand-sm[role="dialog"] .nav-link { 
                      background-color: lightgrey;
                   } */

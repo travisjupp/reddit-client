@@ -19,7 +19,7 @@ const nbToggle = {
 function Header(props) {
     return (
         <>
-            
+
             <Container fluid className='justify-content-start'>
                 <Row>
                     <Navbar key='md' expand='md' variant='dark' bg='dark' collapseOnSelect>
@@ -45,22 +45,21 @@ function Header(props) {
                                     </Offcanvas.Title>
                                 </Offcanvas.Header>
                                 <Offcanvas.Body>
-                                        <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm'>
+                                    <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm'>
 
-                                            <InputGroup>
-                                                <Form.Control
-                                                    type="search"
-                                                    placeholder="placeholder"
-                                                    className=""
-                                                    aria-labelledby='searchForm'
-                                                />
-                                                
-                                                <Button as={NavLink} href="#" variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
-                                {/* <Nav.Link href="#action1"><Button variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button></Nav.Link> */}
-                                            </InputGroup>
+                                        <InputGroup>
+                                            <Form.Control
+                                                type="search"
+                                                placeholder="placeholder"
+                                                className=""
+                                                aria-labelledby='searchForm'
+                                            />
+                                            {/* rendering search button as NavLink for Offcanvas navbar to collapse after clicking (collapseOnSelect) */}
+                                            <Button as={NavLink} href="#" variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
+                                        </InputGroup>
 
-                                        </Form>
-                                        
+                                    </Form>
+
                                 </Offcanvas.Body>
                             </Navbar.Offcanvas>
                         </Col>
