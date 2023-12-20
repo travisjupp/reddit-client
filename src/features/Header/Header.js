@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavItem, NavLink, NavbarBrand, Button, Container, Col, Row, Form, Nav, Navbar, NavDropdown, Offcanvas, InputGroup } from 'react-bootstrap';
 
 import { BsSearch } from "react-icons/bs/index.js";
@@ -8,31 +8,38 @@ const nbToggle = {
 }
 
 function Header(props) {
+    const [show, setShow] = useState(false);
+    const handleShow = () => setShow(!show);
+
+
     return (
         <>
-
-
-            <Container fluid className='justify-content-start'>
-                <Row>
-                    <Navbar key='md' expand='md' variant='dark' bg='dark' collapseOnSelect>
+            {/* <Container fluid className='justify-content-start'> */}
+                {/* <Row> */}
+                    <Navbar key='md' expand='md' variant='dark' bg='dark'
+                        collapseOnSelect 
+                        onSelect={(key, event) => {
+                            console.log('key', key, 'event', event)
+                        }}
+                        onToggle={expanded => console.log('expanded=', expanded)}
+                        >
                         <Col xs={3} className='d-flex' style={{ border: "1px solid red" }}>
 
                             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} />
                             <Navbar.Brand>Navbar.Brand</Navbar.Brand>
-
-
-
+                            {/* <Button href='#' onClick={handleShow} >X</Button> */}
                             <Nav className="justify-content-start pe-3">
                                 <Nav.Link href="#action1">Home</Nav.Link>
                             </Nav>
 
                         </Col>
-                        <Col style={{ border: "1px solid red" }}>
+                        <Col id='headerRightCol'>
 
                             <Navbar.Offcanvas
                                 id={`offcanvasNavbar-expand-sm`}
                                 aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
                                 placement="start"
+                                scroll
                             >
                                 <Offcanvas.Header closeButton>
                                     <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
@@ -41,8 +48,6 @@ function Header(props) {
                                 </Offcanvas.Header>
                                 <Offcanvas.Body>
                                     <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm'>
-                                    <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm'>
-
                                         <InputGroup>
                                             <Form.Control
                                                 type="search"
@@ -52,19 +57,20 @@ function Header(props) {
                                             />
                                             {/* rendering search button as NavLink for Offcanvas navbar to collapse after clicking (collapseOnSelect) */}
                                             <Button as={NavLink} href="#" variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
+
                                         </InputGroup>
 
                                     </Form>
 
-                                    </Form>
+
 
                                 </Offcanvas.Body>
                             </Navbar.Offcanvas>
                         </Col>
 
                     </Navbar>
-                </Row>
-            </Container>
+                {/* </Row> */}
+            {/* </Container> */}
             {/*
             <Navbar key={'sm'} expand={'sm'} variant='dark' bg='dark'>
                 <Container fluid='sm' className='justify-content-start'>

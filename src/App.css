@@ -73,6 +73,17 @@ form#searchForm a[role="button"] {
   background-color: rgb(108, 117, 125);
 }
 
+/* Input group padding */
+/* form#searchForm > div {
+ 
+} */
+
+#headerRightCol {
+
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  padding-left: calc(var(--bs-gutter-x) * .5);
+
+}
 /* #offcanvasNavbar-expand-sm[role="dialog"] .nav-link { 
                      background-color: lightgrey;
                   } */

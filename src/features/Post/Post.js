@@ -10,10 +10,7 @@ import 'holderjs';
 function Post(props) {
     return (
         <>
-            <Container fluid className='justify-content-start'>
-                <Row>
-                    <Col xs={3} style={{ border: "solid 1px red" }}>Column 1</Col>
-                    <Col>
+            
                         <Card >
                             <Card.Img variant="top" data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
                             <Card.Body>
@@ -35,9 +32,7 @@ function Post(props) {
 
                             </Card.Body>
                         </Card>
-                    </Col>
-                </Row>
-            </Container>
+                    
         </>
     )
 }
