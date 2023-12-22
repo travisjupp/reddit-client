@@ -53,7 +53,7 @@ jq '.[1].data.children[].data.replies.data.children[].data.body' comments.json #
 
 ```
 
-### Reddit 
+### Reddit
 
 #### type prefixes
 t1_	Comment  
