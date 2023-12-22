@@ -87,3 +87,16 @@ form#searchForm a[role="button"] {
 /* #offcanvasNavbar-expand-sm[role="dialog"] .nav-link { 
                      background-color: lightgrey;
                   } */
+
+
+/* @media only screen and (max-width: 480px) {
+
+  div.col-3 {
+    display: none;
+  }
+
+  div.d-flex.col-3 {
+    display: none !important;
+
+  }
+} */
