@@ -8,31 +8,28 @@ import 'holderjs';
 
 
 function Post(props) {
+    const {avatarName} = props;
     return (
         <>
-            
-                        <Card >
-                            <Card.Img variant="top" data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
-                            <Card.Body>
-                                <Card.Title>Card Title</Card.Title>
-                                <div className='d-inline d-sm-none' >
-                                    <Avatar name='Ren' />
-                                </div>
-                                <Avatar name='Jane' className='d-none d-lg-block d-xl-none'>lg breakpoint</Avatar>
-                                <Avatar name='Val' className='d-block d-sm-none'>xs breakpoint</Avatar>
-                                <Card.Text>Card.Text</Card.Text>
+            <Card >
+                <Card.Img variant="top" data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
+                <Card.Body>
+                    <Card.Title>Card Title</Card.Title>
+                    <Avatar name={Math.random()}/>
+                    <Avatar name={Math.random()}/>
+                    <Card.Text>Card.Text</Card.Text>
 
-                                <button type="button" className="btn btn-primary position-relative">
-                                    Inbox
-                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        99+
-                                        <span className="visually-hidden">unread messages</span>
-                                    </span>
-                                </button>
+                    <button type="button" className="btn btn-primary position-relative">
+                        Inbox
+                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            99+
+                            <span className="visually-hidden">unread messages</span>
+                        </span>
+                    </button>
 
-                            </Card.Body>
-                        </Card>
-                    
+                </Card.Body>
+            </Card>
+
         </>
     )
 }
