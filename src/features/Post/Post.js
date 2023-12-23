@@ -1,15 +1,23 @@
-
+import React, {useEffect} from 'react';
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Avatar from "../Avatar/Avatar.js";
-import 'holderjs';
+// import 'holderjs';
 
+import Holder from 'holderjs';
 
 function Post(props) {
     const {avatarName} = props;
-    return (
+    
+    useEffect(() => {
+        Holder.run({
+            images:".card-img-top"
+        });
+    });
+
+return (
         <>
             <Card >
                 <Card.Img variant="top" data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
