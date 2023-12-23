@@ -30,14 +30,14 @@ function BSScreenSize() {
         }
     });
 
-    const wrapper = {
+    const container = {
         zIndex: '9998',
         font: 'small-caps 900 14px sans-serif',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
         height: '1.5rem',
         width: '100%',
         position: 'fixed',
-        canHide: () => !hidden ? "" : "d-none",
+        canHide: () => hidden ? "d-none" : "",
     }
 
     const panelOverlay = {
@@ -148,7 +148,7 @@ function BSScreenSize() {
         <>
 
 
-            <div id="wrapper" className={wrapper.canHide()} style={wrapper}>
+            <div id="container" className={container.canHide()} style={container}>
 
                 <div id="panelOverlay" className="position-absolute z-1" style={panelOverlay}>
                     <div id="dialMover" className="d-inline-block" style={panelOverlay.dialMover}></div>
