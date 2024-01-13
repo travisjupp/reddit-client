@@ -15,7 +15,7 @@ function Post(props) {
         Holder.run({
             images:".card-img-top"
         });
-    });
+    },[]);
 
 return (
         <>
