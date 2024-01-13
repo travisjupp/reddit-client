@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavItem, NavLink, NavbarBrand, Button, Container, Col, Row, Form, Nav, Navbar, NavDropdown, Offcanvas, InputGroup } from 'react-bootstrap';
+import { Button, Container, Col, Row, Form, Nav, Navbar, NavLink, NavDropdown, Offcanvas, InputGroup } from 'react-bootstrap';
 
 import { BsSearch } from "react-icons/bs/index.js";
 import Sidebar from '../Sidebar/Sidebar';
@@ -20,7 +20,7 @@ function Header(props) {
             <Navbar key='md' expand='md' variant='dark' bg='dark'
                 collapseOnSelect
                 onSelect={(key, event) => {
-                    console.log('key', key, 'event', event)
+                    console.log('key', key, '\nevent', event)
                 }}
                 onToggle={expanded => console.log('expanded=', expanded)}
             >
@@ -28,6 +28,7 @@ function Header(props) {
 
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} />
                     <Navbar.Brand>Navbar.Brand</Navbar.Brand>
+
                     {/* <Button href='#' onClick={handleShow} >X</Button> */}
                     <Nav className="justify-content-start pe-3">
                         <Nav.Link href="#action1">Home</Nav.Link>
@@ -57,7 +58,7 @@ function Header(props) {
                                         aria-labelledby='searchForm'
                                     />
                                     {/* rendering search button as NavLink for Offcanvas navbar to collapse after clicking (collapseOnSelect) */}
-                                    <Button as={NavLink} href="#" variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
+                                    <Button eventKey="1" as={Nav.Link} href="#" variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
                                 </InputGroup>
                             </Form>
                             {/* .d-none .d-md-block .d-xl-none .d-xxl-none will hide the element for all screen sizes except on medium and large devices. */}
