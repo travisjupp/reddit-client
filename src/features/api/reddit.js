@@ -19,13 +19,13 @@ export const getSubredditTitles = createAsyncThunk('subreddits/getSubredditTitle
       }
 
       const json = await response.json();
-      console.log(json.data.children.map(subreddit => [subreddit.data.title, subreddit.data.url]));
+      console.log(json.data.children.map(subreddit => [subreddit.data.title, subreddit.data.url, subreddit.data.icon_img]));
       // console.log('title, url =>', json.data.children.map(subreddit => {
       //   const { title, url } = subreddit.data;
       //   return [title, url]
       // }));
-      // returns subredditArray in the form of [[title, url],[title, url],[title, url]...]
-      return json.data.children.map(subreddit => [subreddit.data.title, subreddit.data.url]);
+      // returns subredditArray in the form of [[title, url, icon],[title, url, icon],[title, url, icon]...]
+      return json.data.children.map(subreddit => [subreddit.data.title, subreddit.data.url, subreddit.data.icon_img]);
     } catch (e) {
       console.error('error', e);
       console.error('Error message', e.message);

@@ -4,12 +4,16 @@ import { getSubredditTitles } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSubredditTitles } from '../../store/subredditSlice';
 import { apiRoot } from '../api/reddit';
+import Avatar from '../Avatar/Avatar';
 
 // WRITE SELECTOR FOR SELECTING SUBREDDIT TITLES FROM STORE (selectSubredditTitles)
 // THEN SELECT FROM HERE TO RENDER
 
 // getSubredditTitles();
 function Sidebar(props) {
+
+    // extract title url and icon from props passed to Sidebar
+    const {title, url, icon} = props;
 
     const dispatch = useDispatch();
     const subredditTitles = useSelector(selectSubredditTitles);
@@ -42,8 +46,10 @@ function Sidebar(props) {
                             subredditArrayElement => 
                                 <li>
                                     <a href={`${apiRoot}${subredditArrayElement[1]}`}>
+                                        <Avatar src={subredditArrayElement[2]} />
+                                        {/* <img src={subredditArrayElement[2]} width="25px" height="25px" /> */}
                                         {subredditArrayElement[0]}
-                                    </a>
+                                    </a> 
                                 </li>
                             
                         )}

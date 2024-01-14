@@ -17,7 +17,7 @@ function App() {
         </Row>
         <Row>
           <Col xs={3} className='d-none d-md-block' style={{ border: "solid 1px red" }}>
-            <Sidebar />fix styling on sidebar: collapse at same breakpoint as search bar
+            <Sidebar />
           </Col>
           <Col>
             <Post />
