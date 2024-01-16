@@ -49,11 +49,20 @@ curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_di
 jq '.[1].data.children[].data.body' comments.json # first level comments
 jq '.[1].data.children[].data.replies.data.children[].data.body' comments.json # second level comments
 
+# view images from popular
+jq '.data.children[].data.preview.images[0].source.url' popular.json 
 
-
+curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url'
 ```
 
 ### Reddit
+
+#### URLs & Hyperlinks
+
+
+URL redirected from: https://i.redd.it/dcjc97hi3mcc1.jpeg
+to: https://www.reddit.com/media?url=https%3A%2F%2Fi.redd.it%2Fdcjc97hi3mcc1.jpeg
+prepends: https://www.reddit.com/media?url=
 
 #### type prefixes
 t1_	Comment  

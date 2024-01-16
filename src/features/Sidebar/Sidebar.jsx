@@ -6,14 +6,7 @@ import { selectSubredditTitles } from '../../store/subredditSlice';
 import { apiRoot } from '../api/reddit';
 import Avatar from '../Avatar/Avatar';
 
-// WRITE SELECTOR FOR SELECTING SUBREDDIT TITLES FROM STORE (selectSubredditTitles)
-// THEN SELECT FROM HERE TO RENDER
-
-// getSubredditTitles();
 function Sidebar(props) {
-
-    // extract title url and icon from props passed to Sidebar
-    const {title, url, icon} = props;
 
     const dispatch = useDispatch();
     const subredditTitles = useSelector(selectSubredditTitles);
@@ -22,10 +15,8 @@ function Sidebar(props) {
         dispatch(getSubredditTitles());
     }, [dispatch]
     )
-    // console.log('props',props)
     return (
         <>
-
             {/* <Button href="#" size="lg">SidebarButton</Button> */}
             {/* <div className="d-grid gap-1">
                 <DropdownButton id="dropdown-basic-button" title="Button" size="lg">
@@ -34,27 +25,21 @@ function Sidebar(props) {
                     <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                 </DropdownButton>
             </div> */}
-
             <Accordion flush>
-
                 <Accordion.Item>
-
-
                     <Accordion.Header>Popular</Accordion.Header>
                     <Accordion.Body>
                         {subredditTitles.map(
-                            subredditArrayElement => 
+                            subredditArrayElement =>
                                 <li>
                                     <a href={`${apiRoot}${subredditArrayElement[1]}`}>
-                                        <Avatar src={subredditArrayElement[2]} />
+                                        <Avatar name={Math.random()} src={subredditArrayElement[2]} />
                                         {/* <img src={subredditArrayElement[2]} width="25px" height="25px" /> */}
                                         {subredditArrayElement[0]}
-                                    </a> 
+                                    </a>
                                 </li>
-                            
                         )}
                     </Accordion.Body>
-
                 </Accordion.Item>
             </Accordion>
         </>

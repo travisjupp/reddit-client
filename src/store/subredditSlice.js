@@ -33,4 +33,3 @@ const subredditSlice = createSlice({
 export default subredditSlice.reducer;
 export const selectSubredditTitles = (state) => state.subreddits.subreddits;
 
-// console.log('selectSubredditTitles()',selectSubredditTitles())

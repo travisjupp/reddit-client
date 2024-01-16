@@ -3,14 +3,14 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Avatar from "../Avatar/Avatar.js";
+import Avatar from "../Avatar/Avatar";
 // import 'holderjs';
 
 import Holder from 'holderjs';
 
 function Post(props) {
-    const {avatarName} = props;
-    
+    const {avatarName, postImgSrc, postTitle} = props;
+    console.log('postImgSrc',postImgSrc);
     useEffect(() => {
         Holder.run({
             images:".card-img-top"
@@ -20,9 +20,9 @@ function Post(props) {
 return (
         <>
             <Card >
-                <Card.Img variant="top" data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
+                <Card.Img variant="top" src={postImgSrc} data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
                 <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
+                    <Card.Title>{postTitle} Card Title</Card.Title>
                     <Avatar name={Math.random()}/>
                     <Avatar name={Math.random()}/>
                     <Card.Text>Card.Text</Card.Text>
