@@ -50,9 +50,18 @@ jq '.[1].data.children[].data.body' comments.json # first level comments
 jq '.[1].data.children[].data.replies.data.children[].data.body' comments.json # second level comments
 
 # view images from popular
-jq '.data.children[].data.preview.images[0].source.url' popular.json 
+jq '.data.children[].data.preview.images[0].source.url' popular.json # images don't load in browser (CORS)
 
-curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url'
+curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url' # images don't load in browser (CORS)
+
+# LOADING IMAGES
+# load images from subreddit url prop, if it has img img will load if not nothing loads
+curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
+# returns 
+`https://i.redd.it/ssu9nfjyfzcc1.jpeg` if image exists, or somthing like: 
+`https://www.reddit.com/r/AskReddit/comments/198mp35/how_will_you_react_if_joe_biden_becomes_president/` or 
+`https://youtube.com/watch?v=386iVwP-bAA&amp;si=SAg9z216056Ov6nf` or
+`https://twitter.com/SeanRossSapp/status/1747252570043588660` or some other non-image url
 ```
 
 ### Reddit
