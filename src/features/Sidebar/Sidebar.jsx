@@ -1,18 +1,21 @@
 import React, { useEffect } from 'react';
 import { Accordion, AccordionButton, Button, Dropdown, DropdownButton } from 'react-bootstrap';
-import { getSubredditTitles } from '../api/reddit';
+import { getPopSubredditsList } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSubredditTitles } from '../../store/subredditSlice';
-import { apiRoot } from '../api/reddit';
+import { selectPopSubreddits } from '../../store/subredditSlice';
+import { selectPopSubredditTitles } from '../../store/subredditSlice';
+import { apiRootTesting as apiRoot } from '../api/reddit';
 import Avatar from '../Avatar/Avatar';
 
 function Sidebar(props) {
 
     const dispatch = useDispatch();
-    const subredditTitles = useSelector(selectSubredditTitles);
-    console.log('subredditTitles', subredditTitles)
+    // const popSubreddits = useSelector(selectPopSubreddits);
+    // console.log('popSubreddits', popSubreddits);
+    const popSubredditTitles = useSelector(selectPopSubredditTitles);
+    // console.log('popSubredditTitles', popSubredditTitles);
     useEffect(() => {
-        dispatch(getSubredditTitles());
+        dispatch(getPopSubredditsList());
     }, [dispatch]
     )
     return (
@@ -29,9 +32,9 @@ function Sidebar(props) {
                 <Accordion.Item>
                     <Accordion.Header>Popular</Accordion.Header>
                     <Accordion.Body>
-                        {subredditTitles.map(
+                    {popSubredditTitles.map(
                             subredditArrayElement =>
-                                <li>
+                                <li key={subredditArrayElement[0]}>
                                     <a href={`${apiRoot}${subredditArrayElement[1]}`}>
                                         <Avatar name={Math.random()} src={subredditArrayElement[2]} />
                                         {/* <img src={subredditArrayElement[2]} width="25px" height="25px" /> */}
@@ -39,6 +42,7 @@ function Sidebar(props) {
                                     </a>
                                 </li>
                         )}
+
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
