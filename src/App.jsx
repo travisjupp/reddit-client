@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import Header from './features/Header/Header.jsx';
 import Sidebar from './features/Sidebar/Sidebar.jsx';
-import Post from './features/Post/Post.jsx';
+
+import Main from './features/Main/Main.jsx';
 import BSScreenSize from './utils/BSScreenSize/BSScreenSize.js';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -20,11 +21,7 @@ function App() {
             <Sidebar />
           </Col>
           <Col>
-          {/* MAP POSTS ARRAY FOR SELECTED SUBREDDIT TO RENDER POST COMPONENTS */}
-          {/* HANDLE THIS SECTION WITH NEW MAIN.JSX COMPONENT THAT RENDERS POSTS */}
-            <Post postTitle={'Map Partition'} postImgSrc={'https://i.redd.it/dcjc97hi3mcc1.jpeg'} />
-            <Post />
-            <Post />
+            <Main />
           </Col>
         </Row>
       </Container>

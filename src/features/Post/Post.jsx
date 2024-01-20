@@ -10,7 +10,7 @@ import Holder from 'holderjs';
 
 function Post(props) {
     const {avatarName, postImgSrc, postTitle} = props;
-    console.log('postImgSrc',postImgSrc);
+    // console.log('postImgSrc',postImgSrc);
     useEffect(() => {
         Holder.run({
             images:".card-img-top"
@@ -22,7 +22,7 @@ return (
             <Card >
                 <Card.Img variant="top" src={postImgSrc} data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
                 <Card.Body>
-                    <Card.Title>{postTitle} Card Title</Card.Title>
+                    <Card.Title>{postTitle} Post Title</Card.Title>
                     <Avatar name={Math.random()}/>
                     <Avatar name={Math.random()}/>
                     <Card.Text>Card.Text</Card.Text>
