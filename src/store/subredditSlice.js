@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getPopSubredditsList, getSubredditPosts } from "../features/api/reddit";
+import { getPopSubredditsList } from "../features/api/reddit";
 
 
 const initialState = {
-    status: "unitialized",
+    status: 'unitialized',
     subreddits: [],
-    posts: [],
     error: null
 };
 
@@ -28,18 +27,6 @@ const subredditSlice = createSlice({
                 state.subreddits = [];
                 state.error = action.error;
             })
-            .addCase(getSubredditPosts.pending, (state, action) => {
-                state.status = 'loading';
-            })
-            .addCase(getSubredditPosts.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.posts = action.payload;
-            })
-            .addCase(getSubredditPosts.rejected, (state, action) => {
-                state.status = 'failed';
-                state.posts = [];
-                state.error = action.error;
-            })
     }
 }
 )
@@ -50,8 +37,4 @@ export const selectPopSubredditTitles = (state) => {
     const data = state.subreddits.subreddits;
     return data.map(subreddit => [subreddit.data.title, subreddit.data.url, subreddit.data.icon_img]);
 };
-export const selectSubredditPosts = (state) => {
-    const posts = state.subreddits.posts;
-    console.log('posts',posts)
-    // return posts.map(post => post);
-}
+
