@@ -9,12 +9,13 @@ function Main(props) {
     const dispatch = useDispatch();
     const posts = useSelector(selectSubredditPosts);
     useEffect(() => {
-          dispatch(getSubredditPosts('home'));
+          dispatch(getSubredditPosts('react'));
       }, [dispatch]
       )
     console.log('posts',posts);
     return (
         <>
+            {/* <h1>r/{posts[0].data.subreddit}</h1> */}
             {posts.map(post => {
                 return <Post key={post.data.id} postTitle={post.data.title} postImgSrc={post.data.url} postText={post.data.selftext} />
 
