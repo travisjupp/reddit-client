@@ -17,7 +17,11 @@ function Sidebar(props) {
     useEffect(() => {
         dispatch(getPopSubredditsList());
     }, [dispatch]
-    )
+    );
+// CREATE CLICK HANDLER 
+// DISPATCHES getSubredditPosts(subreddit.data.url)
+
+
     return (
         <>
             {/* <Button href="#" size="lg">SidebarButton</Button> */}
@@ -33,12 +37,12 @@ function Sidebar(props) {
                     <Accordion.Header>Popular</Accordion.Header>
                     <Accordion.Body>
                     {popSubredditTitles.map(
-                            subredditArrayElement =>
-                                <li key={subredditArrayElement[0]}>
-                                    <a href={`${apiRoot}${subredditArrayElement[1]}`}>
-                                        <Avatar name={Math.random()} src={subredditArrayElement[2]} />
+                            subredditListItem =>
+                                <li key={subredditListItem.title}>
+                                    <a href={`${apiRoot}${subredditListItem.url}`}>
+                                        <Avatar name={Math.random()} src={subredditListItem.icon} />
                                         {/* <img src={subredditArrayElement[2]} width="25px" height="25px" /> */}
-                                        {subredditArrayElement[0]}
+                                        {subredditListItem.title}
                                     </a>
                                 </li>
                         )}
