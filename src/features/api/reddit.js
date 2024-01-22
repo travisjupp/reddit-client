@@ -30,7 +30,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       
       // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
       // const response = await fetch('http://localhost:8000/posts/3');
-      const response = await fetch(`${apiRootTesting}posts/3`);
+      const response = await fetch(`${apiRootTesting}r/${path}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
