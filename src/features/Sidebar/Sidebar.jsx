@@ -3,23 +3,26 @@ import { Accordion, AccordionButton, Button, Dropdown, DropdownButton } from 're
 import { getPopSubredditsList } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPopSubreddits } from '../../store/subredditSlice';
-import { selectPopSubredditTitles } from '../../store/subredditSlice';
+import { selectPopSubredditTitles, selectSubredditTitlesStatus } from '../../store/subredditSlice';
 import { apiRootTesting as apiRoot } from '../api/reddit';
 import Avatar from '../Avatar/Avatar';
 
 function Sidebar(props) {
 
     const dispatch = useDispatch();
-    // const popSubreddits = useSelector(selectPopSubreddits);
-    // console.log('popSubreddits', popSubreddits);
-    const popSubredditTitles = useSelector(selectPopSubredditTitles);
     // console.log('popSubredditTitles', popSubredditTitles);
     useEffect(() => {
         dispatch(getPopSubredditsList());
-    }, [dispatch]
-    );
-// CREATE CLICK HANDLER 
-// DISPATCHES getSubredditPosts(subreddit.data.url)
+    }, [dispatch]);
+    
+    const popSubreddits = useSelector(selectPopSubreddits);
+    // const popSubredditTitles = useSelector(selectPopSubredditTitles);
+    const status = useSelector(selectSubredditTitlesStatus);
+    while (status !== 'succeeded') {
+        return 'Subreddits Loading...'
+    }
+    // CREATE CLICK HANDLER 
+    // DISPATCHES getSubredditPosts(subreddit.data.url)
 
 
     return (
@@ -36,17 +39,27 @@ function Sidebar(props) {
                 <Accordion.Item>
                     <Accordion.Header>Popular</Accordion.Header>
                     <Accordion.Body>
-                    {popSubredditTitles.map(
+                        {/* {popSubredditTitles.map(
                             subredditListItem =>
                                 <li key={subredditListItem.title}>
                                     <a href={`${apiRoot}${subredditListItem.url}`}>
                                         <Avatar name={Math.random()} src={subredditListItem.icon} />
-                                        {/* <img src={subredditArrayElement[2]} width="25px" height="25px" /> */}
+
                                         {subredditListItem.title}
                                     </a>
                                 </li>
-                        )}
+                        )} */}
 
+                        {popSubreddits.map(
+                            subredditListItem =>
+                                <li key={subredditListItem.data.title}>
+                                    <a href={`${apiRoot}${subredditListItem.url}`}>
+                                        <Avatar name={Math.random()} src={subredditListItem.data.icon_img} />
+
+                                        {subredditListItem.data.title}
+                                    </a>
+                                </li>
+                        )}
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>

@@ -40,11 +40,20 @@ export const selectPopSubreddits = (state) => state.subreddits.subreddits;
 // };
 
 export const selectPopSubredditTitles = (state) => {
-    const data = state.subreddits.subreddits;
-    return data.map(subreddit => {
 
-    return {title: subreddit.data.title, url: subreddit.data.url, icon: subreddit.data.icon_img}
-    }
-        );
+
+    // while (state.subreddits.status !== 'succeeded'){
+    //     console.log('state.subreddits.status !== succeeded');
+    //     return [{ title: 'Title loading...', url: 'URL loading...', icon: 'Icon loading...'}]
+    // }
+    // const data = state.subreddits.subreddits;
+    // return data.map(subreddit => {
+    //     return { title: subreddit.data.title, url: subreddit.data.url, icon: subreddit.data.icon_img }
+    // });
 };
+
+export const selectSubredditTitlesStatus = (state) => {
+    const status = state.subreddits.status;
+    return status;
+}
 
