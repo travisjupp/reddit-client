@@ -42,4 +42,9 @@ export const selectSubredditPosts = (state) => {
     return posts;
 }
 
+export const selectSubredditPostsStatus = (state) => {
+    const status = state.subredditPosts.status;
+    return status;
+}
+
 
