@@ -9,7 +9,7 @@ import Avatar from "../Avatar/Avatar";
 import Holder from 'holderjs';
 
 function Post(props) {
-    const {avatarName, postImgSrc, postTitle, postText} = props;
+    const {avatarName, postImgSrc, postTitle, postText, altText} = props;
     // console.log('postImgSrc',postImgSrc);
     useEffect(() => {
         Holder.run({
@@ -20,12 +20,17 @@ function Post(props) {
 return (
         <>
             <Card>
-                <Card.Img variant="top" src={postImgSrc} data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
+            <Card.Img 
+            variant="top" 
+            src={postImgSrc} 
+            data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial"
+            alt={altText}
+            />
                 <Card.Body>
                     <Card.Title>{postTitle} Post Title</Card.Title>
                     <Avatar name={Math.random()}/>
                     <Avatar name={Math.random()}/>
-                    <Card.Text>{postText}</Card.Text>
+                    <Card.Text style={{wordBreak: 'break-all'}}>{postText}</Card.Text>
 
                     <button type="button" className="btn btn-primary position-relative">
                         Inbox
