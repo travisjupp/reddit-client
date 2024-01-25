@@ -27,34 +27,46 @@ npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react rea
 
 
 #### Holder
+
 https://github.com/imsky/holder
 
 ```js
 <Card.Img variant="top" data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
 ```
 
-#### jq
+
+### Reddit
+
+#### Data
+
 https://jqlang.github.io/jq/manual/  
 ```sh
-# select post by title
-jq '.data.children[] | select(.data.title == "Gratefulness")' ./popular.json
-# view all titles
-jq '.data.children[].data.title'  ./popular.json
 
-# view comments
-curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_dice_set_and_box.json | jq . > comments.json
+# POSTS
+jq '.data.children[] | select(.data.title == "Gratefulness")' ./popular.json # select post by title
+jq '.data.children[].data.title' ./popular.json # view all titles
 
+# COMMENTS
+curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_dice_set_and_box.json | jq . > comments.json # single post comments
 curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_dice_set_and_box.json | jq '.[1].data.children[].data.body'
 
 jq '.[1].data.children[].data.body' comments.json # first level comments
 jq '.[1].data.children[].data.replies.data.children[].data.body' comments.json # second level comments
 
+curl https://www.reddit.com/r/MapPorn/comments.json > ./data/MapPornCommentsListing.json # listing of subreddit comments
+
+# single post comment URL anatomy
+curl https://www.reddit.com/r/MapPorn/comments.json > ./data/MapPornCommentsListing.json
+https://www.reddit.com/r/MapPorn/comments/18vyfbl/mapporn_discussion_thread_for_january_2024/
+https://www.reddit.com/r/MapPorn/comments/<id>/<title>/
+
+
+
+# IMAGES
 # view images from popular
 jq '.data.children[].data.preview.images[0].source.url' popular.json # images don't load in browser (CORS)
-
 curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url' # images don't load in browser (CORS)
 
-# LOADING IMAGES
 # load images from subreddit url prop, if it has img img will load if not nothing loads
 curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
 # returns 
@@ -62,9 +74,9 @@ curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
 `https://www.reddit.com/r/AskReddit/comments/198mp35/how_will_you_react_if_joe_biden_becomes_president/` or 
 `https://youtube.com/watch?v=386iVwP-bAA&amp;si=SAg9z216056Ov6nf` or
 `https://twitter.com/SeanRossSapp/status/1747252570043588660` or some other non-image url
-```
 
-### Reddit
+
+```
 
 #### URLs & Hyperlinks
 
