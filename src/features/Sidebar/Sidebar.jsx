@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { Accordion, AccordionButton, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { getPopSubredditsList } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPopSubreddits } from '../../store/subredditSlice';
-import { selectPopSubredditTitles, selectSubredditTitlesStatus } from '../../store/subredditSlice';
+import { selectPopSubreddits, selectSubredditsStatus } from '../../store/subredditSlice';
 import { apiRootTesting as apiRoot } from '../api/reddit';
 import Avatar from '../Avatar/Avatar';
 
@@ -17,7 +16,7 @@ function Sidebar(props) {
     
     const popSubreddits = useSelector(selectPopSubreddits);
     // const popSubredditTitles = useSelector(selectPopSubredditTitles);
-    const status = useSelector(selectSubredditTitlesStatus);
+    const status = useSelector(selectSubredditsStatus);
     while (status !== 'succeeded') {
         return 'Subreddits Loading...'
     }

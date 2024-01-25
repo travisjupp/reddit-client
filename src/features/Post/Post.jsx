@@ -27,7 +27,7 @@ return (
             alt={altText}
             />
                 <Card.Body>
-                    <Card.Title>{postTitle} Post Title</Card.Title>
+                    <Card.Title>{postTitle}</Card.Title>
                     <Avatar name={Math.random()}/>
                     <Avatar name={Math.random()}/>
                     <Card.Text style={{wordBreak: 'break-all'}}>{postText}</Card.Text>
