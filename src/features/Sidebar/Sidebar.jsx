@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { Accordion, AccordionButton, Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Accordion, AccordionButton, Button, Dropdown, DropdownButton, Nav } from 'react-bootstrap';
 import { getPopSubredditsList, getSubredditPosts } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPopSubreddits, selectSubredditsStatus } from '../../store/subredditSlice';
+import { selectPopSubredditsList, selectSubredditsListStatus } from '../../store/subredditSlice';
 import { apiRootTesting as apiRoot } from '../api/reddit';
 import Avatar from '../Avatar/Avatar';
 
@@ -13,10 +13,10 @@ function Sidebar(props) {
         dispatch(getPopSubredditsList());
     }, [dispatch]);
 
-    const popSubreddits = useSelector(selectPopSubreddits);
-    console.log('popSubreddits', popSubreddits);
+    const popSubredditsList = useSelector(selectPopSubredditsList);
+    console.log('popSubredditsList', popSubredditsList);
     // const popSubredditTitles = useSelector(selectPopSubredditTitles);
-    const status = useSelector(selectSubredditsStatus);
+    const status = useSelector(selectSubredditsListStatus);
     while (status !== 'succeeded') {
         return 'Subreddits Loading...'
     }
@@ -42,17 +42,19 @@ function Sidebar(props) {
                 <Accordion.Item>
                     <Accordion.Header>Popular</Accordion.Header>
                     <Accordion.Body>
-                        {popSubreddits.map(
+                        {popSubredditsList.map(
                             subredditListItem =>
-                                <li key={subredditListItem.data.title}>
-                                    <a
+
+                                    <Nav.Link
+                                    key={subredditListItem.data.title}
                                         // href={`${apiRoot}${subredditListItem.url}`}
                                         href={`#`}
                                         onClick={() => { handlePosts(subredditListItem.data.display_name) }}>
                                         <Avatar name={Math.random()} src={subredditListItem.data.icon_img} />
                                         {subredditListItem.data.title}
-                                    </a>
-                                </li>
+                                    </Nav.Link>
+
+                                
                         )}
                     </Accordion.Body>
                 </Accordion.Item>
