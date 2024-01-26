@@ -28,8 +28,7 @@ const subredditPostsSlice = createSlice({
                 state.error = action.error;
             })
         }
-    }
-)
+    })
 
 export default subredditPostsSlice.reducer;
 

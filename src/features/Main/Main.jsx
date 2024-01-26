@@ -4,7 +4,6 @@ import { apiRoot, getSubredditPosts } from '../api/reddit';
 import Post from '../Post/Post.jsx';
 import { selectSubredditPosts, selectSubredditPostsStatus } from '../../store/subredditPostsSlice.js';
 
-
 function Main(props) {
     const dispatch = useDispatch();
     

@@ -27,12 +27,11 @@ const subredditSlice = createSlice({
                 state.subreddits = [];
                 state.error = action.error;
             })
-    }
-}
-)
+    },
+})
 
 export default subredditSlice.reducer;
-export const selectPopSubreddits = (state) => state.subreddits.subreddits;
+export const selectPopSubredditsList = (state) => state.subreddits.subreddits;
 
 // export const selectPopSubredditTitles = (state) => {
 //     const data = state.subreddits.subreddits;
@@ -40,7 +39,7 @@ export const selectPopSubreddits = (state) => state.subreddits.subreddits;
 // };
 
 
-export const selectSubredditsStatus = (state) => {
+export const selectSubredditsListStatus = (state) => {
     const status = state.subreddits.status;
     return status;
 }

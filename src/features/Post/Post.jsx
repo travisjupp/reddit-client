@@ -23,7 +23,7 @@ return (
             <Card.Img 
             variant="top" 
             src={postImgSrc} 
-            data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial"
+            // data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial"
             alt={altText}
             />
                 <Card.Body>
