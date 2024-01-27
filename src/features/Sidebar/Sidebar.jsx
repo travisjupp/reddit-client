@@ -3,6 +3,7 @@ import { Accordion, AccordionButton, Button, Dropdown, DropdownButton, Nav } fro
 import { getPopSubredditsList, getSubredditPosts } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPopSubredditsList, selectSubredditsListStatus } from '../../store/subredditSlice';
+import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import { apiRootTesting as apiRoot } from '../api/reddit';
 import Avatar from '../Avatar/Avatar';
 
@@ -18,7 +19,7 @@ function Sidebar(props) {
     // const popSubredditTitles = useSelector(selectPopSubredditTitles);
     const status = useSelector(selectSubredditsListStatus);
     while (status !== 'succeeded') {
-        return 'Subreddits Loading...'
+        return <StatusLoader />
     }
     // CREATE CLICK HANDLER 
     // DISPATCHES getSubredditPosts(subreddit.data.url)
@@ -45,16 +46,16 @@ function Sidebar(props) {
                         {popSubredditsList.map(
                             subredditListItem =>
 
-                                    <Nav.Link
+                                <Nav.Link
                                     key={subredditListItem.data.title}
-                                        // href={`${apiRoot}${subredditListItem.url}`}
-                                        href={`#`}
-                                        onClick={() => { handlePosts(subredditListItem.data.display_name) }}>
-                                        <Avatar name={Math.random()} src={subredditListItem.data.icon_img} />
-                                        {subredditListItem.data.title}
-                                    </Nav.Link>
+                                    // href={`${apiRoot}${subredditListItem.url}`}
+                                    href={`#`}
+                                    onClick={() => { handlePosts(subredditListItem.data.display_name) }}>
+                                    <Avatar name={Math.random()} src={subredditListItem.data.icon_img} />
+                                    {subredditListItem.data.title}
+                                </Nav.Link>
 
-                                
+
                         )}
                     </Accordion.Body>
                 </Accordion.Item>
