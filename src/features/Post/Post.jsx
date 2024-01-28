@@ -20,12 +20,12 @@ function Post(props) {
 return (
         <>
             <Card>
-            <Card.Img 
+            {postImgSrc ? <Card.Img 
             variant="top" 
             src={postImgSrc} 
             // data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial"
             alt={altText}
-            />
+            /> : null}
                 <Card.Body>
                     <Card.Title>{postTitle}</Card.Title>
                     <Avatar name={Math.random()}/>
