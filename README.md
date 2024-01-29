@@ -20,8 +20,9 @@ Wireframing bootstrap components [Figma](https://www.figma.com/file/L8qdk7mzh4Gn
 - React
 - Redux
 - Bootstrap
-- React-bootstrap
-- React-icons
+- react-bootstrap
+- react-icons
+- react-markdown
 - HolderJS
 - Jest
 - DiceBear/identicon
