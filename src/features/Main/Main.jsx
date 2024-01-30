@@ -9,7 +9,7 @@ function Main(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getSubredditPosts('MapPorn'));
+        dispatch(getSubredditPosts('react'));
     }, [dispatch]);
 
 

@@ -1,33 +1,37 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Card from "react-bootstrap/Card";
 import Avatar from "../Avatar/Avatar";
 // import 'holderjs';
+import Markdown from 'react-markdown';
 
 import Holder from 'holderjs';
 
 function Post(props) {
-    const {avatarName, postImgSrc, postTitle, postText, altText} = props;
+    const { avatarName, postImgSrc, postTitle, postText, altText } = props;
     // console.log('postImgSrc',postImgSrc);
     useEffect(() => {
         Holder.run({
-            images:".card-img-top"
+            images: ".card-img-top"
         });
-    },[]);
+    }, []);
 
-return (
+    return (
         <>
             <Card>
-            {postImgSrc ? <Card.Img 
-            variant="top" 
-            src={postImgSrc} 
-            // data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial"
-            alt={altText}
-            /> : null}
+                {postImgSrc ? <Card.Img
+                    variant="top"
+                    src={postImgSrc}
+                    // data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial"
+                    alt={altText}
+                /> : null}
                 <Card.Body>
                     <Card.Title>{postTitle}</Card.Title>
-                    <Avatar name={Math.random()}/>
-                    <Avatar name={Math.random()}/>
-                    <Card.Text style={{wordBreak: 'break-all'}}>{postText}</Card.Text>
+                    <Avatar name={Math.random()} />
+                    <Avatar name={Math.random()} />
+                    <Card.Text style={{ wordBreak: 'break-all' }}>
+                        {postText}
+                        <Markdown>{postText}</Markdown>
+                    </Card.Text>
 
                     <button type="button" className="btn btn-primary position-relative">
                         Inbox

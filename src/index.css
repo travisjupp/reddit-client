@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+p.card-text > * {
+  border: solid 1px red;
+  word-break: break-all;
+}
+
+/* preformatted text any larger than this breaks the layout when sidebar is present */
+p.card-text > pre {
+  /* display: none; */
+  max-width: 718px;
+}
+
+p.card-text > pre > code {
+  border: solid 2px green;
+  font-size: 80%;
+  word-break: break-all;
+}
