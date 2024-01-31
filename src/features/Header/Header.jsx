@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Container, Col, Row, Form, Nav, Navbar, NavLink, NavDropdown, Offcanvas, InputGroup } from 'react-bootstrap';
-
+import { useDispatch } from 'react-redux';
+import { getSubredditPosts } from '../api/reddit';
 import { BsSearch } from "react-icons/bs/index.js";
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -10,8 +11,37 @@ const nbToggle = {
 
 function Header(props) {
     const [show, setShow] = useState(false);
-    const handleShow = () => setShow(!show);
+    // const handleShow = () => setShow(!show);
+    const dispatch = useDispatch();
 
+    const [data, setData] = useState(
+        {
+            searchValue: ""
+        }
+    );
+    const handleChange = (e) => {
+        const key = e.target.id;
+        setData((prev) => {
+            console.log('prev', prev)
+            // console.log({name: 'chris', name: 'dan'});
+
+            // console.log({ ...prev, newKey: e.target.value })
+            console.log({ [key]: e.target.value })
+            console.log({ ...prev, [key]: e.target.value })
+            return { ...prev, [key]: e.target.value };
+        })
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(getSubredditPosts(data.searchValue));
+        console.log(`handleSubmit: getSubredditPosts(${data.searchValue})`);
+    }
+
+    const handlePosts = () => {
+
+        
+
+    }
 
     return (
         <>
@@ -49,21 +79,32 @@ function Header(props) {
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                            <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm'>
+                            <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm' onSubmit={handleSubmit}>
                                 <InputGroup>
+                                    {/* <Form.Label htmlFor='searchValue'>{data.searchValue}</Form.Label> */}
                                     <Form.Control
                                         type="search"
+                                        id="searchValue"
+                                        value={data.searchValue}
+                                        onChange={handleChange}
                                         placeholder="placeholder"
                                         className=""
                                         aria-labelledby='searchForm'
                                     />
                                     {/* rendering search button as NavLink for Offcanvas navbar to collapse after clicking (collapseOnSelect) */}
-                                    <Button eventKey="1" as={Nav.Link} href="#" variant="secondary" aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
+                                    <Button
+                                        type="submit"
+                                        eventKey="1"
+                                        as={Nav.Link}
+                                        // href="#" 
+                                        onClick={handleSubmit}
+                                        variant="secondary"
+                                        aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
                                 </InputGroup>
                             </Form>
                             {/* .d-none .d-md-block .d-xl-none .d-xxl-none will hide the element for all screen sizes except on medium and large devices. */}
-                            <div className="d-block d-md-none"> 
-                            {/* visible only on xs, sm */}
+                            <div className="d-block d-md-none">
+                                {/* visible only on xs, sm */}
                                 <Sidebar />
                             </div>
 
