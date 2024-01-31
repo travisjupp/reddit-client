@@ -1,7 +1,7 @@
 # reddit-client
 
 ## Description
-Reddit client built with React/Redux using the undocumented [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON) 
+Reddit client built with React/Redux using the [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON) 
 
 ## Setup
 
@@ -26,6 +26,7 @@ Wireframing bootstrap components [Figma](https://www.figma.com/file/L8qdk7mzh4Gn
 - HolderJS
 - Jest
 - DiceBear/identicon
+- json-server
 
 ## Features
 

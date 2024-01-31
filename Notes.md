@@ -75,7 +75,9 @@ curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
 `https://youtube.com/watch?v=386iVwP-bAA&amp;si=SAg9z216056Ov6nf` or
 `https://twitter.com/SeanRossSapp/status/1747252570043588660` or some other non-image url
 
+# SEARCHING
 
+curl https://www.reddit.com/search.json\?q=cat | jq . # search for cat and return JSON
 ```
 
 #### URLs & Hyperlinks
