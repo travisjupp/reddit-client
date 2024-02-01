@@ -28,8 +28,8 @@ function Post(props) {
                     <Card.Title>{postTitle}</Card.Title>
                     <Avatar name={Math.random()} />
                     <Avatar name={Math.random()} />
-                    <Card.Text style={{ wordBreak: 'break-all' }}>
-                        {postText}
+                    <Card.Text as='div' style={{ wordBreak: 'break-all' }}>
+                        {/* {postText} */}
                         <Markdown>{postText}</Markdown>
                     </Card.Text>
 
