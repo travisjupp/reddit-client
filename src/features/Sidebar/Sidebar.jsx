@@ -15,8 +15,8 @@ function Sidebar(props) {
     }, [dispatch]);
 
     const popSubredditsList = useSelector(selectPopSubredditsList);
-    console.log('popSubredditsList', popSubredditsList);
-    // const popSubredditTitles = useSelector(selectPopSubredditTitles);
+    // console.log('popSubredditsList', popSubredditsList);
+
     const status = useSelector(selectSubredditsListStatus);
     while (status !== 'succeeded') {
         return <StatusLoader />
@@ -43,7 +43,8 @@ function Sidebar(props) {
                 <Accordion.Item>
                     <Accordion.Header>Popular</Accordion.Header>
                     <Accordion.Body>
-                        {popSubredditsList.map(
+                        {
+                        popSubredditsList.map(
                             subredditListItem =>
 
                                 <Nav.Link

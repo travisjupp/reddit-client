@@ -17,14 +17,21 @@ p.card-text > * {
   word-break: break-all;
 }
 
-/* preformatted text any larger than this breaks the layout when sidebar is present */
-p.card-text > pre {
+/* non-wrapping preformatted text breaks the layout when sidebar is present */
+div.card-text > pre {
   /* display: none; */
-  max-width: 718px;
+  /* max-width: 510px; */
+  text-wrap: wrap;
 }
-
-p.card-text > pre > code {
+/* 
+div.card-text > pre > code {
   border: solid 2px green;
   font-size: 80%;
   word-break: break-all;
+} */
+
+/* overflowing Nav.Link items word-break */
+.accordion-body .nav-link {
+  word-break: break-all;
+  font-size: 80%;
 }
