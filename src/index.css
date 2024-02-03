@@ -21,7 +21,8 @@ p.card-text > * {
 div.card-text > pre {
   /* display: none; */
   /* max-width: 510px; */
-  text-wrap: wrap;
+  /* text-wrap: wrap; not supported in Safari, Firefox */
+  white-space: pre-wrap;
 }
 /* 
 div.card-text > pre > code {
