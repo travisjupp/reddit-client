@@ -17,7 +17,7 @@ function App() {
           <Header />
         </Row>
         <Row>
-          <Col xs={3} className='d-none d-md-block' style={{ border: "solid 1px red" }}>
+          <Col md={3} className='d-none d-md-block' style={{ border: "solid 1px red" }}>
             <Sidebar />
           </Col>
           <Col>

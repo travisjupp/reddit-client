@@ -31,7 +31,7 @@ function Header(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(getSubredditPosts(data.searchValue));
-        console.log('Header.jsx typeof handleShow', typeof toggleOffcanvas);
+        console.log('Header.jsx typeof toggleOffcanvas', typeof toggleOffcanvas);
         return show ? toggleOffcanvas() : null;
         console.log(`handleSubmit: getSubredditPosts(${data.searchValue})`);
     };
@@ -46,7 +46,7 @@ function Header(props) {
                 }}
                 onToggle={expanded => console.log('expanded=', expanded)}
             >
-                <Col xs={3} className='d-flex' style={{ border: "1px solid red" }}>
+                <Col md={3} className='d-flex' style={{ border: "1px solid red" }}>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} onClick={toggleOffcanvas} />
                     <Navbar.Brand>Navbar.Brand</Navbar.Brand>
                     <Nav className="justify-content-start pe-3">
