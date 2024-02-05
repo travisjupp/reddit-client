@@ -25,7 +25,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
 );
 
 export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts',
-  async (path) => {
+  async (path, {rejectWithValue}) => {
     try {
       
       // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
@@ -39,6 +39,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       return json.data.children;
     } catch (e) {
       console.error('Error:', e.message);
+      return rejectWithValue(e.message);
     }
   }
 );

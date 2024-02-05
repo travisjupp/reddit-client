@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiRoot, getSubredditPosts } from '../api/reddit';
 import Post from '../Post/Post';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
-import { selectSubredditPosts, selectSubredditPostsStatus } from '../../store/subredditPostsSlice.js';
+import { selectSubredditPosts, selectSubredditPostsStatus, selectSubredditPostsError } from '../../store/subredditPostsSlice.js';
 
 function Main(props) {
     const dispatch = useDispatch();
@@ -15,32 +15,42 @@ function Main(props) {
 
     const posts = useSelector(selectSubredditPosts);
     const status = useSelector(selectSubredditPostsStatus);
+    const error = useSelector(selectSubredditPostsError);
+
     console.log('posts', posts);
     // console.log('posts[0]',posts[0]);
     console.log('status', status);
-    while (status !== 'succeeded') {
+
+    while (status === 'loading') {
         return <StatusLoader />
     }
-    const validatePostImgURL = (url) => {
-        return url.match(/jpeg|jpg|png/i) ? url : null;
+    if (status === 'failed') {
+        // console.log({error})
+        return <pre>{error.message}</pre>
+    }
+    if (status === 'succeeded') {
+        const validatePostImgURL = (url) => {
+            return url.match(/jpeg|jpg|png/i) ? url : null;
+        }
+
+        return (
+            <>
+                <h1>r/{posts[0].data.subreddit}</h1>
+
+                {posts.map(post => {
+                    return <Post
+                        key={post.data.id}
+                        postTitle={post.data.title}
+                        postImgSrc={validatePostImgURL(post.data.url)}
+                        postText={post.data.selftext}
+                        altText={`r/${post.data.subreddit} - ${post.data.title}`}
+                    // postText={'#####################################################################################################################################################################################################################################################'}
+                    />
+                })}
+            </>
+        )
     }
 
-    return (
-        <>
-            <h1>r/{posts[0].data.subreddit}</h1>
-
-            {posts.map(post => {
-                return <Post
-                    key={post.data.id}
-                    postTitle={post.data.title}
-                    postImgSrc={validatePostImgURL(post.data.url)}
-                    postText={post.data.selftext}
-                    altText={`r/${post.data.subreddit} - ${post.data.title}`}
-                // postText={'#####################################################################################################################################################################################################################################################'}
-                />
-            })}
-        </>
-    )
 }
 
 export default Main;

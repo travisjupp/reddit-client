@@ -17,15 +17,18 @@ const subredditPostsSlice = createSlice({
             builder
             .addCase(getSubredditPosts.pending, (state, action) => {
                 state.status = 'loading';
+                console.log('pending action =>', action);
             })
             .addCase(getSubredditPosts.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.posts = action.payload;
+                console.log('fulfilled action =>', action);
             })
             .addCase(getSubredditPosts.rejected, (state, action) => {
                 state.status = 'failed';
                 state.posts = [];
                 state.error = action.error;
+                console.log('rejected action =>', action);
             })
         }
     })
@@ -46,4 +49,5 @@ export const selectSubredditPostsStatus = (state) => {
     return status;
 }
 
+export const selectSubredditPostsError = (state) => state.subredditPosts.error;
 
