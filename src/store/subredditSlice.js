@@ -17,15 +17,25 @@ const subredditSlice = createSlice({
         builder
             .addCase(getPopSubredditsList.pending, (state, action) => {
                 state.status = 'loading';
+                console.log('pending action =>', action);
             })
             .addCase(getPopSubredditsList.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.subreddits = action.payload;
+                console.log('fulfilled action =>', action);
             })
             .addCase(getPopSubredditsList.rejected, (state, action) => {
                 state.status = 'failed';
                 state.subreddits = [];
-                state.error = action.error;
+                // unpack error props
+                const { error, meta, payload, type } = action;
+                state.error = { error, meta, payload, type };
+                // console.log('state.error', state.error);
+                // console.log('rejected action =>', action);
+                // console.log('state.error => action.error', action.error);
+                // console.log('state.error => action.meta', action.meta);
+                // console.log('state.error => action.payload', action.payload);
+                // console.log('state.error => action.type', action.type);
             })
     },
 })
@@ -39,8 +49,10 @@ export const selectPopSubredditsList = (state) => state.subreddits.subreddits;
 // };
 
 
-export const selectSubredditsListStatus = (state) => {
+export const selectPopSubredditsListStatus = (state) => {
     const status = state.subreddits.status;
     return status;
 }
+
+export const selectPopSubredditsListError = (state) => state.subreddits.error;
 

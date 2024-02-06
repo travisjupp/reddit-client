@@ -15,7 +15,7 @@ function Main(props) {
 
     const posts = useSelector(selectSubredditPosts);
     const status = useSelector(selectSubredditPostsStatus);
-    const error = useSelector(selectSubredditPostsError);
+    const subredditPostsErrorState = useSelector(selectSubredditPostsError);
 
     console.log('posts', posts);
     // console.log('posts[0]',posts[0]);
@@ -25,26 +25,21 @@ function Main(props) {
         return <StatusLoader />
     }
     if (status === 'failed') {
-        { console.log('ERROR', error) }
+        { console.log('ERROR', subredditPostsErrorState) }
 
-        let errorStr = JSON.stringify(Object.entries(error));
+        let errorStr = JSON.stringify(Object.entries(subredditPostsErrorState));
 
         return (
             <>
-                <code>{error.error.message}</code>
+                <code>{subredditPostsErrorState.error.message}</code>
+
 
                 <pre style={{ whiteSpace: 'pre-wrap' }}>
-                    {error.payload}<hr />
+                    {subredditPostsErrorState.payload}<hr />
                     <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
                 </pre>
             </>
-
-
         )
-
-
-        // return <pre>{JSON.stringify(error)}</pre>
-        // return <pre>{error.message}</pre>
     }
     if (status === 'succeeded') {
         const validatePostImgURL = (url) => {
