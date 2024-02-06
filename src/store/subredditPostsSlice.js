@@ -27,8 +27,21 @@ const subredditPostsSlice = createSlice({
             .addCase(getSubredditPosts.rejected, (state, action) => {
                 state.status = 'failed';
                 state.posts = [];
-                state.error = action.error;
+                // state.error = action.error;
+
+                // unpack error props
+                const {error, meta, payload, type} = action;
+                state.error = {error, meta, payload, type};
+                console.log('state.error', state.error);
                 console.log('rejected action =>', action);
+                console.log('state.error => action.error', action.error);
+                console.log('state.error => action.meta', action.meta);
+                console.log('state.error => action.payload', action.payload);
+                console.log('state.error => action.type', action.type);
+
+
+
+                // state.error = action.error;
             })
         }
     })

@@ -25,8 +25,26 @@ function Main(props) {
         return <StatusLoader />
     }
     if (status === 'failed') {
-        // console.log({error})
-        return <pre>{error.message}</pre>
+        { console.log('ERROR', error) }
+
+        let errorStr = JSON.stringify(Object.entries(error));
+
+        return (
+            <>
+                <code>{error.error.message}</code>
+
+                <pre style={{ whiteSpace: 'pre-wrap' }}>
+                    {error.payload}<hr />
+                    <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
+                </pre>
+            </>
+
+
+        )
+
+
+        // return <pre>{JSON.stringify(error)}</pre>
+        // return <pre>{error.message}</pre>
     }
     if (status === 'succeeded') {
         const validatePostImgURL = (url) => {
