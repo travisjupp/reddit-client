@@ -34,7 +34,7 @@ function Sidebar(props) {
 
         return (
             <>
-                <code>{popSubredditsListErrorState.message}</code>
+                <code>{popSubredditsListErrorState.error.message}</code>
 
 
                 <pre style={{ whiteSpace: 'pre-wrap' }}>

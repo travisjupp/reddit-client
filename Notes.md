@@ -50,6 +50,19 @@ jq '.data.children[].data.title' ./popular.json # view all titles
 curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_dice_set_and_box.json | jq . > comments.json # single post comments
 curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_dice_set_and_box.json | jq '.[1].data.children[].data.body'
 
+# link to comments for individual posts from a subreddit can be found in the `permalink` property of a subreddits' json file
+curl https://www.reddit.com/r/MapPorn.json | jq '.data.children[].data.permalink'
+# returns 25 url fragments: 
+"/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024/"
+"/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day/"
+"/r/MapPorn/comments/1aikgos/foreign_language_speakers_in_europe/"
+...
+# all from ...MapPorn.json: 
+"permalink": "/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024/",
+
+
+
+
 jq '.[1].data.children[].data.body' comments.json # first level comments
 jq '.[1].data.children[].data.replies.data.children[].data.body' comments.json # second level comments
 
@@ -88,6 +101,7 @@ to: https://www.reddit.com/media?url=https%3A%2F%2Fi.redd.it%2Fdcjc97hi3mcc1.jpe
 prepends: https://www.reddit.com/media?url=
 
 #### type prefixes
+
 t1_	Comment  
 t2_	Account  
 t3_	Link  

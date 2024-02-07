@@ -31,7 +31,6 @@ function Header(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(getSubredditPosts(data.searchValue));
-        console.log('Header.jsx typeof toggleOffcanvas', typeof toggleOffcanvas);
         return show ? toggleOffcanvas() : null;
         console.log(`handleSubmit: getSubredditPosts(${data.searchValue})`);
     };
