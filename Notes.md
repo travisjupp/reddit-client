@@ -91,6 +91,14 @@ curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
 # SEARCHING
 
 curl https://www.reddit.com/search.json\?q=cat | jq . # search for cat and return JSON
+
+
+# USER ICON AND OTHER DATA
+
+`curl https://www.reddit.com/user/Ltroid/about.json > userAbout.json` # locally stored user data
+
+`curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img'`
+# returns `"https://styles.redditmedia.com/t5_2tu5t7/styles/profileIcon_snoobf84d9a3-2cea-42e8-972a-135e78ff10ff-headshot-f.png?width=256&amp;height=256&amp;crop=256:256,smart&amp;s=3ddc4418d0cbf20c8b6ed9b615506117ac15f7f3"`
 ```
 
 #### URLs & Hyperlinks

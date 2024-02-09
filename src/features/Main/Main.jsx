@@ -46,14 +46,17 @@ function Main(props) {
             return url.match(/jpeg|jpg|png/i) ? url : null;
         }
 
+        
         return (
             <>
                 <h1>r/{posts[0].data.subreddit}</h1>
 
                 {posts.map(post => {
+                    
                     return <Post
                         key={post.data.id}
                         postTitle={post.data.title}
+                        postAuthor={post.data.author}
                         postImgSrc={validatePostImgURL(post.data.url)}
                         postText={post.data.selftext}
                         altText={`r/${post.data.subreddit} - ${post.data.title}`}

@@ -64,3 +64,30 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
     }
   }
 );
+
+export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
+  async (userName, { rejectWithValue }) => {
+    try {
+      // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
+      const response = await fetch(`${apiRootTesting}user/${userName}`);
+      // const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
+      if (!response.ok) {
+        throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+      }
+      const json = await response.json();
+      console.log('json.data.icon_img', json.data.icon_img);
+      // return an object
+      // return { [userName]: json.data.icon_img }
+
+      // return an array
+      return [userName, json.data.icon_img]
+
+      // return a property
+      // return [userName]: json.data.icon_img
+      // return json.data.icon_img;
+    } catch (e) {
+      console.error('Error:', e.message);
+      return rejectWithValue(e.message);
+    }
+  }
+);
