@@ -52,7 +52,7 @@ curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_di
 
 # link to comments for individual posts from a subreddit can be found in the `permalink` property of a subreddits' json file
 curl https://www.reddit.com/r/MapPorn.json | jq '.data.children[].data.permalink'
-# returns 25 url fragments: 
+# returns 25 url paths: 
 "/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024/"
 "/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day/"
 "/r/MapPorn/comments/1aikgos/foreign_language_speakers_in_europe/"
@@ -60,7 +60,8 @@ curl https://www.reddit.com/r/MapPorn.json | jq '.data.children[].data.permalink
 # all from ...MapPorn.json: 
 "permalink": "/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024/",
 
-
+# create object of authors from a subreddit post
+curl https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json | jq '[.[].data.children[].data.author | tostring] | [.,.] | .[0] as $keys | .[1] as $values | reduce range(0; $keys|length) as $i ({}; . + {($keys[$i]): $values[$i]})'
 
 
 jq '.[1].data.children[].data.body' comments.json # first level comments
