@@ -1,37 +1,59 @@
 #!/bin/zsh
 
 #INITIAL_WORKING_DIRECTORY=$(pwd)
-cd "$(dirname "$0")"
 
-output=()
-jq -cr '.data.children[].data.author' ./react.json | while read i; do
+cd "$(dirname "$0")" # change to this scripts directory for portability relative paths
 
-	filter=(jq -s '.[0]+ {"id":.[].data.name}')
+profilesRetrieved=()
+jq -cr '.data.children[].data.author' ./subreddits/MapPorn.json | while read i; do
 
-        profile=$(curl https://www.reddit.com/user/$i/about.json \
-        	| $filter \
-        	| jq 'pick(.id, .kind, .data)')
+	filterAddProfileID=(jq -s '.[0]+ {"id":.[].data.name}') # add `id` property to profile object
+	filterSortProfileID=(jq 'pick(.id, .kind, .data)') # move `id` property to top of profile object
+
+	# get profile
+    profile=$(curl https://www.reddit.com/user/$i/about.json \
+        | $filterAddProfileID \
+        | $filterSortProfileID)
 	
 	profileName=$(printf '%s' "$profile" | jq .id)
 
+		# catch any failed profile requests (invalid profileName) and try again until profile valid
 		while [[ $profileName == *null* ]]; do
 			echo "REFETCHING =>" $i
 
-                        profile=$(curl https://www.reddit.com/user/$i/about.json \
-                        	| jq -s '.[0]+ {"id":.[].data.name}' \
-                        	| jq 'pick(.id, .kind, .data)')
+			# get profile
+            profile=$(curl https://www.reddit.com/user/$i/about.json \
+            	| $filterAddProfileID \
+            	| $filterSortProfileID)
 
-                        profileName=$(printf '%s' "$profile" | jq .id)
-
+            profileName=$(printf '%s' "$profile" | jq .id)
 		done
+
 	echo "PROFILE GOOD => " $i	
-	output=($output$profile)
+
+	# accumulate valid profile objects
+	profilesRetrieved=($profilesRetrieved$profile)
 
 	sleep .2
 done
 
-output=$(printf '%s' "$output" | jq -s | jq '. | unique')
+# get current db profiles
+profilesCurrent=$(jq '.user[]' ./dbcopy.json | $filterSortProfileID)
 
-jq --argjson profiles "$output" '.user = $profiles' ./dbcopy.json > ./output.json
+# merge retrieved profiles with current profiles
+profilesMerged=($profilesRetrieved$profilesCurrent)
 
-#cd $INITIAL_WORKING_DIRECTORY
+# package and remove duplicate profiles
+profilesFinal=$(printf '%s' "$profilesMerged" | jq -s | jq '. | unique')
+
+# add processed profiles objects to the database `user` array
+# jq --argjson updatedProfiles "$profilesFinal" '.user = $updatedProfiles' ./dbcopy.json > ./dbcopy.json
+profilesProcessed=$(jq --argjson updatedProfiles "$profilesFinal" '.user = $updatedProfiles' ./dbcopy.json)
+printf '%s' $profilesProcessed > ./dbcopy.json
+
+
+
+
+
+
+# cd $INITIAL_WORKING_DIRECTORY
