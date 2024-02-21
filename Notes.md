@@ -37,7 +37,13 @@ https://github.com/imsky/holder
 
 ### Reddit
 
-#### Data
+#### Testing Server Data
+
+Data for testing is pulled from reddit and saved in the /data folder where it is accessed using json-server.
+
+Scripts found in the /data folder can load some data into the testing server from reddit
+
+JQ queries/filters for wrangling data, and curl URLs revealing where local files originated found here. 
 
 https://jqlang.github.io/jq/manual/  
 ```sh
@@ -101,6 +107,9 @@ curl https://www.reddit.com/search.json\?q=cat | jq . # search for cat and retur
 `curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img'`
 # returns `"https://styles.redditmedia.com/t5_2tu5t7/styles/profileIcon_snoobf84d9a3-2cea-42e8-972a-135e78ff10ff-headshot-f.png?width=256&amp;height=256&amp;crop=256:256,smart&amp;s=3ddc4418d0cbf20c8b6ed9b615506117ac15f7f3"`
 ```
+
+
+
 
 #### URLs & Hyperlinks
 

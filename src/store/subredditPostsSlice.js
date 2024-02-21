@@ -11,9 +11,7 @@ const initialState = {
 const subredditPostsSlice = createSlice({
     name: 'subredditPosts',
     initialState: initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
             .addCase(getSubredditPosts.pending, (state, action) => {

@@ -11,8 +11,7 @@ const initialState = {
 const subredditSlice = createSlice({
     name: 'subreddits',
     initialState,
-    reducers: {
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
             .addCase(getPopSubredditsList.pending, (state, action) => {
