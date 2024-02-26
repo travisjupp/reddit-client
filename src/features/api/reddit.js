@@ -6,6 +6,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const apiRootTesting = 'http://localhost:8000/';
 const subredditsPathName = 'subreddits/1';
 
+// Fetch list of popular subreddits
+// Populates the sidebar on first load with https://www.reddit.com/subreddits
 export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubredditsList',
   async (_, { rejectWithValue }) => {
     try {
@@ -26,6 +28,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
   }
 );
 
+// Fetch subreddits eg. /r/MapPorn
 export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts',
   async (path, { rejectWithValue }) => {
     try {
@@ -65,6 +68,26 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
   }
 );
 
+// Todo: Fetch subreddit post comments
+
+export const getSubredditComments = createAsyncThunk('subreddits/getSubredditComments',
+  async (permalink, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`https://www.reddit.com${permalink}`);
+      // const response = await fetch(`https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day`);
+      if (!response.ok) {
+        throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+      }
+      const json = await response.json();
+      return json;
+    } catch (e) {
+      console.error('Error:', e.message);
+      return rejectWithValue(e.message);
+    }
+  }
+)
+
+// Fetch avatars from user profiles 
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
     try {
