@@ -3,7 +3,6 @@ import Card from "react-bootstrap/Card";
 import Avatar from "../Avatar/Avatar";
 import Markdown from 'react-markdown';
 import Holder from 'holderjs';
-import { decode } from 'html-entities';
 import { getUserAvatar } from '../api/reddit';
 import { selectUserAvatar } from '../../store/subredditPostsSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,9 +35,8 @@ function Post(props) {
     if (!url) {
       return;
     }
-    const re = '';
-    return url.match(/.*png|.*jpg/gm) ? url.match(/.*png|.*jpg/gm)[0] : null;
-    // return url.match(/.*png|.*jpg/gm) ? url : null;
+    const re = /.*png|.*jpg/g;
+    return url.match(re) ? url.match(re)[0] : null;
   }
   return (
     <>
@@ -52,11 +50,7 @@ function Post(props) {
         /> : null}
         <Card.Body>
           <Card.Title>{postTitle}</Card.Title>
-          {/* <Avatar name={postAuthor} />{postAuthor} */}
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatar[postAuthor])} />{postAuthor}
-          {/* <img src={avatar[postAuthor]} />{avatar[postAuthor]} */}
-
-          {/* <Avatar name={Math.random()} /> */}
           <Card.Text as='div' style={{ wordBreak: 'break-all' }}>
             <Markdown>{postText}</Markdown>
           </Card.Text>
