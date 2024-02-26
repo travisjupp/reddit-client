@@ -70,7 +70,7 @@ function Sidebar(props) {
 
                                         >
 
-                                            <Avatar name={Math.random()} src={subredditListItem.data.icon_img} />
+                                            <Avatar name={subredditListItem.data.title} src={subredditListItem.data.icon_img} />
                                             {subredditListItem.data.title}
                                         </Nav.Link>
 
