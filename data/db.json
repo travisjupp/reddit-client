@@ -1,16 +1,6 @@
 {
   "r": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    },
-    {
-      "id": 2,
-      "title": "id two",
-      "author": "second author"
-    },
-    {
       "id": "MapPorn",
       "kind": "Listing",
       "data": {

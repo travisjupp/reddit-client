@@ -9,6 +9,7 @@ cd "$(dirname "$0")" # change to this scripts directory for portability of relat
 
 profilesRetrieved=()
 
+# get a list of profle names from subreddit
 jq -r '.data.children[].data.author' ../subreddits/react.json | while read i; do
 
 	filterAddProfileID=(jq -s '.[0]+ {"id":.[].data.name}') # add `id` property to profile object

@@ -39,70 +39,95 @@ https://github.com/imsky/holder
 
 #### Testing Server Data
 
-Data for testing is pulled from reddit and saved in the /data folder where it is accessed using json-server.
+Data for testing is pulled from reddit and saved in the data/ folder where it is accessed using json-server.
 
-Scripts found in the /data folder can load some data into the testing server from reddit
+Scripts found in the data/scripts/ folder can load some data into the testing server from reddit
 
-JQ queries/filters for wrangling data, and curl URLs revealing where local files originated found here. 
+Files found in the data/subreddits/ folder are from `https://www.reddit.com/r/<filename>.json`
 
-https://jqlang.github.io/jq/manual/  
+JQ filters for wrangling JSON data, and curl URLs revealing where local files originated found here. 
+
+`jq` https://jqlang.github.io/jq for filtering JSON
+`bat` https://github.com/sharkdp/bat cat clone for syntax highlighting
+
+##### Posts data/subreddits/
+
 ```sh
+# view subreddit posts
+curl https://www.reddit.com/r/popular.json | jq '.data.children' | bat -l json
 
-# POSTS
-jq '.data.children[] | select(.data.title == "Gratefulness")' ./popular.json # select post by title
-jq '.data.children[].data.title' ./popular.json # view all titles
+# view all titles
+curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.title' | bat -l json
+```
 
-# COMMENTS
-curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_dice_set_and_box.json | jq . > comments.json # single post comments
-curl https://www.reddit.com/r/DnD/comments/17mu96z/oc_runic_dice_bue_cats_eye_dice_set_and_box.json | jq '.[1].data.children[].data.body'
 
-# link to comments for individual posts from a subreddit can be found in the `permalink` property of a subreddits' json file
+##### Images
+
+```sh
+# view images from popular
+curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url' # images don't load in browser (CORS)
+
+# load images from subreddit url prop, if it has img img will load if not nothing loads
+curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
+# returns `https://i.redd.it/ssu9nfjyfzcc1.jpeg` if image exists, or somthing like: 
+`https://www.reddit.com/r/AskReddit/comments/198mp35/how_will_you_react_if_joe_biden_becomes_president/` or 
+`https://youtube.com/watch?v=386iVwP-bAA&amp;si=SAg9z216056Ov6nf` or
+`https://twitter.com/SeanRossSapp/status/1747252570043588660` or some other non-image url
+```
+
+
+##### Comments data/comments/
+
+```sh
+# On reddit, when you click on a subreddit post from the initial listing from eg. `/r/MapPorn/` you will be taken to something like: `/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day`
+
+# link to comments for individual posts from a subreddit can be found in the `permalink` property of a subreddits' JSON file
 curl https://www.reddit.com/r/MapPorn.json | jq '.data.children[].data.permalink'
 # returns 25 url paths: 
 "/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024/"
 "/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day/"
 "/r/MapPorn/comments/1aikgos/foreign_language_speakers_in_europe/"
 ...
-# all from ...MapPorn.json: 
-"permalink": "/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024/",
 
-# create object of authors from a subreddit post
-curl https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json | jq '[.[].data.children[].data.author | tostring] | [.,.] | .[0] as $keys | .[1] as $values | reduce range(0; $keys|length) as $i ({}; . + {($keys[$i]): $values[$i]})'
+# so in order to render posts w/ comments we need to grab the JSON from `permalink` then render that data.
 
+curl $(printf "https://www.reddit.com"$(curl https://www.reddit.com/r/MapPorn.json | jq -r '.data.children[0].data.permalink | rtrimstr("/")').json) | jq -r '.[].data.children[].data.body' | bat -l json
 
-jq '.[1].data.children[].data.body' comments.json # first level comments
-jq '.[1].data.children[].data.replies.data.children[].data.body' comments.json # second level comments
+# first-level comments
+curl https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json | jq '.[1].data.children[].data.body'
 
-curl https://www.reddit.com/r/MapPorn/comments.json > ./data/MapPornCommentsListing.json # listing of subreddit comments
+# second level comments
+curl https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json | jq '.[1].data.children[].data.replies.data.children[].data.body'
+
+# listing of subreddit comments
+curl https://www.reddit.com/r/MapPorn/comments.json > ./data/comments/MapPornCommentsListing.json
 
 # single post comment URL anatomy
-curl https://www.reddit.com/r/MapPorn/comments.json > ./data/MapPornCommentsListing.json
-https://www.reddit.com/r/MapPorn/comments/18vyfbl/mapporn_discussion_thread_for_january_2024/
-https://www.reddit.com/r/MapPorn/comments/<id>/<title>/
+curl https://www.reddit.com/r/MapPorn/comments.json > ./data/comments/MapPornCommentsListing.json
+# https://www.reddit.com/r/MapPorn/comments/18vyfbl/mapporn_discussion_thread_for_january_2024/
+# https://www.reddit.com/r/MapPorn/comments/<id>/<title>/
+```
 
 
+##### Searching data/search/
 
-# IMAGES
-# view images from popular
-jq '.data.children[].data.preview.images[0].source.url' popular.json # images don't load in browser (CORS)
-curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url' # images don't load in browser (CORS)
+```sh
+# search query
+curl https://www.reddit.com/search.json\?q=cat > ./data/search/searchQuery.json
 
-# load images from subreddit url prop, if it has img img will load if not nothing loads
-curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
-# returns 
-`https://i.redd.it/ssu9nfjyfzcc1.jpeg` if image exists, or somthing like: 
-`https://www.reddit.com/r/AskReddit/comments/198mp35/how_will_you_react_if_joe_biden_becomes_president/` or 
-`https://youtube.com/watch?v=386iVwP-bAA&amp;si=SAg9z216056Ov6nf` or
-`https://twitter.com/SeanRossSapp/status/1747252570043588660` or some other non-image url
-
-# SEARCHING
-
-curl https://www.reddit.com/search.json\?q=cat | jq . # search for cat and return JSON
+# search for cat and return JSON
+curl https://www.reddit.com/search.json\?q=cat | jq . | bat -l json
+```
 
 
-# USER ICON AND OTHER DATA
+##### User Profiles data/profiles/
 
-`curl https://www.reddit.com/user/Ltroid/about.json > userAbout.json` # locally stored user data
+```sh
+# user overview
+`curl https://www.reddit.com/user/Ltroid.json > ./data/profiles/userOverview.json`
+
+# user icon and other data
+`curl https://www.reddit.com/user/Ltroid/about.json > ./data/profiles/userAbout.json`
 
 `curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img'`
 # returns `"https://styles.redditmedia.com/t5_2tu5t7/styles/profileIcon_snoobf84d9a3-2cea-42e8-972a-135e78ff10ff-headshot-f.png?width=256&amp;height=256&amp;crop=256:256,smart&amp;s=3ddc4418d0cbf20c8b6ed9b615506117ac15f7f3"`
@@ -132,5 +157,4 @@ t6_	Award
 
 
 [^1]: https://create-react-app.dev/docs/getting-started
-[^2]: https://reactstrap.github.io/?path=/story/home-installation--page
 [^4]: https://jestjs.io/docs/tutorial-react
