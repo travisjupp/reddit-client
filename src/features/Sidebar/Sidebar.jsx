@@ -20,7 +20,7 @@ function Sidebar(props) {
 
     const handlePosts = (param) => {
         dispatch(getSubredditPosts(param));
-        console.log('Sidebar.jsx typeof toggleOffcanvas', typeof toggleOffcanvas)
+        // console.log('Sidebar.jsx typeof toggleOffcanvas', typeof toggleOffcanvas)
     }
 
     while (status === 'loading') {
@@ -29,14 +29,11 @@ function Sidebar(props) {
 
     if (status === 'failed') {
         { console.log('ERROR', popSubredditsListErrorState) }
-
         let errorStr = JSON.stringify(Object.entries(popSubredditsListErrorState));
 
         return (
             <>
                 <code>{popSubredditsListErrorState.error.message}</code>
-
-
                 <pre style={{ whiteSpace: 'pre-wrap' }}>
                     {popSubredditsListErrorState.payload}<hr />
                     <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
@@ -57,7 +54,6 @@ function Sidebar(props) {
                             {
                                 popSubredditsList.map(
                                     subredditListItem =>
-
                                         <Nav.Link
                                             key={subredditListItem.data.title}
                                             // href={`${apiRoot}${subredditListItem.url}`}
@@ -65,15 +61,10 @@ function Sidebar(props) {
                                             onClick={() => {
                                                 handlePosts(subredditListItem.data.display_name);
                                                 return toggleOffcanvas ? toggleOffcanvas() : null;
-                                            }
-                                            }
-
-                                        >
-
+                                            }}>
                                             <Avatar name={subredditListItem.data.title} src={subredditListItem.data.icon_img} />
                                             {subredditListItem.data.title}
                                         </Nav.Link>
-
                                 )}
                         </Accordion.Body>
                     </Accordion.Item>

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 function Post(props) {
-  const { postAuthor, avatarName, postImgSrc, postTitle, postText, altText } = props;
+  const { postAuthor, avatarName, postImgSrc, postTitle, postText, altText, postPermalink } = props;
   // console.log('postImgSrc',postImgSrc);
   useEffect(() => {
     Holder.run({
@@ -17,20 +17,13 @@ function Post(props) {
     });
   }, []);
 
-  // const [avatar, setAvatar] = useState('');
-  
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getUserAvatar(postAuthor));
   }, [dispatch])
-  
+
   const avatar = useSelector(selectUserAvatar);
-  // setAvatar(userAvatar);
-  // const avatar = useSelector(selectUserAvatar);
-  console.log('avatar:', avatar);
-  console.log('postAuthor',postAuthor);
-  // console.log('currentAvatar:', currentAvatar);
   const validateAvatarImgURL = (url) => {
     if (!url) {
       return;
@@ -40,7 +33,7 @@ function Post(props) {
   }
   return (
     <>
-
+      <a href={postPermalink}>{postPermalink}
       <Card>
         {postImgSrc ? <Card.Img
           variant="top"
@@ -65,7 +58,7 @@ function Post(props) {
 
         </Card.Body>
       </Card>
-
+      </a>
     </>
   )
 }

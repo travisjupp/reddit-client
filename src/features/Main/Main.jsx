@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { apiRoot, getSubredditPosts } from '../api/reddit';
+import { apiRoot, getSubredditComments, getSubredditPosts } from '../api/reddit';
 import Post from '../Post/Post';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import { selectSubredditPosts, selectSubredditPostsStatus, selectSubredditPostsError } from '../../store/subredditPostsSlice.js';
@@ -12,14 +12,19 @@ function Main(props) {
         dispatch(getSubredditPosts('react'));
     }, [dispatch]);
 
-
+    
     const posts = useSelector(selectSubredditPosts);
     const status = useSelector(selectSubredditPostsStatus);
     const subredditPostsErrorState = useSelector(selectSubredditPostsError);
-
-    console.log('posts', posts);
+    
+    // console.log('posts', posts);
     // console.log('posts[0]',posts[0]);
-    console.log('status', status);
+    // console.log('status', status);
+    
+    useEffect(() => {
+        dispatch(getSubredditComments('/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day'));
+    }, [dispatch]);
+
 
     while (status === 'loading') {
         return <StatusLoader />
@@ -43,6 +48,9 @@ function Main(props) {
     }
     if (status === 'succeeded') {
         const validatePostImgURL = (url) => {
+            if (!url) {
+                return
+            }
             return url.match(/jpeg|jpg|png/i) ? url : null;
         }
 
@@ -60,6 +68,7 @@ function Main(props) {
                         postImgSrc={validatePostImgURL(post.data.url)}
                         postText={post.data.selftext}
                         altText={`r/${post.data.subreddit} - ${post.data.title}`}
+                        postPermalink={post.data.permalink}
                     // postText={'#####################################################################################################################################################################################################################################################'}
                     />
                 })}
