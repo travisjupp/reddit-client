@@ -16,12 +16,12 @@ const subredditSlice = createSlice({
         builder
             .addCase(getPopSubredditsList.pending, (state, action) => {
                 state.status = 'loading';
-                console.log('pending action =>', action);
+                // console.log('pending action =>', action);
             })
             .addCase(getPopSubredditsList.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.subreddits = action.payload;
-                console.log('fulfilled action =>', action);
+                // console.log('fulfilled action =>', action);
             })
             .addCase(getPopSubredditsList.rejected, (state, action) => {
                 state.status = 'failed';

@@ -68,12 +68,11 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
   }
 );
 
-// Todo: Fetch subreddit post comments
-
+// Fetch subreddit post comments
 export const getSubredditComments = createAsyncThunk('subreddits/getSubredditComments',
   async (permalink, { rejectWithValue }) => {
     try {
-      const response = await fetch(`https://www.reddit.com${permalink}`);
+      const response = await fetch(`https://www.reddit.com${permalink}.json`);
       // const response = await fetch(`https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day`);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -98,7 +97,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
-      console.log('json.data.icon_img', json.data.icon_img);
+      // console.log('json.data.icon_img', json.data.icon_img);
       // return an object
       // return { [userName]: json.data.icon_img }
 

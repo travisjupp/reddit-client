@@ -1,0 +1,39 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { getSubredditComments } from "../features/api/reddit";
+
+
+const initialState = {
+    status: 'uninitialized',
+    comments: [],
+    error: null
+}
+
+const subredditCommentsSlice = createSlice({
+    name: 'subredditComments',
+    initialState,
+    reducers: {},
+    extraReducers: builder => {
+        builder
+            .addCase(getSubredditComments.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(getSubredditComments.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.comments = action.payload;
+            })
+            .addCase(getSubredditComments.rejected, (state, action) => {
+                state.status = 'failed';
+                state.comments = [];
+                const { error, meta, payload, type } = action;
+                state.error = { error, meta, payload, type };
+            })
+    }
+});
+
+export default subredditCommentsSlice.reducer;
+
+export const selectSubredditComments = state => state.subredditComments.comments;
+
+export const selectSubredditCommentsStatus = state => state.subredditComments.status;
+
+export const selectSubredditCommentsError = state => state.subredditComments.error;

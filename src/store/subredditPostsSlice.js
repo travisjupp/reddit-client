@@ -10,7 +10,7 @@ const initialState = {
 
 const subredditPostsSlice = createSlice({
     name: 'subredditPosts',
-    initialState: initialState,
+    initialState,
     reducers: {},
     extraReducers: builder => {
         builder
@@ -37,20 +37,20 @@ const subredditPostsSlice = createSlice({
                 // console.log('state.error => action.type', action.type);
             })
             .addCase(getUserAvatar.pending, (state, action) => {
-                console.log('avatar pending')
+                // console.log('avatar pending')
             })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
                 // state.avatar = action.payload;
                 const key = action.payload[0];
                 const val = action.payload[1];
                 state.avatars[key] = val;
-                console.log('avatar fulfilled', action.payload);
-                console.log('state.avatar', state.avatars);
+                // console.log('avatar fulfilled', action.payload);
+                // console.log('state.avatar', state.avatars);
             })
             .addCase(getUserAvatar.rejected, (state, action) => {
                 const { error, meta, payload, type } = action;
                 const fullError = { error, meta, payload, type }
-                console.log(`avatar rejected: ${JSON.stringify(fullError)}`);
+                // console.log(`avatar rejected: ${JSON.stringify(fullError)}`);
                 // console.log(`avatar rejected: ${action.error}`);
                 // state.avatar = '';
             })
@@ -59,20 +59,10 @@ const subredditPostsSlice = createSlice({
 
 export default subredditPostsSlice.reducer;
 
-export const selectSubredditPosts = (state) => {
-    const posts = state.subredditPosts.posts;
-    // console.log('posts',posts);
-    // console.log('posts.map',posts.map(post => post));
+export const selectSubredditPosts = state => state.subredditPosts.posts;
 
-    // return posts.map(post => post);
-    return posts;
-}
+export const selectSubredditPostsStatus = state => state.subredditPosts.status;
 
-export const selectSubredditPostsStatus = (state) => {
-    const status = state.subredditPosts.status;
-    return status;
-}
+export const selectSubredditPostsError = state => state.subredditPosts.error;
 
-export const selectSubredditPostsError = (state) => state.subredditPosts.error;
-
-export const selectUserAvatar = (state) => state.subredditPosts.avatars;
+export const selectUserAvatar = state => state.subredditPosts.avatars;
