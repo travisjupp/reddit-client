@@ -25,7 +25,6 @@ npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react rea
 
 ### Technologies
 
-
 #### Holder
 
 https://github.com/imsky/holder
@@ -37,7 +36,7 @@ https://github.com/imsky/holder
 
 ### Reddit
 
-#### Testing Server Data
+#### Testing-Server Data
 
 Data for testing is pulled from reddit and saved in the data/ folder where it is accessed using json-server.
 
@@ -102,9 +101,8 @@ curl https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_d
 # listing of subreddit comments
 curl https://www.reddit.com/r/MapPorn/comments.json > ./data/comments/MapPornCommentsListing.json
 
-# single post comment URL anatomy
-curl https://www.reddit.com/r/MapPorn/comments.json > ./data/comments/MapPornCommentsListing.json
-# https://www.reddit.com/r/MapPorn/comments/18vyfbl/mapporn_discussion_thread_for_january_2024/
+# single post with comments URL anatomy
+curl https://www.reddit.com/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024.json > ./data/comments/MapPornPostComments.json
 # https://www.reddit.com/r/MapPorn/comments/<id>/<title>/
 ```
 
@@ -131,6 +129,10 @@ curl https://www.reddit.com/search.json\?q=cat | jq . | bat -l json
 
 `curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img'`
 # returns `"https://styles.redditmedia.com/t5_2tu5t7/styles/profileIcon_snoobf84d9a3-2cea-42e8-972a-135e78ff10ff-headshot-f.png?width=256&amp;height=256&amp;crop=256:256,smart&amp;s=3ddc4418d0cbf20c8b6ed9b615506117ac15f7f3"`
+
+# view user icon
+curl $(curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img' | jq -r 'match(".*png").string') | imgcat
+
 ```
 
 
