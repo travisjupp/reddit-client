@@ -1,0 +1,6 @@
+{
+  "port": 8000,
+  "watch": true,
+  "routes": "./data/routes.json",
+  "host": "192.168.0.5"
+}
