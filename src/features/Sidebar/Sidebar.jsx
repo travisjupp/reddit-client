@@ -53,17 +53,17 @@ function Sidebar(props) {
                         <Accordion.Body>
                             {
                                 popSubredditsList.map(
-                                    subredditListItem =>
+                                    subreddit =>
                                         <Nav.Link
-                                            key={subredditListItem.data.title}
+                                            key={subreddit.data.title}
                                             // href={`${apiRoot}${subredditListItem.url}`}
                                             href={`#`}
                                             onClick={() => {
-                                                handlePosts(subredditListItem.data.display_name);
+                                                handlePosts(subreddit.data.display_name);
                                                 return toggleOffcanvas ? toggleOffcanvas() : null;
                                             }}>
-                                            <Avatar name={subredditListItem.data.title} src={subredditListItem.data.icon_img} />
-                                            {subredditListItem.data.title}
+                                            <Avatar name={subreddit.data.title} src={subreddit.data.icon_img} />
+                                            {subreddit.data.title}
                                         </Nav.Link>
                                 )}
                         </Accordion.Body>

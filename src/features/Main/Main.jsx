@@ -25,20 +25,16 @@ function Main(props) {
         dispatch(getSubredditComments('/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day'));
     }, [dispatch]);
 
-
     while (status === 'loading') {
         return <StatusLoader />
     }
+
     if (status === 'failed') {
         { console.log('ERROR', subredditPostsErrorState) }
-
         let errorStr = JSON.stringify(Object.entries(subredditPostsErrorState));
-
         return (
             <>
                 <code>{subredditPostsErrorState.error.message}</code>
-
-
                 <pre style={{ whiteSpace: 'pre-wrap' }}>
                     {subredditPostsErrorState.payload}<hr />
                     <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
@@ -46,6 +42,7 @@ function Main(props) {
             </>
         )
     }
+
     if (status === 'succeeded') {
         const validatePostImgURL = (url) => {
             if (!url) {
@@ -53,8 +50,6 @@ function Main(props) {
             }
             return url.match(/jpeg|jpg|png/i) ? url : null;
         }
-
-        
         return (
             <>
                 <h1>r/{posts[0].data.subreddit}</h1>
@@ -66,7 +61,7 @@ function Main(props) {
                         postTitle={post.data.title}
                         postAuthor={post.data.author}
                         postImgSrc={validatePostImgURL(post.data.url)}
-                        postText={post.data.selftext}
+                        postText={(post.data.selftext).substring(0, 200)+'...'}
                         altText={`r/${post.data.subreddit} - ${post.data.title}`}
                         postPermalink={post.data.permalink}
                     // postText={'#####################################################################################################################################################################################################################################################'}

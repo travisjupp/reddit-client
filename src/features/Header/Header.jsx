@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Container, Col, Row, Form, Nav, Navbar, NavLink, NavDropdown, Offcanvas, InputGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { getSubredditPosts } from '../api/reddit';
-import { BsSearch } from "react-icons/bs/index.js";
+import { BsSearch } from "react-icons/bs";
 import Sidebar from '../Sidebar/Sidebar';
 
 const nbToggle = {
