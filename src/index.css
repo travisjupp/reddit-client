@@ -18,10 +18,10 @@ p.card-text > * {
 }
 
 /* non-wrapping preformatted text breaks the layout when sidebar is present */
-div.card-text > pre {
+
+
+pre {
   /* display: none; */
-  /* max-width: 510px; */
-  /* text-wrap: wrap; not supported in Safari, Firefox */
   white-space: pre-wrap;
 }
 /* 
