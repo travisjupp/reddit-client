@@ -3,7 +3,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // export const apiRoot = 'https://www.reddit.com/';
-export const apiRootTesting = 'http://localhost:8000/';
+// export const apiRootTesting = 'http://localhost:8000/';
+export const apiRootTesting = 'http://192.168.0.5:8000/';
 const subredditsPathName = 'subreddits/1';
 
 // Fetch list of popular subreddits
@@ -73,12 +74,39 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
   async (permalink, { rejectWithValue }) => {
     try {
       const response = await fetch(`https://www.reddit.com${permalink}.json`);
-      // const response = await fetch(`https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day`);
+      // const response = await fetch(`https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json`);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
-      return json;
+      console.log('json[1].data.children', json[1].data.children);
+
+      // Comments objects can be quite large, this removes replies to replies of comments.
+      // We only need comments/replies a few levels deep
+      const commentsArr = json[1].data.children;
+      for (let comment of commentsArr) {
+        // ignore non comment objects of kind: 'more'
+        if (comment.kind !== 'more') {
+          // if replies property not empty
+          if (comment.data.replies !== "") {
+            const repliesArr = comment.data.replies.data.children;
+            for (let reply of repliesArr) {
+              // ignore non comment objects of kind: 'more'
+              if (reply.kind !== 'more') {
+                // neuter reply by removing replies to a reply
+                reply.data.replies = "neutered"
+                console.log('reply', reply);
+                console.log('comment', comment);
+              }
+            }
+          }
+        }
+
+
+        // console.log('comment',comment);
+      }
+      console.log('json',json);
+      return json[1].data.children;
     } catch (e) {
       console.error('Error:', e.message);
       return rejectWithValue(e.message);
