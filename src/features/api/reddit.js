@@ -79,7 +79,7 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
-      console.log('json[1].data.children', json[1].data.children);
+      // console.log('json[1].data.children', json[1].data.children);
 
       // Comments objects can be quite large, this removes replies to replies of comments.
       // We only need comments/replies a few levels deep
@@ -95,18 +95,15 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
               if (reply.kind !== 'more') {
                 // neuter reply by removing replies to a reply
                 reply.data.replies = "neutered"
-                console.log('reply', reply);
-                console.log('comment', comment);
               }
             }
           }
         }
-
-
-        // console.log('comment',comment);
       }
-      console.log('json',json);
-      return json[1].data.children;
+      // console.log('json',json);
+      // console.log('json[1].data.children',json[1].data.children);
+      console.log('commentsArr',commentsArr);
+      return commentsArr;
     } catch (e) {
       console.error('Error:', e.message);
       return rejectWithValue(e.message);

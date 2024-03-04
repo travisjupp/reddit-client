@@ -23,7 +23,7 @@ jq -r '.data.children[].data.author' ../subreddits/react.json | while read i; do
 	profileName=$(printf '%s' "$profile" | jq .id)
 
 		# catch any failed profile requests (invalid profileName) and try again until profile valid
-		numRetries=2
+		numRetries=5
 		while [[ $profileName == *null* && $numRetries != 0 ]]; do
 			echo "REFETCHING =>" $i
 
@@ -42,7 +42,7 @@ jq -r '.data.children[].data.author' ../subreddits/react.json | while read i; do
 		# accumulate valid profile objects
 		profilesRetrieved=($profilesRetrieved$profile)
 	else
-		echo "PROFILE SKIPPED => " $i
+		echo "PROFILE SKIPPED ======> " $i
 	fi
 
 	sleep .2

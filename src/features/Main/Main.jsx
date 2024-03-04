@@ -4,6 +4,8 @@ import { apiRoot, getSubredditComments, getSubredditPosts } from '../api/reddit'
 import Post from '../Post/Post';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import { selectSubredditPosts, selectSubredditPostsStatus, selectSubredditPostsError } from '../../store/subredditPostsSlice.js';
+import { selectSubredditComments } from '../../store/subredditCommentsSlice.js';
+import validatePostImgURL from '../../utils/validateImgURL.js'
 
 function Main(props) {
     const dispatch = useDispatch();
@@ -12,58 +14,47 @@ function Main(props) {
         dispatch(getSubredditPosts('react'));
     }, [dispatch]);
 
-    
     const posts = useSelector(selectSubredditPosts);
-    const status = useSelector(selectSubredditPostsStatus);
-    const subredditPostsErrorState = useSelector(selectSubredditPostsError);
-    
-    // console.log('posts', posts);
-    // console.log('posts[0]',posts[0]);
-    // console.log('status', status);
-    
-    useEffect(() => {
-        dispatch(getSubredditComments('/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day'));
-    }, [dispatch]);
+    const postsStatus = useSelector(selectSubredditPostsStatus);
+    const postsErrorState = useSelector(selectSubredditPostsError);
 
-    while (status === 'loading') {
+    while (postsStatus === 'loading') {
         return <StatusLoader />
     }
 
-    if (status === 'failed') {
-        { console.log('ERROR', subredditPostsErrorState) }
-        let errorStr = JSON.stringify(Object.entries(subredditPostsErrorState));
+    if (postsStatus === 'failed') {
+        { console.log('ERROR', postsErrorState) }
+        let errorStr = JSON.stringify(Object.entries(postsErrorState));
         return (
             <>
-                <code>{subredditPostsErrorState.error.message}</code>
+                <code>{postsErrorState.error.message}</code>
                 <pre style={{ whiteSpace: 'pre-wrap' }}>
-                    {subredditPostsErrorState.payload}<hr />
+                    {postsErrorState.payload}<hr />
                     <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
                 </pre>
             </>
         )
     }
 
-    if (status === 'succeeded') {
-        const validatePostImgURL = (url) => {
-            if (!url) {
-                return
-            }
-            return url.match(/jpeg|jpg|png/i) ? url : null;
-        }
+    if (postsStatus === 'succeeded') {
+
         return (
             <>
                 <h1>r/{posts[0].data.subreddit}</h1>
 
                 {posts.map(post => {
-                    
+
+
                     return <Post
                         key={post.data.id}
+                        id={post.data.id}
                         postTitle={post.data.title}
                         postAuthor={post.data.author}
                         postImgSrc={validatePostImgURL(post.data.url)}
-                        postText={(post.data.selftext).substring(0, 200)+'...'}
+                        postText={post.data.selftext}
                         altText={`r/${post.data.subreddit} - ${post.data.title}`}
                         postPermalink={post.data.permalink}
+                        numberOfComments={post.data.num_comments}
                     // postText={'#####################################################################################################################################################################################################################################################'}
                     />
                 })}
