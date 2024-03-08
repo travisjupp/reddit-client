@@ -18,6 +18,11 @@ function Main(props) {
     const postsStatus = useSelector(selectSubredditPostsStatus);
     const postsErrorState = useSelector(selectSubredditPostsError);
 
+    const handleComments = (permalink) => {
+        console.log('permalink', permalink)
+            dispatch(getSubredditComments(permalink));
+      }
+
     while (postsStatus === 'loading') {
         return <StatusLoader />
     }
@@ -53,8 +58,9 @@ function Main(props) {
                         postImgSrc={validatePostImgURL(post.data.url)}
                         postText={post.data.selftext}
                         altText={`r/${post.data.subreddit} - ${post.data.title}`}
-                        postPermalink={post.data.permalink}
+                        postPermalink={post.data.permalink.slice(0,-1)}
                         numberOfComments={post.data.num_comments}
+                        handleComments={handleComments}
                     // postText={'#####################################################################################################################################################################################################################################################'}
                     />
                 })}

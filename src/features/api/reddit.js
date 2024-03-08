@@ -116,8 +116,8 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
     try {
       // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
-      const response = await fetch(`${apiRootTesting}user/${userName}`);
-      // const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
+      // const response = await fetch(`${apiRootTesting}user/${userName}`);
+      const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }

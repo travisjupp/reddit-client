@@ -104,6 +104,11 @@ curl https://www.reddit.com/r/MapPorn/comments.json > ./data/comments/MapPornCom
 # single post with comments URL anatomy
 curl https://www.reddit.com/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024.json > ./data/comments/MapPornPostComments.json
 # https://www.reddit.com/r/MapPorn/comments/<id>/<title>/
+
+# num_comments inaccuracy (compare num_comments to actual comments array)
+echo $(curl https://www.reddit.com/r/react.json | jq '.data.children[0].data.num_comments') - $(curl https://www.reddit.com/r/react/comments/ky2gf5/hello_members_of_rreact.json | jq '.[1].data.children | length') | bc
+
+
 ```
 
 

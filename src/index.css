@@ -10,6 +10,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+    border: solid 2px green;
+   word-break: break-all;
 }
 
 p.card-text > * {
@@ -23,9 +25,13 @@ p.card-text > * {
 pre {
   /* display: none; */
   white-space: pre-wrap;
+  word-break: break-all;
 }
-/* 
-div.card-text > pre > code {
+
+pre code {
+  word-break: break-all;
+}
+/* div.card-text > pre > code {
   border: solid 2px green;
   font-size: 80%;
   word-break: break-all;
