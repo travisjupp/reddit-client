@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card } from "react-bootstrap";
+import { Card, Stack } from "react-bootstrap";
 import Avatar from "../Avatar/Avatar";
 import { selectUserAvatar } from "../../store/subredditPostsSlice";
 import { getUserAvatar } from "../api/reddit";
@@ -8,7 +8,7 @@ import validateAvatarImgURL from '../../utils/validateImgURL.js';
 
 
 function Comment(props) {
-    const { comment, postAuthor } = props;
+    const { comment, show } = props;
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getUserAvatar(comment.data.author));
@@ -20,13 +20,24 @@ function Comment(props) {
     return (
 
         <>
-            <Card>
+            <Card className={show ? null : 'd-none'}>
                 <Card.Body>
                     <Card.Title>
-                        <Avatar
-                            name={comment.data.author}
-                            src={validateAvatarImgURL(avatar[comment.data.author])}
-                        /> {comment.data.author}
+
+                        <Stack direction="horizontal" gap={3}>
+                            <div className="p-2">
+                                <Avatar
+                                    name={comment.data.author}
+                                    src={validateAvatarImgURL(avatar[comment.data.author])}
+                                /> {comment.data.author}
+                            </div>
+
+
+
+                            <div className="p-2 ms-auto">{new Date(comment.data.created_utc * 1000).toString()}</div>
+                        </Stack>
+
+
                     </Card.Title>
                     <Card.Text>
                         {comment.data.body}
