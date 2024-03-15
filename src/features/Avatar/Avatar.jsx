@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { createAvatar } from '@dicebear/core';
 import { identicon } from '@dicebear/collection';
 
