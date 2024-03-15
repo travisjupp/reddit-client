@@ -48,22 +48,12 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
         // for (const pair of response.headers.entries()) {
         //   console.log(`${pair[0]}: ${pair[1]}`);
         // }
-        throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+        throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
-      // console.log(response.status);
-      // console.log(response.statusText);
-      // console.log(response.body);
-      // console.log(response.type);
-      // console.log(response.url);
-      // console.log(response.headers);
-      // for (const pair of response.headers.entries()) {
-      //   console.log(`${pair[0]}: ${pair[1]}`);
-      // }
-      // console.log('json.data.children', json.data.children);
       return json.data.children;
     } catch (e) {
-      console.error('Error:', e.message);
+      // console.error('Error:', e.message);
       return rejectWithValue(e.message);
     }
   }
@@ -76,7 +66,7 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
       const response = await fetch(`https://www.reddit.com${permalink}.json`);
       // const response = await fetch(`https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json`);
       if (!response.ok) {
-        throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+        throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
       // console.log('json[1].data.children', json[1].data.children);
@@ -119,7 +109,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // const response = await fetch(`${apiRootTesting}user/${userName}`);
       const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
       if (!response.ok) {
-        throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+        throw new Error(`getUserAvatar HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
       // console.log('json.data.icon_img', json.data.icon_img);
@@ -133,7 +123,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // return [userName]: json.data.icon_img
       // return json.data.icon_img;
     } catch (e) {
-      console.error('Error:', e.message);
+      // console.error('Error:', e.message);
       return rejectWithValue(e.message);
     }
   }
