@@ -11,12 +11,14 @@ import { BsChatQuote, BsChatQuoteFill, BsArrowUpCircle, BsArrowUpCircleFill, BsA
 import { Button, Container, Row, Col, Card, Badge, Stack } from 'react-bootstrap';
 import { selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsStatus } from '../../store/subredditCommentsSlice.js';
 import validateAvatarImgURL from '../../utils/validateImgURL.js';
+import formatPostText from '../../utils/formatPostText.js';
 
 import rehypeRaw from 'rehype-raw';
-import he from 'he';
+import Toaster from '../../components/Toast/Toast.jsx';
+import { getSubredditComments } from '../api/reddit';
 
 function Post(props) {
-  const { id, postAuthor, postImgSrc, postTitle, postText, postTextHtml, altText,
+  const { postId, postAuthor, postImgSrc, postTitle, postText, postTextHtml, altText,
     postPermalink, numberOfComments, handleComments } = props;
 
   const [show, setShow] = useState(false);
@@ -29,6 +31,7 @@ function Post(props) {
 
   const dispatch = useDispatch();
 
+  // Get user avatar
   useEffect(() => {
     dispatch(getUserAvatar(postAuthor));
 
@@ -36,15 +39,36 @@ function Post(props) {
 
   const avatar = useSelector(selectUserAvatar);
   const comments = useSelector(selectSubredditComments);
+  const commentsStatus = useSelector(selectSubredditCommentsStatus);
+  const commentsErrorState = useSelector(selectSubredditCommentsError);
 
-  const formatPost = (postTextHtml, postText, charLength) => {
-    return postTextHtml !== null ?
-      he.decode(postTextHtml)
-        .substring(0, charLength) :
-      postText !== null ?
-        postText.substring(0, charLength) :
-        "postText is null"
-  }
+  if (commentsStatus === 'failed' && postId === 'ky2gf5') {
+    console.log('commentsStatus failed');
+    let errorStr = JSON.stringify(commentsErrorState);
+    return (
+        <>
+            {/* <code>{postsErrorState.error.message}</code>
+            <pre style={{ whiteSpace: 'pre-wrap' }}>
+                {postsErrorState.payload}<hr />
+                <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
+            </pre> */}
+            {/* Toaster */}
+            <Toaster header={`Get Comments ${commentsErrorState.message}`} variant='dark'>
+                <pre>
+                    {commentsErrorState.payload}<br />
+                    {postTitle}
+                    <hr />
+                    <strong>{`${commentsErrorState.type}`}</strong>
+                    <code>{errorStr}</code>
+                </pre>
+                <Button className='' onClick={() => dispatch(getSubredditComments(postPermalink))}>Retry</Button>
+                {console.log('postPermalink',postPermalink)}
+            </Toaster>
+
+        </>
+    )
+}
+
 
   return (
     <>
@@ -57,7 +81,7 @@ function Post(props) {
           alt={altText}
         /> : null}
         <Card.Body>
-          <Card.Title>{postTitle} id: {id}</Card.Title>
+          <Card.Title>{postTitle} id: {postId}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatar[postAuthor])} /> {postAuthor}
           <Card.Text as='div'>{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
             <Container>
@@ -77,42 +101,33 @@ function Post(props) {
 
                   {/* show on xs and sm screen size only */}
                   {/* hide on md and wider screens */}
-                  {/* <Markdown className="d-md-none">{postText.substring(0, 60) + '...show on xs sm only'}</Markdown> */}
-                  <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPost(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
+                  <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
 
                   {/* show on md and lg screen size only */}
                   {/* hide on screens smaller than md */}
-                  {/* <Markdown className="d-none d-md-block d-xl-none d-xxl-none">{postText.substring(0, 200) + '...show on md and lg only'}</Markdown> */}
-                  <Markdown className="d-none d-md-block d-xl-none d-xxl-none" rehypePlugins={[rehypeRaw]} >{formatPost(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>
+                  <Markdown className="d-none d-md-block d-xl-none d-xxl-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>
 
                   {/* show on xl and xxl screen size only */}
                   {/* hide on screens smaller than xl */}
-                  {/* <Markdown className="d-none d-xl-block">{postText.substring(0, 500) + '...show on xl and xxl only'}</Markdown> */}
-                  <Markdown className="d-none d-xl-block" rehypePlugins={[rehypeRaw]} >{formatPost(postTextHtml, postText, 500) + '...show on xl and xxl only'}</Markdown>
-
-                  {/* <Markdown className="d-none d-xl-block" rehypePlugins={[rehypeRaw]} >
-                    {postTextHtml !== null ? // if HTML exists, decode html-entities and render
-                      he.decode(postTextHtml).substring(0, 500) + '...show on xl and xxl only' :
-                      postText}
-                  </Markdown> */}
-                  {/* <Markdown className="d-none d-xl-block" rehypePlugins={[rehypeRaw]} >
-                    {formatPost(postTextHtml, postText, 300)}
-                  </Markdown> */}
-
+                  <Markdown className="d-none d-xl-block" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 1200) + '...show on xl and xxl only'}</Markdown>
 
                 </Col>
                 <Col>
                   <Stack direction="horizontal" gap={2} style={{ height: '100%', justifyContent: 'center' }}>
-                    <div onClick={() => { handleComments(postPermalink); setShow(!show) }} style={{ border: 'solid 1px red', zIndex: '3' }}>
+                    <div onClick={() => { 
+                      // handleComments(postPermalink); 
+                      handleComments('TEST ERROR'); 
+                      setShow(!show) }} 
+                      style={{ border: 'solid 1px red', zIndex: '3' }}
+                      >
                       <BsChatQuote size='3em' color='#000000' />
                       <Badge pill className='position-absolute translate-middle-x'>
                         {numberOfComments}
-                        {/* {comments.length !== 0 ? comments[0].data.parent_id === `t3_${id}` ? comments.length : null : null} */}
                       </Badge>
                       <Badge pill className='position-absolute translate-middle-x'>
                         {/* Overlay actual number of comments when comments clicked/loaded. 
                           numberOfComments not accurate, but good enough on initial load,  */}
-                        {comments.length !== 0 ? comments[0].data.parent_id === `t3_${id}` ? comments.length : null : null}
+                        {comments.length !== 0 ? comments[0].data.parent_id === `t3_${postId}` ? comments.length : null : null}
                       </Badge>
                     </div>
                     <div style={{ border: 'solid 1px red', zIndex: '3' }}>
@@ -128,15 +143,22 @@ function Post(props) {
         {/* <a href={postPermalink} className='stretched-link' /> */}
       </Card>
 
+{/* Render Comments */}
+
+
+
 
       {/* if any comments exist display them below post with matching id */
         comments.length !== 0 ?
-          comments[0].data.parent_id === `t3_${id}` ?
+          comments[0].data.parent_id === `t3_${postId}` ?
             comments.map((comment) => {
               return (
                 <Comment
                   key={comment.data.id}
-                  comment={comment}
+                  commentAuthor={comment.data.author}
+                  commentDate={comment.data.created_utc}
+                  commentText={comment.data.body}
+                  commentTextHtml={comment.data.body_html}
                   show={show}
                 />
               )
@@ -144,6 +166,11 @@ function Post(props) {
             null :
           null
       }
+
+
+
+
+      
     </>
   )
 }
