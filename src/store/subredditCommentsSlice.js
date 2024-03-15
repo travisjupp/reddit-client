@@ -25,7 +25,7 @@ const subredditCommentsSlice = createSlice({
                 state.status = 'failed';
                 state.comments = [];
                 const { error, meta, payload, type } = action;
-                state.error = { error, meta, payload, type };
+                state.error = { message: error.message, meta, payload, type };
             })
     }
 });
