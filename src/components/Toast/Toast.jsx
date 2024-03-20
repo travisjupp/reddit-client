@@ -6,7 +6,18 @@ function Toaster({children, header, variant}) {
     const [show, setShow] = useState(true);
     const toggleShow = () => setShow(!show);
   return (
-    <ToastContainer position="bottom-end">
+    <div
+        aria-live="polite"
+        aria-atomic="true"
+        // className="bg-dark position-relative"
+        className="bg-dark position-fixed bottom-0 end-0"
+        // style={{ minHeight: '240px' }}
+        // style={{ minHeight: '90vh' }}
+        // style={{ minHeight: 'auto' }}
+        style={{ zIndex:9999, minWidth: '100%' }}
+      >
+    <ToastContainer position="bottom-end" className='p-3' style={{ zIndex: 1 }}
+>
     <Toast show={show} onClose={toggleShow} bg={variant}>
       <Toast.Header>
         <strong className="me-auto">{header}</strong>
@@ -17,6 +28,7 @@ function Toaster({children, header, variant}) {
       <Toast.Body className={`d-flex flex-column ${variant === 'dark' ? 'text-white' : null}`}>{children}</Toast.Body>
     </Toast>
     </ToastContainer>
+    </div>
   );
 }
 
