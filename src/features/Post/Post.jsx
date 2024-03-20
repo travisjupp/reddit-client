@@ -8,7 +8,7 @@ import Markdown from 'react-markdown';
 import Holder from 'holderjs';
 
 import { BsChatQuote, BsChatQuoteFill, BsArrowUpCircle, BsArrowUpCircleFill, BsArrowDownCircle, BsArrowDownCircleFill, BsShare, BsShareFill } from "react-icons/bs";
-import { Button, Container, Row, Col, Card, Badge, Stack } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card, Badge, Stack, Collapse, Fade } from 'react-bootstrap';
 import { selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsStatus } from '../../store/subredditCommentsSlice.js';
 import validateAvatarImgURL from '../../utils/validateImgURL.js';
 import formatPostText from '../../utils/formatPostText.js';
@@ -16,6 +16,7 @@ import formatPostText from '../../utils/formatPostText.js';
 import rehypeRaw from 'rehype-raw';
 import Toaster from '../../components/Toast/Toast.jsx';
 import { getSubredditComments } from '../api/reddit';
+
 
 function Post(props) {
   const { postId, postAuthor, postImgSrc, postTitle, postText, postTextHtml, altText,
@@ -42,33 +43,30 @@ function Post(props) {
   const commentsStatus = useSelector(selectSubredditCommentsStatus);
   const commentsErrorState = useSelector(selectSubredditCommentsError);
 
-  if (commentsStatus === 'failed' && postId === 'ky2gf5') {
-    console.log('commentsStatus failed');
-    let errorStr = JSON.stringify(commentsErrorState);
-    return (
-        <>
-            {/* <code>{postsErrorState.error.message}</code>
-            <pre style={{ whiteSpace: 'pre-wrap' }}>
-                {postsErrorState.payload}<hr />
-                <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
-            </pre> */}
-            {/* Toaster */}
-            <Toaster header={`Get Comments ${commentsErrorState.message}`} variant='dark'>
-                <pre>
-                    {commentsErrorState.payload}<br />
-                    {postTitle}
-                    <hr />
-                    <strong>{`${commentsErrorState.type}`}</strong>
-                    <code>{errorStr}</code>
-                </pre>
-                <Button className='' onClick={() => dispatch(getSubredditComments(postPermalink))}>Retry</Button>
-                {console.log('postPermalink',postPermalink)}
-            </Toaster>
+  const renderComments = () => {
+    if (comments.length !== 0) {
+      if (comments[0].data.parent_id === `t3_${postId}`) {
+        return comments.map((comment) => {
+          return (
+            <Comment
+              key={comment.data.id}
+              commentAuthor={comment.data.author}
+              commentDate={comment.data.created_utc}
+              commentText={comment.data.body}
+              commentTextHtml={comment.data.body_html}
+            // show={show}
+            // postId={postId}
+            />
 
-        </>
-    )
-}
-
+          )
+        })
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
   return (
     <>
@@ -114,12 +112,20 @@ function Post(props) {
                 </Col>
                 <Col>
                   <Stack direction="horizontal" gap={2} style={{ height: '100%', justifyContent: 'center' }}>
-                    <div onClick={() => { 
-                      // handleComments(postPermalink); 
-                      handleComments('TEST ERROR'); 
-                      setShow(!show) }} 
+                    <div
+                      role="button"
+                      // data-bs-toggle="collapse"
+                      // data-bs-target={`#comments-${postId}`}
+                      aria-controls={`comments-${postId}`}
+                      aria-expanded={show}
+                      onClick={() => {
+                        setShow(!show);
+                        handleComments({ permalink: postPermalink, postId });
+                        // handleComments({ permalink: 'TEST ERROR', postId });
+
+                      }}
                       style={{ border: 'solid 1px red', zIndex: '3' }}
-                      >
+                    >
                       <BsChatQuote size='3em' color='#000000' />
                       <Badge pill className='position-absolute translate-middle-x'>
                         {numberOfComments}
@@ -143,34 +149,69 @@ function Post(props) {
         {/* <a href={postPermalink} className='stretched-link' /> */}
       </Card>
 
-{/* Render Comments */}
+      {/* Render Comments */}
 
+      {/* If fetching comments failed pop toast only for the post for which it was originally requested */}
+      {commentsStatus === 'failed' && postId === commentsErrorState.meta.arg.postId ?
+        <>
+          <Toaster header={`Get Comments ${commentsErrorState.message}`} variant='dark'>
+            <pre>
+              {commentsErrorState.payload}<br />
+              {postTitle}
+              <hr />
+              <strong>{`${commentsErrorState.type}`}</strong>
+              <code>{JSON.stringify(commentsErrorState)}</code>
+            </pre>
+            <Button
+              // data-bs-toggle="collapse"
+              // data-bs-target={`#comments-${postId}`}
+              aria-controls={`comments-${postId}`}
+              aria-expanded={show}
+              // className=''
+              onClick={() => handleComments({ permalink: postPermalink, postId }) && setShow(!show)}
+            >Retry</Button>
+          </Toaster>
 
-
-
-      {/* if any comments exist display them below post with matching id */
-        comments.length !== 0 ?
-          comments[0].data.parent_id === `t3_${postId}` ?
-            comments.map((comment) => {
-              return (
-                <Comment
-                  key={comment.data.id}
-                  commentAuthor={comment.data.author}
-                  commentDate={comment.data.created_utc}
-                  commentText={comment.data.body}
-                  commentTextHtml={comment.data.body_html}
-                  show={show}
-                />
-              )
-            }) :
-            null :
-          null
+        </> : null
       }
 
 
+      <Button
+        // data-bs-toggle="collapse"
+        // data-bs-target={`#comments-${postId}`}
+        aria-controls={`comments-${postId}`}
+        aria-expanded={show}
+        // className=''
+        // onClick={() => handleComments({ permalink: postPermalink, postId }) && setShow(!show)}
+        onClick={() => setShow(!show)}
+      >Toggle Show</Button>
+      <Fade
+        in={show}
+      mountOnEnter={true}
+      unmountOnExit={true}
+      // appear={true}
+      // onEnter={renderComments}
+      timeout={300}
+      >
+        <div
+          id={`comments-${postId}`}
+        // className={show ? 'comments' : 'd-none comments'}
+        >
+          {/* <p>SOME COMMENTS HERE</p> */}
+          {renderComments()}
+
+          {/* <div className="card"><div className="card-body"><div className="card-title h5"><div className="hstack gap-3"><div className="p-2">
+  <img src="https://styles.redditmedia.com/t5_mccqt/styles/profileIcon_snoo-nftv2_bmZ0X2VpcDE1NToxMzdfYzhkM2EzYTgzYmRlNWRhZDA2ZDQzNjY5NGUzZTIyYWMzZTY0ZDU3N181MDE2NDE5_rare_fdf84df9-50a7-4b97-ad82-563810b05dd0-headshot.png" 
+  alt="Avatar" width="28" height="28" /> PASTED ELEMENT</div>
+  <div className="p-2 ms-auto">Fri Jan 22 2021 04:20:49 GMT-0700 (Mountain Standard Time)</div></div></div>
+  <div className="card-text">
+    <div className="md"><p>Would be nice to have some flairs so that it's easier to find what posts are questions and what posts are not.</p>
+</div></div></div></div> */}
+
+        </div>
+      </Fade>
 
 
-      
     </>
   )
 }

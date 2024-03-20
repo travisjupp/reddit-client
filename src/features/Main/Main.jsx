@@ -59,14 +59,9 @@ function Main(props) {
     }
 
     if (postsStatus === 'failed') {
-        let errorStr = JSON.stringify(postsErrorState);
+        // let errorStr = JSON.stringify(postsErrorState);
         return (
             <>
-                {/* <code>{postsErrorState.error.message}</code>
-                <pre style={{ whiteSpace: 'pre-wrap' }}>
-                    {postsErrorState.payload}<hr />
-                    <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
-                </pre> */}
                 {/* Toaster */}
                 <Toaster header={`Get Posts ${postsErrorState.message}`} variant='dark'>
                     {/* {console.error('postsErrorState', postsErrorState)} */}

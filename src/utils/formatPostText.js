@@ -3,9 +3,8 @@
 import he from 'he';
 
 // If html post text exists, decode html-entites, truncate and render. 
-// Else, render plain post text and truncate.
+// Else, render plain post text, truncate and render.
 const formatPostText = (postTextHtml, postText, charLength) => {
-    // console.log('post text decoded: ', postTextHtml !== null ? he.decode(postTextHtml) : null);
     try {
         return postTextHtml !== null ?
             he.decode(postTextHtml)

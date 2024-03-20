@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Container, Col, Row, Form, Nav, Navbar, NavLink, NavDropdown, Offcanvas, InputGroup } from 'react-bootstrap';
+import { Button, Form, Nav, Navbar, Col, Offcanvas, InputGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { getSubredditPosts } from '../api/reddit';
 import { BsSearch } from "react-icons/bs";
@@ -12,7 +12,7 @@ const nbToggle = {
 function Header(props) {
     const [show, setShow] = useState(false);
     const toggleOffcanvas = () => {
-      setShow(!show);
+        setShow(!show);
     };
 
     const dispatch = useDispatch();
@@ -32,7 +32,6 @@ function Header(props) {
         e.preventDefault();
         dispatch(getSubredditPosts(data.searchValue));
         return show ? toggleOffcanvas() : null;
-        console.log(`handleSubmit: getSubredditPosts(${data.searchValue})`);
     };
 
     return (
