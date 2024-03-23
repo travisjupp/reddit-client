@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Stack, Collapse } from "react-bootstrap";
+import { Card, Stack, Collapse, Placeholder } from "react-bootstrap";
 import Avatar from "../Avatar/Avatar";
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import { selectUserAvatar } from "../../store/subredditPostsSlice";
@@ -32,41 +32,57 @@ function Comment(props) {
 
 
 
-    // while (commentsStatus === 'loading') {
-    //     return <StatusLoader />
-    // }
+    while (commentsStatus === 'loading') {
+        // while (commentsStatus === 'succeeded') {
+        return (
+            <Card
+            //  className={show ? 'comment' : 'd-none comment'}
+            >
+                <Card.Body>
+                    <Placeholder as={Card.Title} animation="glow">
+                        <Stack direction="horizontal" gap={3}>
+                        <div className="w-100">
+                                <Avatar
+                                    name={commentAuthor}
+                                    // src={validateAvatarImgURL(avatar[commentAuthor])}
+                                /> <Placeholder children={commentAuthor} />
+                            </div>
+                            <div className="p-2 ms-auto">
+                                <Placeholder children={commentAuthor}/>
+                            </div>
+
+                        </Stack>
+                    </Placeholder>
+                    <Placeholder as={Card.Text} animation="glow">
+                        <Placeholder xs={12} />
+                    </Placeholder>
+                </Card.Body>
+            </Card>
+
+        )
+    }
     if (commentsStatus === 'succeeded') {
         return (
-            <>
-                {/* <Collapse in={show}> */}
-                    <Card
-                    //  className={show ? 'comment' : 'd-none comment'}
-                     >
-                        <Card.Body>
-                            <Card.Title>
-
-                                <Stack direction="horizontal" gap={3}>
-                                    <div className="p-2">
-                                        <Avatar
-                                            name={commentAuthor}
-                                            src={validateAvatarImgURL(avatar[commentAuthor])}
-                                        /> {commentAuthor}
-                                    </div>
-
-
-
-                                    <div className="p-2 ms-auto">{new Date(commentDate * 1000).toString()}</div>
-                                </Stack>
-
-
-                            </Card.Title>
-                            <Card.Text as='div'>{/* Render as 'div' to avoid <p> nesting; <p> cannot appear as a descendant of <p>. */}
-                                <Markdown rehypePlugins={[rehypeRaw]}>{formatPostText(commentTextHtml, commentText, 300)}</Markdown>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                {/* </Collapse> */}
-            </>
+            <Card
+            //  className={show ? 'comment' : 'd-none comment'}
+            >
+                <Card.Body>
+                    <Card.Title>
+                        <Stack direction="horizontal" gap={3}>
+                            <div>
+                                <Avatar
+                                    name={commentAuthor}
+                                    src={validateAvatarImgURL(avatar[commentAuthor])}
+                                /> {commentAuthor}
+                            </div>
+                            <div className="p-2 ms-auto">{new Date(commentDate * 1000).toString()}</div>
+                        </Stack>
+                    </Card.Title>
+                    <Card.Text as='div'>{/* Render as 'div' to avoid <p> nesting; <p> cannot appear as a descendant of <p>. */}
+                        <Markdown rehypePlugins={[rehypeRaw]}>{formatPostText(commentTextHtml, commentText, 300)}</Markdown>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
         )
     }
 

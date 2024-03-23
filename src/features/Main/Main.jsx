@@ -44,6 +44,7 @@ function Main(props) {
                         postId={post.data.id}
                         postTitle={post.data.title}
                         postAuthor={post.data.author}
+                        postDate={post.data.created}
                         postImgSrc={validatePostImgURL(post.data.url)}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}

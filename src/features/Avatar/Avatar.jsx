@@ -13,7 +13,7 @@ function Avatar(props) {
             // ... other options
         }).toDataUriSync();
     }, [name]);
-
+    // render avatar or identicon if src not provided
     return !src ? <img src={avatar} alt="Avatar" /> :
         <img src={src} alt="Avatar" width={28} height={28} />;
 }
