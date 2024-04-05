@@ -51,7 +51,7 @@ const subredditPostsSlice = createSlice({
             })
             .addCase(getUserAvatar.rejected, (state, action) => {
                 state.avatarsStatus = 'failed';
-                state.avatars = {};
+                // state.avatars = {};
                 const { error, meta, payload, type } = action;
                 state.avatarsErrorState = { message: error.message, meta, payload, type };
                 // console.log('state.avatarsErrorState', state.avatarsErrorState);

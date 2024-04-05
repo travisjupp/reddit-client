@@ -5,17 +5,24 @@ import { getSubredditComments } from "../features/api/reddit";
 const initialState = {
     status: 'uninitialized',
     comments: [],
-    error: null
+    postId: null,
+    error: null,
 }
 
 const subredditCommentsSlice = createSlice({
     name: 'subredditComments',
     initialState,
-    reducers: {},
+    reducers: {
+        // commentsRequested(state, action) {
+        //     const postId = action.payload;
+        //     state.postId = postId;
+        // }
+    },
     extraReducers: builder => {
         builder
             .addCase(getSubredditComments.pending, (state, action) => {
                 state.status = 'loading';
+                state.postId = action.meta.arg.postId;
             })
             .addCase(getSubredditComments.fulfilled, (state, action) => {
                 state.status = 'succeeded';
@@ -35,5 +42,7 @@ export default subredditCommentsSlice.reducer;
 export const selectSubredditComments = state => state.subredditComments.comments;
 
 export const selectSubredditCommentsStatus = state => state.subredditComments.status;
+
+export const selectSubredditCommentsPostId = state => state.subredditComments.postId;
 
 export const selectSubredditCommentsError = state => state.subredditComments.error;

@@ -110,7 +110,8 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
       // const response = await fetch(`${apiRootTesting}user/${userName}`);
 
-      if (userName === '[deleted]') {
+      // avoid fetching deleted or undefined profiles
+      if (userName === '[deleted]' || userName === undefined) {
         throw new Error(`getUserAvatar HTTP error! User Name Deleted`);
       }
 
