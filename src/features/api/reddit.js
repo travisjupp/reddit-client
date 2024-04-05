@@ -92,7 +92,7 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
       }
       // console.log('json',json);
       // console.log('json[1].data.children',json[1].data.children);
-      console.log('postId', postId, '\ncommentsArr', commentsArr);
+      // console.log('postId', postId, '\ncommentsArr', commentsArr);
       return commentsArr;
     } catch (e) {
       // console.error('e.message:', e.message);

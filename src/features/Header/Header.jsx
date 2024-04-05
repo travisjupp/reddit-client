@@ -42,7 +42,7 @@ function Header(props) {
                 onSelect={(key, event) => {
                     console.log('key', key, '\nevent', event)
                 }}
-                onToggle={expanded => console.log('expanded=', expanded)}
+                // onToggle={expanded => console.log('expanded=', expanded)}
             >
                 <Col md={3} className='d-flex' style={{ border: "1px solid red" }}>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} onClick={toggleOffcanvas} />

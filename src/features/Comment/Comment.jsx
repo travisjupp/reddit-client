@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Stack, Collapse, Placeholder } from "react-bootstrap";
+import { Card, Stack, Collapse, Placeholder, Fade } from "react-bootstrap";
 import Avatar from "../Avatar/Avatar";
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import { selectUserAvatar } from "../../store/subredditPostsSlice";
@@ -22,18 +22,18 @@ function Comment(props) {
         commentTextHtml,
         show,
     } = props;
+
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getUserAvatar(commentAuthor));
     }, [dispatch, commentAuthor])
-    const avatar = useSelector(selectUserAvatar);
 
+    const avatar = useSelector(selectUserAvatar);
     const commentsStatus = useSelector(selectSubredditCommentsStatus);
 
-
-
-    while (commentsStatus === 'loading') {
-        // while (commentsStatus === 'succeeded') {
+    if (commentsStatus === 'loading') {
+    // if (commentsStatus === 'succeeded') {
         return (
             <Card
             //  className={show ? 'comment' : 'd-none comment'}
@@ -41,16 +41,9 @@ function Comment(props) {
                 <Card.Body>
                     <Placeholder as={Card.Title} animation="glow">
                         <Stack direction="horizontal" gap={3}>
-                        <div className="w-100">
-                                <Avatar
-                                    name={commentAuthor}
-                                    // src={validateAvatarImgURL(avatar[commentAuthor])}
-                                /> <Placeholder children={commentAuthor} />
-                            </div>
-                            <div className="p-2 ms-auto">
-                                <Placeholder children={commentAuthor}/>
-                            </div>
-
+                            <Avatar name={commentAuthor ? commentAuthor : 'placeholder name'} />
+                            <Placeholder children="username" />
+                            <Placeholder className="ms-auto" children="date" />
                         </Stack>
                     </Placeholder>
                     <Placeholder as={Card.Text} animation="glow">
@@ -58,13 +51,14 @@ function Comment(props) {
                     </Placeholder>
                 </Card.Body>
             </Card>
-
         )
     }
+
     if (commentsStatus === 'succeeded') {
         return (
             <Card
             //  className={show ? 'comment' : 'd-none comment'}
+            style={{backgroundColor: "gainsboro"}}
             >
                 <Card.Body>
                     <Card.Title>
@@ -85,10 +79,6 @@ function Comment(props) {
             </Card>
         )
     }
-
-
-
-
 }
 
 export default Comment;

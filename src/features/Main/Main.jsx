@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSubredditComments, getSubredditPosts } from '../api/reddit';
 import Post from '../Post/Post';
@@ -9,10 +9,12 @@ import Toaster from '../../components/Toast/Toast.jsx';
 import { Button } from 'react-bootstrap';
 
 function Main(props) {
+    const [nodeIdGlobal, setNodeIdGlobal] = useState(null);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getSubredditPosts('x'));
+        dispatch(getSubredditPosts('INTENTIONALLY ERROR THIS OUT FOR TESTING'));
     }, [dispatch]);
 
     const posts = useSelector(selectSubredditPosts);
@@ -24,11 +26,9 @@ function Main(props) {
         // dispatch(getSubredditComments('TEST ERROR'));
     }
 
-    while (postsStatus === 'loading') {
+    if (postsStatus === 'loading') {
         return <StatusLoader />
     }
-
-
 
     if (postsStatus === 'succeeded') {
 
@@ -40,6 +40,11 @@ function Main(props) {
 
 
                     return <Post
+// show={show}
+// setShow={setShow}
+
+nodeIdGlobal={nodeIdGlobal}
+setNodeIdGlobal={setNodeIdGlobal}
                         key={post.data.id}
                         postId={post.data.id}
                         postTitle={post.data.title}
