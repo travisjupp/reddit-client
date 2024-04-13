@@ -9,9 +9,8 @@ import Toaster from '../../components/Toast/Toast.jsx';
 import { Button } from 'react-bootstrap';
 
 function Main(props) {
-    const [buttonRefs, setButtonRefs] = useState([]);
-    const [nodeIdGlobal, setNodeIdGlobal] = useState(null);
-    const [show, setShow] = useState(null);
+
+    const [collapseStates, setCollapseStates] = useState({});
 
     const dispatch = useDispatch();
 
@@ -42,14 +41,7 @@ function Main(props) {
 
 
                     return <Post
-buttonRefs={buttonRefs}
-setButtonRefs={setButtonRefs}
 
-show={show}
-setShow={setShow}
-
-nodeIdGlobal={nodeIdGlobal}
-setNodeIdGlobal={setNodeIdGlobal}
                         key={post.data.id}
                         postId={post.data.id}
                         postTitle={post.data.title}
@@ -62,7 +54,10 @@ setNodeIdGlobal={setNodeIdGlobal}
                         postPermalink={post.data.permalink.slice(0, -1)}
                         numberOfComments={post.data.num_comments}
                         handleComments={handleComments}
-                    // postText={'#####################################################################################################################################################################################################################################################'}
+                        collapseStates={collapseStates}
+                        setCollapseStates={setCollapseStates}
+                    // postText={'#######LAYOUT####BREAKER##########################################################################################################################################################################################################################################'}
+                    // postTextHtml={'#######LAYOUT####BREAKER##########################################################################################################################################################################################################################################'}
                     />
                 })}
             </>
