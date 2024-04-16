@@ -61,7 +61,12 @@ function Post(props) {
     setCollapseStates(updatedStates);
   }
 
-
+  const toggleComments = () => {
+    !collapseStates[postId] && // only fetch comments if comments not already expanded
+      handleComments({ permalink: postPermalink, postId })
+    // !collapseStates[postId] && handleComments({ permalink: 'INTENTOINALLY ERROR THIS OUT FOR TESTING', postId })
+    handleCollapse(postId);
+  }
   const renderComments = () => {
     // render comments (only for the post that dispatched)
 
@@ -165,13 +170,7 @@ function Post(props) {
                       aria-controls={`comments-${postId}`}
                       // aria-controls={commentsRef}
                       aria-expanded={collapseStates[postId]}
-                      onClick={(e) => {
-                        !collapseStates[postId] && // only fetch comments if comments not already expanded
-                          handleComments({ permalink: postPermalink, postId })
-                        // !collapseStates[postId] && handleComments({ permalink: 'INTENTOINALLY ERROR THIS OUT FOR TESTING', postId })
-                        handleCollapse(postId);
-                      }}
-
+                      onClick={toggleComments}
                       style={{ border: 'solid 1px red', zIndex: '3' }}
                       id={`button-${postId}`}
                     >
@@ -194,12 +193,7 @@ function Post(props) {
                       // data-bs-target={`#comments-${postId}`}
                       aria-controls={`comments-${postId}`}
                       aria-expanded={collapseStates[postId]}
-                      onClick={() => {
-                        // handleComments({ permalink: postPermalink, postId });
-                        // handleComments({ permalink: 'TEST ERROR', postId });
-                        // setShow(!show);
-
-                      }}
+                      onClick={toggleComments}
                       style={{ border: 'solid 1px red', zIndex: '3' }}
                     >
                       <BsChatQuote size='3em' color='#000000' />
@@ -252,6 +246,7 @@ function Post(props) {
         null
       }
       {renderComments()}
+
     </>
   )
 }
