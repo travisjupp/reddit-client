@@ -36,7 +36,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
 
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
-      // const response = await fetch('http://localhost:8000/posts/3');
+      // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
       const response = await fetch(`${apiRootTesting}r/${path}`);
       if (!response.ok) {
         // console.error(response.status);
@@ -53,7 +53,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       const json = await response.json();
       return json.data.children;
     } catch (e) {
-      // console.error('Error:', e.message);
+      console.error('Posts Error:', e.message);
       return rejectWithValue(e.message);
     }
   }
@@ -65,6 +65,14 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
     try {
       const response = await fetch(`https://www.reddit.com${permalink}.json`);
       // const response = await fetch(`https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json`);
+      // console.log(response.status);
+      // console.log(response.statusText);
+      // console.log(response.body);
+      // console.log(response.type);
+      // console.log(response.url);
+      //   for (const pair of response.headers.entries()) {
+      //     console.log(`${pair[0]}: ${pair[1]}`);
+      //   }
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -95,9 +103,9 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
       // console.log('postId', postId, '\ncommentsArr', commentsArr);
       return commentsArr;
     } catch (e) {
-      // console.error('e.message:', e.message);
-      // console.error('postId:', postId);
-      // console.error('e:', e);
+     
+      // console.error('e: ', e);
+      console.error('Comments Error:', e.message);
       return rejectWithValue(e.message);
     }
   }
@@ -106,34 +114,59 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
 // Fetch avatars from user profiles 
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
-    try {
-      // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
-      // const response = await fetch(`${apiRootTesting}user/${userName}`);
+    if (userName === '[deleted]' || userName === undefined) {
+          // throw new Error(`getUserAvatar HTTP error! User Name Deleted`);
+          // console.log('userName',userName);
+          return [userName, 'FAKE/URL'];
+        }
 
-      // avoid fetching deleted or undefined profiles
-      if (userName === '[deleted]' || userName === undefined) {
-        throw new Error(`getUserAvatar HTTP error! User Name Deleted`);
-      }
-
-      const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
-
+    return fetch(`https://www.reddit.com/user/${userName}/about.json`)
+    .then(response => {
       if (!response.ok) {
-        throw new Error(`getUserAvatar HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+        throw new Error('Network response was not ok');
       }
-      const json = await response.json();
-      // console.log('json.data.icon_img', json.data.icon_img);
-      // return an object
-      // return { [userName]: json.data.icon_img }
+      // const json = response.json();
+      // return [userName, json.data.icon_img];
+      return response.json()
+    })
+    .then(data=>{
+      // console.log('userName', userName);
+      // console.log('data', data.data.icon_img);
+      return [userName, data.data.icon_img];
+    })
+    .catch(error => {
+      console.error('Fetch request failed with status:', error.response.status);
+      console.error('Fetch request failed with message:', error.response.message);
+      return rejectWithValue(error.response.message);
+    });
 
-      // return an array
-      return [userName, json.data.icon_img]
+    // try {
+    //   // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
+    //   // const response = await fetch(`${apiRootTesting}user/${userName}`);
 
-      // return a property
-      // return [userName]: json.data.icon_img
-      // return json.data.icon_img;
-    } catch (e) {
-      // console.error('Error:', e.message);
-      return rejectWithValue(e.message);
-    }
+    //   // avoid fetching deleted or undefined profiles
+    //   if (userName === '[deleted]' || userName === undefined) {
+    //     // throw new Error(`getUserAvatar HTTP error! User Name Deleted`);
+    //     return [userName, 'FAKE/URL'];
+    //   }
+
+    //   const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
+    //   // const response = await fetch(`BAD_URL`);
+    //   // const response = await fetch(`http://httpstat.us/429`);
+
+
+    //   if (!response.ok) {
+    //     console.log('response.ok', response.ok);
+    //     throw new Error(`getUserAvatar HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+        
+    //   }
+    //   const json = await response.json();
+    //   // return an array
+    //   return [userName, json.data.icon_img]
+
+    // } catch (e) {
+    //   console.error('Avatar Error:',userName, e.message);
+    //   return rejectWithValue(e.message);
+    // }
   }
 );

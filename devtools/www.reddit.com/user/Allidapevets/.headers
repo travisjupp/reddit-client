@@ -3,7 +3,7 @@
     "applyTo": "*",
     "headers": [
       {
-        "name": "access-control-allow-origin",
+        "name": "Access-Control-Allow-Origin",
         "value": "*"
       }
     ]

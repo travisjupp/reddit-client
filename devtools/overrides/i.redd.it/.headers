@@ -1,0 +1,11 @@
+[
+  {
+    "applyTo": "17vjxeduehec1.jpeg",
+    "headers": [
+      {
+        "name": "access-control-allow-origin",
+        "value": "*"
+      }
+    ]
+  }
+]

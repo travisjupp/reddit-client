@@ -12,12 +12,7 @@ const initialState = {
 const subredditCommentsSlice = createSlice({
     name: 'subredditComments',
     initialState,
-    reducers: {
-        // commentsRequested(state, action) {
-        //     const postId = action.payload;
-        //     state.postId = postId;
-        // }
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
             .addCase(getSubredditComments.pending, (state, action) => {
