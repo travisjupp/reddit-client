@@ -7,6 +7,22 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const apiRootTesting = 'http://192.168.0.5:8000/';
 const subredditsPathName = 'subreddits/1';
 
+const t0 = performance.now();
+function fetchWithDelay(url, delay = 0) { // delay must be at least a second or setTimeout will resolve before fetch is done
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(response => resolve(response))
+      .catch(error => reject(error));
+    setTimeout(() => {
+      const t1 = performance.now();
+      console.log(`Call took ${t1 - t0} milliseconds.`);
+      resolve(null); // Resolve after the delay even if fetch fails
+    }, delay);
+  });
+}
+
+
+
 // Fetch list of popular subreddits
 // Populates the sidebar on first load with https://www.reddit.com/subreddits
 export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubredditsList',
@@ -33,21 +49,11 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
 export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts',
   async (path, { rejectWithValue }) => {
     try {
-
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
       // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
       const response = await fetch(`${apiRootTesting}r/${path}`);
       if (!response.ok) {
-        // console.error(response.status);
-        // console.error(response.statusText);
-        // console.error(response.body);
-        // console.error(response.type);
-        // console.error(response.url);
-        // console.error(response.headers);
-        // for (const pair of response.headers.entries()) {
-        //   console.log(`${pair[0]}: ${pair[1]}`);
-        // }
         throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
@@ -64,21 +70,10 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
   async ({ permalink, postId }, { rejectWithValue }) => {
     try {
       const response = await fetch(`https://www.reddit.com${permalink}.json`);
-      // const response = await fetch(`https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json`);
-      // console.log(response.status);
-      // console.log(response.statusText);
-      // console.log(response.body);
-      // console.log(response.type);
-      // console.log(response.url);
-      //   for (const pair of response.headers.entries()) {
-      //     console.log(`${pair[0]}: ${pair[1]}`);
-      //   }
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
-      // console.log('json[1].data.children', json[1].data.children);
-
       // Comments objects can be quite large, this removes replies to replies of comments.
       // We only need comments/replies a few levels deep
       const commentsArr = json[1].data.children;
@@ -98,13 +93,8 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
           }
         }
       }
-      // console.log('json',json);
-      // console.log('json[1].data.children',json[1].data.children);
-      // console.log('postId', postId, '\ncommentsArr', commentsArr);
       return commentsArr;
     } catch (e) {
-     
-      // console.error('e: ', e);
       console.error('Comments Error:', e.message);
       return rejectWithValue(e.message);
     }
@@ -115,30 +105,28 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
     if (userName === '[deleted]' || userName === undefined) {
-          // throw new Error(`getUserAvatar HTTP error! User Name Deleted`);
-          // console.log('userName',userName);
-          return [userName, 'FAKE/URL'];
-        }
+      // throw new Error(`getUserAvatar HTTP error! User Name Deleted`);
+      // console.log('userName',userName);
+      return [userName, 'FAKE/URL'];
+    }
 
+    // return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`)
     return fetch(`https://www.reddit.com/user/${userName}/about.json`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      // const json = response.json();
-      // return [userName, json.data.icon_img];
-      return response.json()
-    })
-    .then(data=>{
-      // console.log('userName', userName);
-      // console.log('data', data.data.icon_img);
-      return [userName, data.data.icon_img];
-    })
-    .catch(error => {
-      console.error('Fetch request failed with status:', error.response.status);
-      console.error('Fetch request failed with message:', error.response.message);
-      return rejectWithValue(error.response.message);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        // const json = response.json();
+        // return [userName, json.data.icon_img];
+        return response.json()
+      })
+      .then(data => {
+        return [userName, data.data.icon_img];
+      })
+      .catch(error => {
+        console.error('Fetch request failed with message:', error.message);
+        return rejectWithValue(error.message);
+      });
 
     // try {
     //   // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
@@ -158,7 +146,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     //   if (!response.ok) {
     //     console.log('response.ok', response.ok);
     //     throw new Error(`getUserAvatar HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
-        
+
     //   }
     //   const json = await response.json();
     //   // return an array
