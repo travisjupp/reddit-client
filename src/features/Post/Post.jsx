@@ -6,7 +6,6 @@ import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment"
 import Markdown from 'react-markdown';
 import Holder from 'holderjs';
-
 import { BsChatQuote, BsChatQuoteFill, BsArrowUpCircle, BsArrowUpCircleFill, BsArrowDownCircle, BsArrowDownCircleFill, BsShare, BsShareFill } from "react-icons/bs";
 import { Button, Container, Row, Col, Card, Badge, Stack, Collapse, Fade, Placeholder } from 'react-bootstrap';
 import { selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsStatus, selectSubredditCommentsPostId } from '../../store/subredditCommentsSlice.js';
@@ -20,7 +19,7 @@ import { getSubredditComments } from '../api/reddit';
 
 function Post(props) {
   const { postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText,
-    postPermalink, numberOfComments, handleComments,
+    postPermalink, score, numberOfComments, handleComments,
     collapseStates, setCollapseStates,
   } = props;
 
@@ -101,12 +100,10 @@ function Post(props) {
 
   return (
     <>
-      {/* <a href={postPermalink}>{postPermalink}</a> */}
       <Card id={postId}>
         {postImgSrc ? <Card.Img
           variant="top"
           src={postImgSrc}
-          // data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial"
           alt={altText}
         /> : null}
         <Card.Body>
@@ -114,25 +111,25 @@ function Post(props) {
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatar[postAuthor])} /> {postAuthor}
           <Card.Text as='div'>{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
             <Container fluid className="p-0">
-              {/* show on xs and sm screen size only */}
+
+              {/* MOBILE POSTTEXT show on xs and sm screen size only */}
               <Row className='d-md-none'>
                 <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
               </Row>
+              
               <Row className='align-items-end'>
-                {/* show on xs and sm screen size only */}
+
+                {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
                   <Stack direction="horizontal" gap={1} style={{}} className='justify-content-start'>
-
                     <a onMouseOver={onHover} onMouseLeave={onLeave} href='#'>{hover ? upCircleFill() : upCircle()}</a>
                     {/* <BsArrowUpCircle size='1.5em' color='#000000' /> */}
-
                     <BsArrowDownCircle size='1.5em' color='#000000' />
-
-                    <Badge pill className=''>+4</Badge>
-
+                    <Badge pill className=''>{score}</Badge>
                   </Stack>
                 </Col>
-                {/* show on md and larger */}
+
+                {/* DESKTOP ACTION BAR (left side) show on md and larger */}
                 <Col className="d-none d-md-block">
                   <Stack direction="horizontal" gap={2} style={{}} className='justify-content-start'>
                     <div style={{ border: 'solid 1px red', zIndex: '3' }}>
@@ -140,23 +137,24 @@ function Post(props) {
                     </div>
                     <div style={{ border: 'solid 1px red', zIndex: '3' }}>
                       <BsArrowDownCircle size='3em' color='#000000' />
-                      <Badge pill className='position-absolute translate-middle-x'>-13</Badge>
+                      <Badge pill className='position-absolute translate-middle-x'>{score}</Badge>
                     </div>
                   </Stack>
                 </Col>
                 <Col xs sm={5} xl={7}>
 
-                  {/* show on xs and sm screen size only */}
-                  {/* <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown> */}
-                  <div className="d-md-none date">{new Date(postDate * 1000).toString()}</div>
-                  {/* show on md and lg screen size only */}
+                  {/* MOBILE DATE show on xs and sm screen size only */}
+                  <div className="d-md-none date" style={{ border: 'solid 1px red' }}>{new Date(postDate * 1000).toString()}</div>
+
+                  {/* DESKTOP POSTTEXT show on md and lg screen size only */}
                   <Markdown className="d-none d-md-block d-xl-none d-xxl-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>
 
-                  {/* show on xl and xxl screen size only */}
+                  {/* DESKTOP POSTTEXT show on xl and xxl screen size only */}
                   <Markdown className="d-none d-xl-block" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 1200) + '...show on xl and xxl only'}</Markdown>
 
                 </Col>
-                {/* show on xs and sm screen size only */}
+
+                {/* MOBILE ACTION BAR (right side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
                   <Stack direction="horizontal" gap={1} style={{}} className='justify-content-end'>
                     <div style={{ border: 'solid 1px red', zIndex: '3' }}>
@@ -184,7 +182,7 @@ function Post(props) {
                   </Stack>
                 </Col>
 
-                {/* show on md and larger */}
+                {/* DESKTOP ACTION BAR (right side) show on md and larger */}
                 <Col className='d-none d-md-block'>
                   <Stack direction="horizontal" gap={2} style={{}} className='justify-content-end'>
                     <div
@@ -197,7 +195,6 @@ function Post(props) {
                       style={{ border: 'solid 1px red', zIndex: '3' }}
                     >
                       <BsChatQuote size='3em' color='#000000' />
-
                       <Badge pill className='position-absolute translate-middle-x'>
                         {/* Overlay actual number of comments when comments clicked/loaded. 
                           numberOfComments not accurate, but good enough on initial load.  */}
@@ -246,7 +243,6 @@ function Post(props) {
         null
       }
       {renderComments()}
-
     </>
   )
 }
