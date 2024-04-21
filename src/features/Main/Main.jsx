@@ -51,6 +51,7 @@ function Main(props) {
                         postImgSrc={validatePostImgURL(post.data.url)}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}
+                        score={post.data.score}
                         altText={`r/${post.data.subreddit} - ${post.data.title}`}
                         postPermalink={post.data.permalink.slice(0, -1)}
                         numberOfComments={post.data.num_comments}
