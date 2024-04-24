@@ -1,5 +1,11 @@
 {
     "setupFilesAfterEnv": [
-     "./src/setupTests.js"
-    ]
- }
+        "./src/setupTests.js"
+    ],
+    "moduleNameMapper": {
+        "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js",
+        "holderjs(.*)": "<rootDir>/__mocks__/holderjs.js"
+    },
+    "extensionsToTreatAsEsm": [".jsx"],
+    "transformIgnorePatterns": ["/node_modules/"]
+}
