@@ -1,6 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getSubredditComments } from "../features/api/reddit";
-
+// import { createSlice } from "@reduxjs/toolkit";
+// import * as toolkit from "@reduxjs/toolkit";
+import { getSubredditComments } from "../features/api/reddit.js";
+import * as toolkitRaw from '@reduxjs/toolkit';
+// const { createSlice } = toolkitRaw.createSlice ?? toolkitRaw;
+const { createSlice } = toolkitRaw;
 
 const initialState = {
     status: 'uninitialized',

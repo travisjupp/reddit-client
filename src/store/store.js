@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import subredditReducer from "./subredditSlice";
-import subredditPostsReducer from "./subredditPostsSlice";
-import subredditCommentsReducer from "./subredditCommentsSlice";
+import subredditReducer from "./subredditSlice.js";
+import subredditPostsReducer from "./subredditPostsSlice.js";
+import subredditCommentsReducer from "./subredditCommentsSlice.js";
 
 export default configureStore({
         reducer: {
