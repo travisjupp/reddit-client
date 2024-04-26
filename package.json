@@ -1,9 +1,10 @@
 {
+  "type": "module",
   "name": "reddit-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^2.0.1",
+    "@reduxjs/toolkit": "^2.2.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -22,7 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "node --experimental-vm-modules --trace-warnings node_modules/jest/bin/jest.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,11 +47,13 @@
   "devDependencies": {
     "@babel/core": "^7.23.6",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-syntax-jsx": "^7.23.3",
+    "@babel/preset-env": "^7.24.4",
+    "@babel/preset-react": "^7.23.3",
     "@dicebear/collection": "^7.0.1",
     "@dicebear/core": "^7.0.1",
-    "chai": "^4.3.10",
+    "babel-jest": "^29.7.0",
     "holderjs": "^2.9.9",
-    "mocha": "^10.2.0",
-    "react-test-renderer": "^18.2.0"
+    "react-test-renderer": "^18.3.0"
   }
 }

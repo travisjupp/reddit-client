@@ -1,14 +1,23 @@
-// filter popular.json
 
-import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { createAsyncThunk } from '@reduxjs/toolkit';
+// import * as toolkit from "@reduxjs/toolkit";
+
+// import * as toolkitRaw from '@reduxjs/toolkit';
+// const { createAsyncThunk } = toolkitRaw.createAsyncThunk ?? toolkitRaw;
+// const { createAsyncThunk } = toolkitRaw;
 
 // export const apiRoot = 'https://www.reddit.com/';
 // export const apiRootTesting = 'http://localhost:8000/';
 export const apiRootTesting = 'http://192.168.0.5:8000/';
 const subredditsPathName = 'subreddits/1';
+const options = {
+  // mode: "cors"
+}
+
 
 const t0 = performance.now();
-function fetchWithDelay(url, delay = 0) { // delay must be at least a second or setTimeout will resolve before fetch is done
+function fetchWithDelay(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
   return new Promise((resolve, reject) => {
     fetch(url)
       .then(response => resolve(response))
@@ -110,15 +119,18 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       return [userName, 'FAKE/URL'];
     }
 
-    // return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`)
-    return fetch(`https://www.reddit.com/user/${userName}/about.json`)
+    return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`)
+      // return fetch(`https://www.reddit.com/user/${userName}/about.json`)
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        console.log('avatars delayed fetch response\n', response);
+        if (response !== null) { // if response is not null return json
+          if (!response.ok) {
+            throw new Error('Network response was not in the 200 range');
+          }
+          return response.json()
+        } else { // early return
+          throw new Error('Response was', response);
         }
-        // const json = response.json();
-        // return [userName, json.data.icon_img];
-        return response.json()
       })
       .then(data => {
         return [userName, data.data.icon_img];

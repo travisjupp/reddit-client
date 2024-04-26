@@ -1,14 +1,13 @@
+/**
+ * @jest-environment jsdom
+ */
 
 import { render, screen } from '@testing-library/react';
-import App from './App.jsx';
+import App2 from './App2.jsx';
 import React from 'react';
 
-jest.mock('holderjs', () => 'Video');
-
-
-
 test('renders learn react link', () => {
-  render(<App />);
+  render(<App2 />);
   const linkElement = screen.getByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
 });

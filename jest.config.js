@@ -1,5 +1,6 @@
 export default  {
     verbose: true,
+    testEnvironment: "jsdom",
     setupFilesAfterEnv: [
         "./src/setupTests.js"
     ],
@@ -10,5 +11,5 @@ export default  {
         "rehype-raw": "<rootDir>/__mocks__/rehype-raw.js"
     },
     extensionsToTreatAsEsm: [".jsx"],
-    transformIgnorePatterns: ["/node_modules/"]
+    transformIgnorePatterns: ["<rootDir>/node_modules/"]
 };
