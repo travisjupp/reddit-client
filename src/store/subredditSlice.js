@@ -2,8 +2,8 @@
 // import * as toolkit from "@reduxjs/toolkit";
 import { getPopSubredditsList } from "../features/api/reddit.js";
 import * as toolkitRaw from '@reduxjs/toolkit';
+const { createSlice } = toolkitRaw.default ?? toolkitRaw;
 // const { createSlice } = toolkitRaw.createSlice ?? toolkitRaw;
-const { createSlice } = toolkitRaw;
 
 
 
