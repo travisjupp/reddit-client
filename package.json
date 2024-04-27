@@ -23,7 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "node --experimental-vm-modules --trace-warnings node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules --trace-warnings node_modules/jest/bin/jest.js --watchAll=true",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -1,11 +1,8 @@
-// import logo from './logo.svg';
-// import './App.css';
 import React from 'react';
 
-import { createAvatar } from '@dicebear/core';
 
-
-function App2() {
+function App2(props) {
+  const {date} = props;
   return (
     <div className="App">
       <header className="App-header">
@@ -19,7 +16,7 @@ function App2() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React {date}
         </a>
       </header>
     </div>

@@ -1,10 +1,10 @@
 
 
-// import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 // import * as toolkit from "@reduxjs/toolkit";
 
-import * as toolkitRaw from '@reduxjs/toolkit';
-const { createAsyncThunk } = toolkitRaw.default ?? toolkitRaw;
+// import * as toolkitRaw from '@reduxjs/toolkit';
+// const { createAsyncThunk } = toolkitRaw.default ?? toolkitRaw;
 // const { createAsyncThunk } = toolkitRaw;
 
 // export const apiRoot = 'https://www.reddit.com/';

@@ -1,8 +1,8 @@
-// import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 // import * as toolkit from "@reduxjs/toolkit";
 import { getSubredditComments } from "../features/api/reddit.js";
-import * as toolkitRaw from '@reduxjs/toolkit';
-const { createSlice } = toolkitRaw.default ?? toolkitRaw;
+// import * as toolkitRaw from '@reduxjs/toolkit';
+// const { createSlice } = toolkitRaw.createSlice ?? toolkitRaw;
 // const { createSlice } = toolkitRaw;
 
 const initialState = {
