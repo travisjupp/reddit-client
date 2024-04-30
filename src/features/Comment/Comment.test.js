@@ -7,7 +7,7 @@ import store from '../../store/store.js';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
-    render(<Provider store={store}><Comment /></Provider>, div);
+    render(<Comment />, div);
 });
 
 // test('renders learn react link', () => {
