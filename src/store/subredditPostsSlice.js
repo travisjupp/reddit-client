@@ -78,4 +78,4 @@ export const selectSubredditPostsError = state => state.subredditPosts.postsErro
 
 export const selectSubredditAvatarsError = state => state.subredditPosts.avatarsErrorState;
 
-export const selectUserAvatar = state => state.subredditPosts.avatars;
+export const selectUserAvatars = state => state.subredditPosts.avatars;

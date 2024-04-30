@@ -6,6 +6,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 // import * as toolkitRaw from '@reduxjs/toolkit';
 // const { createAsyncThunk } = toolkitRaw.default ?? toolkitRaw;
 // const { createAsyncThunk } = toolkitRaw;
+import { selectUserAvatars } from '../../store/subredditPostsSlice.js';
+import { useSelector } from 'react-redux';
+
 
 // export const apiRoot = 'https://www.reddit.com/';
 // export const apiRootTesting = 'http://localhost:8000/';
@@ -24,7 +27,7 @@ function fetchWithDelay(url, delay = 1000) { // delay must be at least a second 
       .catch(error => reject(error));
     setTimeout(() => {
       const t1 = performance.now();
-      console.log(`Call took ${t1 - t0} milliseconds.`);
+      // console.log(`Call took ${t1 - t0} milliseconds.`);
       resolve(null); // Resolve after the delay even if fetch fails
     }, delay);
   });
@@ -118,11 +121,10 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // console.log('userName',userName);
       return [userName, 'FAKE/URL'];
     }
-
     return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`)
       // return fetch(`https://www.reddit.com/user/${userName}/about.json`)
       .then(response => {
-        console.log('avatars delayed fetch response\n', response);
+
         if (response !== null) { // if response is not null return json
           if (!response.ok) {
             throw new Error('Network response was not in the 200 range');

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Card, Stack, Collapse, Placeholder, Fade } from "react-bootstrap";
 import Avatar from "../Avatar/Avatar";
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
-import { selectUserAvatar } from "../../store/subredditPostsSlice";
+import { selectUserAvatars } from "../../store/subredditPostsSlice";
 import { getUserAvatar } from "../api/reddit";
 import validateAvatarImgURL from '../../utils/validateImgURL.js';
 import formatPostText from "../../utils/formatPostText.js";
@@ -29,7 +29,7 @@ function Comment(props) {
         dispatch(getUserAvatar(commentAuthor));
     }, [dispatch, commentAuthor])
 
-    const avatar = useSelector(selectUserAvatar);
+    const avatar = useSelector(selectUserAvatars);
     const commentsStatus = useSelector(selectSubredditCommentsStatus);
 
     if (commentsStatus === 'loading') {

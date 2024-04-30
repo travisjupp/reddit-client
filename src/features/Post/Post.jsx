@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAvatar } from '../api/reddit';
-import { selectUserAvatar } from '../../store/subredditPostsSlice';
+import { selectUserAvatars } from '../../store/subredditPostsSlice';
 import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment"
 import Markdown from 'react-markdown';
@@ -16,13 +16,11 @@ import rehypeRaw from 'rehype-raw';
 import Toaster from '../../components/Toast/Toast.jsx';
 import { getSubredditComments } from '../api/reddit';
 
-
 function Post(props) {
   const { postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText,
     postPermalink, score, numberOfComments, handleComments,
     collapseStates, setCollapseStates,
   } = props;
-
 
   const [hover, setHover] = useState(false);
   const onHover = () => setHover(true);
@@ -36,12 +34,15 @@ function Post(props) {
 
   const dispatch = useDispatch();
 
+  const avatars = useSelector(selectUserAvatars);
   // get user avatar
   useEffect(() => {
-    dispatch(getUserAvatar(postAuthor));
-  }, [dispatch, postAuthor])
+    if (!avatars[postAuthor]) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
+      console.log('dispatching for ', postAuthor);
+      dispatch(getUserAvatar(postAuthor));
+    }
+  }, [dispatch, postAuthor]);
 
-  const avatar = useSelector(selectUserAvatar);
   const comments = useSelector(selectSubredditComments);
   const commentsStatus = useSelector(selectSubredditCommentsStatus);
   const commentsErrorState = useSelector(selectSubredditCommentsError);
@@ -59,7 +60,6 @@ function Post(props) {
     updatedStates[postId] = !updatedStates[postId];
     setCollapseStates(updatedStates);
   }
-
   const toggleComments = () => {
     !collapseStates[postId] && // only fetch comments if comments not already expanded
       handleComments({ permalink: postPermalink, postId })
@@ -108,7 +108,7 @@ function Post(props) {
         /> : null}
         <Card.Body>
           <Card.Title>{postTitle} <div style={{ float: 'right' }}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
-          <Avatar name={postAuthor} src={validateAvatarImgURL(avatar[postAuthor])} /> {postAuthor}
+          <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
           <Card.Text as='div'>{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
             <Container fluid className="p-0">
 
@@ -116,7 +116,7 @@ function Post(props) {
               <Row className='d-md-none'>
                 <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
               </Row>
-              
+
               <Row className='align-items-end'>
 
                 {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
