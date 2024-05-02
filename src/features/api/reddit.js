@@ -117,14 +117,11 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
     if (userName === '[deleted]' || userName === undefined) {
-      // throw new Error(`getUserAvatar HTTP error! User Name Deleted`);
-      // console.log('userName',userName);
-      return [userName, 'FAKE/URL'];
-    }
-    return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`)
-      // return fetch(`https://www.reddit.com/user/${userName}/about.json`)
-      .then(response => {
-
+      // avoid (re)dispatching deleted profiles
+      return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
+    } return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`) 
+    // return fetch(`https://www.reddit.com/user/${userName}/about.json`) 
+    .then(response => {
         if (response !== null) { // if response is not null return json
           if (!response.ok) {
             throw new Error('Network response was not in the 200 range');
@@ -134,8 +131,10 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
           throw new Error('Response was', response);
         }
       })
-      .then(data => {
-        return [userName, data.data.icon_img];
+      .then(profile => {
+        // avoid (re)dispatching suspended profiles
+        return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+          [userName, profile.data.icon_img];
       })
       .catch(error => {
         console.error('Fetch request failed with message:', error.message);

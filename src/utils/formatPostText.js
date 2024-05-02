@@ -6,13 +6,28 @@ import he from 'he';
 // Else, render plain post text, truncate and render.
 const formatPostText = (postTextHtml, postText, charLength) => {
     try {
-        return postTextHtml !== null ?
-            he.decode(postTextHtml)
-                .substring(0, charLength) :
-            postText !== null ?
-                postText.substring(0, charLength) :
-                ""
+        // return postTextHtml !== null || undefined ?
+        //     he.decode(postTextHtml)
+        //         .substring(0, charLength) :
+        //     postText !== "" || null || undefined ?
+        //         postText.substring(0, charLength) :
+        //         "";
+
+if (postTextHtml !== null || undefined) {
+    return he.decode(postTextHtml)
+    .substring(0, charLength);
+} else {
+    if (postText !== "" || null || undefined) {
+        return postText.substring(0, charLength);
+    } else {
+        return "";
+    }
+}
+
+
     } catch (e) {
+        console.log('postTextHtml',postTextHtml)
+        console.log('postText',typeof postText)
         console.error('Error:', e.message);
     }
 }
