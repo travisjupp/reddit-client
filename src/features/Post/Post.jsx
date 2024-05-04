@@ -62,12 +62,11 @@ function Post(props) {
   const toggleComments = () => {
     !collapseStates[postId] && // only fetch comments if comments not already expanded
       handleComments({ permalink: postPermalink, postId })
-    // !collapseStates[postId] && handleComments({ permalink: 'INTENTOINALLY ERROR THIS OUT FOR TESTING', postId })
+    // !collapseStates[postId] && handleComments({ permalink: 'INTENTIONALLY ERROR THIS OUT FOR TESTING', postId })
     handleCollapse(postId);
   }
   const renderComments = () => {
     // render comments (only for the post that dispatched)
-
     return (
       <>
         {commentsDispatchedPost &&
@@ -78,7 +77,7 @@ function Post(props) {
               // setShow(false);
             }}
           >
-            <div id={`comments-${postId}`} style={{ border: '4px double green' }}>
+            <div id={`comments-wrapper-${postId}`} style={{ border: '4px double green' }}>
               {comments.map(comment => {
                 return <Comment
                   key={comment.data.id}
@@ -163,8 +162,8 @@ function Post(props) {
                     <div
                       role="button"
                       // data-bs-toggle="collapse"
-                      // data-bs-target={`#comments-${postId}`}
-                      aria-controls={`comments-${postId}`}
+                      // data-bs-target={`#comments-wrapper-${postId}`}
+                      aria-controls={`comments-wrapper-${postId}`}
                       // aria-controls={commentsRef}
                       aria-expanded={collapseStates[postId]}
                       onClick={toggleComments}
@@ -187,8 +186,8 @@ function Post(props) {
                     <div
                       role="button"
                       // data-bs-toggle="collapse"
-                      // data-bs-target={`#comments-${postId}`}
-                      aria-controls={`comments-${postId}`}
+                      // data-bs-target={`#comments-wrapper-${postId}`}
+                      aria-controls={`comments-wrapper-${postId}`}
                       aria-expanded={collapseStates[postId]}
                       onClick={toggleComments}
                       style={{ border: 'solid 1px red', zIndex: '3' }}
@@ -232,8 +231,8 @@ function Post(props) {
           </pre>
           <Button
             // data-bs-toggle="collapse"
-            // data-bs-target={`#comments-${postId}`}
-            aria-controls={`comments-${postId}`}
+            // data-bs-target={`#comments-wrapper-${postId}`}
+            aria-controls={`comments-wrapper-${postId}`}
             aria-expanded={collapseStates[postId]}
             // className=''
             onClick={() => handleComments({ permalink: postPermalink, postId })}
