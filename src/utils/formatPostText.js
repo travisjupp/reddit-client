@@ -13,21 +13,19 @@ const formatPostText = (postTextHtml, postText, charLength) => {
         //         postText.substring(0, charLength) :
         //         "";
 
-if (postTextHtml !== null || undefined) {
-    return he.decode(postTextHtml)
-    .substring(0, charLength);
-} else {
-    if (postText !== "" || null || undefined) {
-        return postText.substring(0, charLength);
-    } else {
-        return "";
-    }
-}
-
-
+        if (postTextHtml !== null || undefined) {
+            return he.decode(postTextHtml)
+                .substring(0, charLength);
+        } else {
+            if (postText !== "" || null || undefined) {
+                return postText.substring(0, charLength);
+            } else {
+                return "";
+            }
+        }
     } catch (e) {
-        console.log('postTextHtml',postTextHtml)
-        console.log('postText',typeof postText)
+        console.log('postTextHtml', postTextHtml)
+        console.log('postText', typeof postText)
         console.error('Error:', e.message);
     }
 }

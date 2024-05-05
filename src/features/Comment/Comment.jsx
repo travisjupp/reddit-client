@@ -25,11 +25,14 @@ function Comment(props) {
 
     const dispatch = useDispatch();
 
+    const avatars = useSelector(selectUserAvatars);
     useEffect(() => {
-        dispatch(getUserAvatar(commentAuthor));
+        if (!avatars[commentAuthor] && commentAuthor !== undefined){ // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
+            console.log('<Comment>dispatching for ', commentAuthor);
+            dispatch(getUserAvatar(commentAuthor));
+        }
     }, [dispatch, commentAuthor])
 
-    const avatar = useSelector(selectUserAvatars);
     const commentsStatus = useSelector(selectSubredditCommentsStatus);
 
     if (commentsStatus === 'loading') {
@@ -66,7 +69,7 @@ function Comment(props) {
                             <div>
                                 <Avatar
                                     name={commentAuthor}
-                                    src={validateAvatarImgURL(avatar[commentAuthor])}
+                                    src={validateAvatarImgURL(avatars[commentAuthor])}
                                 /> {commentAuthor}
                             </div>
                             <div className="p-2 ms-auto">{new Date(commentDate * 1000).toString()}</div>

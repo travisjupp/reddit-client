@@ -117,8 +117,8 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
     try {
+      // avoid (re)dispatching deleted/undefined profiles
       if (userName === '[deleted]' || userName === undefined) {
-        // avoid (re)dispatching deleted profiles
         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
       }
       // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
@@ -128,7 +128,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // const response = await fetch(`http://httpstat.us/429`);
       const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
       if (!response?.ok) {
-        throw new Error(`getUserAvatar HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
+        throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
       }
       const profile = await response.json();
       // avoid (re)dispatching suspended profiles
