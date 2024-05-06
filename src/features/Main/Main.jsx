@@ -7,6 +7,7 @@ import { selectSubredditPosts, selectSubredditPostsStatus, selectSubredditPostsE
 import validatePostImgURL from '../../utils/validateImgURL.js'
 import Toaster from '../../components/Toast/Toast.jsx';
 import { Button } from 'react-bootstrap';
+import { selectSubredditComments } from '../../store/subredditCommentsSlice.js';
 
 function Main(props) {
 
@@ -23,9 +24,12 @@ function Main(props) {
     const postsStatus = useSelector(selectSubredditPostsStatus);
     const postsErrorState = useSelector(selectSubredditPostsError);
 
+    const comments = useSelector(selectSubredditComments);
+
     const handleComments = (permalink) => {
-        dispatch(getSubredditComments(permalink));
-        // dispatch(getSubredditComments('TEST ERROR'));
+        if (`t3_${permalink.postId}` !== comments[0]?.data.parent_id) { // check if comments are cached before dispatching fetch (avoid hitting rate-limits)
+            dispatch(getSubredditComments(permalink));
+        }
     }
 
     if (postsStatus === 'loading') {

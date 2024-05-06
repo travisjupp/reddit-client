@@ -20,7 +20,6 @@ function Sidebar(props) {
 
     const handlePosts = (param) => {
         dispatch(getSubredditPosts(param));
-        // console.log('Sidebar.jsx typeof toggleOffcanvas', typeof toggleOffcanvas)
     }
 
     while (status === 'loading') {
