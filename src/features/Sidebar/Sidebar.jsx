@@ -6,6 +6,7 @@ import { selectPopSubredditsList, selectPopSubredditsListError, selectPopSubredd
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import { apiRootTesting as apiRoot } from '../api/reddit';
 import Avatar from '../Avatar/Avatar';
+import { selectSubredditPosts } from '../../store/subredditPostsSlice';
 
 function Sidebar(props) {
     const { toggleOffcanvas, show } = props;
@@ -18,8 +19,14 @@ function Sidebar(props) {
     const status = useSelector(selectPopSubredditsListStatus);
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
 
+    const posts = useSelector(selectSubredditPosts);
+
     const handlePosts = (param) => {
-        dispatch(getSubredditPosts(param));
+        if (posts[0]?.data.subreddit !== param){ // check if posts are cached before dispatching fetch (avoid hitting rate-limits)
+            console.log('posts[0]?.data.subreddit',posts[0]?.data.subreddit);
+            console.log('posts[0]?.data.subreddit',posts[0]?.data.subreddit === param);
+            dispatch(getSubredditPosts(param));
+        }
     }
 
     while (status === 'loading') {
