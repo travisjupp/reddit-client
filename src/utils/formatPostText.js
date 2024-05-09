@@ -13,11 +13,11 @@ const formatPostText = (postTextHtml, postText, charLength) => {
         //         postText.substring(0, charLength) :
         //         "";
 
-        if (postTextHtml !== null || undefined) {
+        if (postTextHtml) {
             return he.decode(postTextHtml)
                 .substring(0, charLength);
         } else {
-            if (postText !== "" || null || undefined) {
+            if (postText) {
                 return postText.substring(0, charLength);
             } else {
                 return "";

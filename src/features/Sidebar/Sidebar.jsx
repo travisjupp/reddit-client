@@ -23,8 +23,6 @@ function Sidebar(props) {
 
     const handlePosts = (param) => {
         if (posts[0]?.data.subreddit !== param){ // check if posts are cached before dispatching fetch (avoid hitting rate-limits)
-            console.log('posts[0]?.data.subreddit',posts[0]?.data.subreddit);
-            console.log('posts[0]?.data.subreddit',posts[0]?.data.subreddit === param);
             dispatch(getSubredditPosts(param));
         }
     }
