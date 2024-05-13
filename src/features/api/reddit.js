@@ -6,8 +6,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 // import * as toolkitRaw from '@reduxjs/toolkit';
 // const { createAsyncThunk } = toolkitRaw.default ?? toolkitRaw;
 // const { createAsyncThunk } = toolkitRaw;
-import { selectUserAvatars } from '../../store/subredditPostsSlice.js';
-import { useSelector } from 'react-redux';
+
+import axios from 'axios';
 
 
 // export const apiRoot = 'https://www.reddit.com/';
@@ -116,27 +116,77 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
 // Fetch avatars from user profiles 
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
+    //  --------------------------------try/catch-------------------------------
+    // try {
+    //   // avoid (re)dispatching deleted/undefined profiles
+    //   if (userName === '[deleted]' || userName === undefined) {
+    //     return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
+    //   }
+    //   // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
+    //   // const response = await fetch(`${apiRootTesting}user/${userName}`);
+    //   // const response = await fetch(`BAD_URL`);
+    //   // const response = await fetch(`http://httpstat.us/429`);
+    //   const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
+    //   // const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
+    //   if (!response?.ok) {
+    //     console.log('response?.status',response?.status);
+    //     throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
+    //   }
+    //   const profile = await response.json();
+    //   // avoid (re)dispatching suspended profiles
+    //   return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+    //     [userName, profile.data.icon_img]
+    // } catch (e) {
+    //   console.error('Avatar Error:', userName, e.message);
+    //   return rejectWithValue(e.message);
+    // }
+    //  --------------------------------then/catch-------------------------------
+
+    //   return fetch(`https://www.reddit.com/user/${userName}/about.json`,
+    //   // {'mode': 'no-cors'}
+    // )
+    //     .then(response => {
+    //       console.log('response', response);
+    //         if (response.ok) {
+    //         return response.json();
+    //         }
+    //         return Promise.reject(response);
+    //     })
+    //     .then(profile => {
+    //       console.log('profile', userName, profile);
+    //       if (userName === '[deleted]' || userName === undefined) {
+    //         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
+    //       }
+    //       return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+    //         [userName, profile.data.icon_img];
+    //     })
+    //     .catch(
+    //       response => {
+    //         console.log('error', userName);
+    //         console.log('response.status',response.status, 'response.statusText',  response.statusText );
+    //         response.json().then(json => {
+    //           console.log('json',json);
+    //         })
+    //         return ['FailedFetch', 'FailedFetch']
+    //       }
+    //     )
+    //  -----------------------------------axios----------------------------------
+
     try {
-      // avoid (re)dispatching deleted/undefined profiles
+      const response = await axios.get(`https://www.reddit.com/user/${userName}/about.json`);
+      console.log('axios response', response);
       if (userName === '[deleted]' || userName === undefined) {
         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
       }
-      // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
-      // const response = await fetch(`${apiRootTesting}user/${userName}`);
-      // const response = await fetch(`BAD_URL`);
-      // const response = await fetch(`http://httpstat.us/429`);
-      const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
-      // const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
-      if (!response?.ok) {
-        throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
-      }
-      const profile = await response.json();
-      // avoid (re)dispatching suspended profiles
-      return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
-        [userName, profile.data.icon_img]
+      return response.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+        [userName, response.data.icon_img];
     } catch (e) {
-      console.error('Avatar Error:', userName, e.message);
-      return rejectWithValue(e.message);
+      console.log('axios error', e);
+      console.log('axios error toJSON', e.toJSON());
+      return ['failedFetch', 'FailedFetch']
     }
+
+
+
   }
 );

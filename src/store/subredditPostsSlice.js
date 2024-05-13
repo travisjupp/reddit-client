@@ -47,6 +47,7 @@ const subredditPostsSlice = createSlice({
             })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
                 state.avatarsStatus = 'succeeded';
+                console.log('action.payload',action.payload);
                 const key = action.payload[0];
                 const val = action.payload[1];
                 state.avatars[key] = val;

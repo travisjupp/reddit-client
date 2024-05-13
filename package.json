@@ -7,6 +7,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
+    "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "he": "^1.2.0",
     "react": "^18.3.1",

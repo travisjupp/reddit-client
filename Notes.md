@@ -1,4 +1,8 @@
-## Notes
+# Notes
+
+## Rate-limits
+
+100 queries per minute per OAuth client id if you are using OAuth authentication and 10 queries per minute if you are not using OAuth authentication.
 
 ### Setup
 
@@ -72,6 +76,14 @@ curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
 `https://www.reddit.com/r/AskReddit/comments/198mp35/how_will_you_react_if_joe_biden_becomes_president/` or 
 `https://youtube.com/watch?v=386iVwP-bAA&amp;si=SAg9z216056Ov6nf` or
 `https://twitter.com/SeanRossSapp/status/1747252570043588660` or some other non-image url
+
+# Parsing gallery image URLS
+
+# in order to parse gallery images 
+
+# this works
+https://preview.redd.it/ih9drrcwtkec1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=3790a5fe03f20add700bd3125e4c874d564c22f0
+
 ```
 
 
