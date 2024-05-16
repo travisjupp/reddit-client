@@ -178,12 +178,13 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       if (userName === '[deleted]' || userName === undefined) {
         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
       }
-      return response.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
-        [userName, response.data.icon_img];
+      return response.data.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+        [userName, response.data.data.icon_img];
     } catch (e) {
       console.log('axios error', e);
       console.log('axios error toJSON', e.toJSON());
-      return ['failedFetch', 'FailedFetch']
+      // return ['failedFetch', 'FailedFetch']
+      return rejectWithValue(e.message);
     }
 
 
