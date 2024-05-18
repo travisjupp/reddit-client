@@ -175,14 +175,28 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     try {
       const response = await axios.get(`https://www.reddit.com/user/${userName}/about.json`);
       console.log('axios response', response);
+      
+
+      axios.interceptors.response.use(function (response) {
+        // Do something with response data
+        console.log('intercept response', response);
+        // return response;
+      }, function (error) {
+        // Do something with response error
+        console.log('intercept error', error);
+        return Promise.reject(error);
+      });
       if (userName === '[deleted]' || userName === undefined) {
         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
       }
+
       return response.data.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
         [userName, response.data.data.icon_img];
     } catch (e) {
       console.log('axios error', e);
-      console.log('axios error toJSON', e.toJSON());
+      console.log('axios X-Ratelimit-Remaining', e.response.headers.get('X-Ratelimit-Remaining'));
+      console.log('axios error status', e.response.data.error);
+      console.log('axios error headers toJSON', e.response.headers.toJSON());
       // return ['failedFetch', 'FailedFetch']
       return rejectWithValue(e.message);
     }
