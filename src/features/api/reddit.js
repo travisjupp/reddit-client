@@ -21,6 +21,7 @@ const options = {
 
 const t0 = performance.now();
 function fetchWithDelay(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
+  sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests'))+1);
   return new Promise((resolve, reject) => {
     fetch(url)
       .then(response => resolve(response))
@@ -43,7 +44,8 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch('https://www.reddit.com/subreddits.json');
       // const response = await fetch('http://localhost:8000/subreddits/1');
-      const response = await fetch(`${apiRootTesting}${subredditsPathName}`);
+      const response = await fetchWithDelay(`${apiRootTesting}${subredditsPathName}`);
+      // const response = await fetch(`${apiRootTesting}${subredditsPathName}`);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -64,7 +66,8 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
       // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
-      const response = await fetch(`${apiRootTesting}r/${path}`);
+      const response = await fetchWithDelay(`${apiRootTesting}r/${path}`);
+      // const response = await fetch(`${apiRootTesting}r/${path}`);
       if (!response.ok) {
         throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -81,7 +84,8 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
 export const getSubredditComments = createAsyncThunk('subreddits/getSubredditComments',
   async ({ permalink, postId }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`https://www.reddit.com${permalink}.json`);
+      const response = await fetchWithDelay(`https://www.reddit.com${permalink}.json`);
+      // const response = await fetch(`https://www.reddit.com${permalink}.json`);
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -128,11 +132,14 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     //   // const response = await fetch(`http://httpstat.us/429`);
     //   const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
     //   // const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
+    //   console.log('response', response);
     //   if (!response?.ok) {
     //     console.log('response?.status',response?.status);
     //     throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
     //   }
     //   const profile = await response.json();
+
+    //   console.log('profile',profile);
     //   // avoid (re)dispatching suspended profiles
     //   return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
     //     [userName, profile.data.icon_img]
@@ -142,64 +149,58 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     // }
     //  --------------------------------then/catch-------------------------------
 
-    //   return fetch(`https://www.reddit.com/user/${userName}/about.json`,
-    //   // {'mode': 'no-cors'}
-    // )
-    //     .then(response => {
-    //       console.log('response', response);
-    //         if (response.ok) {
-    //         return response.json();
-    //         }
-    //         return Promise.reject(response);
-    //     })
-    //     .then(profile => {
-    //       console.log('profile', userName, profile);
-    //       if (userName === '[deleted]' || userName === undefined) {
-    //         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
-    //       }
-    //       return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
-    //         [userName, profile.data.icon_img];
-    //     })
-    //     .catch(
-    //       response => {
-    //         console.log('error', userName);
-    //         console.log('response.status',response.status, 'response.statusText',  response.statusText );
-    //         response.json().then(json => {
-    //           console.log('json',json);
-    //         })
-    //         return ['FailedFetch', 'FailedFetch']
-    //       }
-    //     )
+    return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`,
+    // return fetch(`https://www.reddit.com/user/${userName}/about.json`,
+      // {'mode': 'no-cors'}
+    )
+      .then(response => {
+        console.log('numRequests',sessionStorage.getItem('numRequests'));
+        sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests'))+1);
+        console.log('response', response);
+        console.log('response.status', response.status);
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
+      })
+      .then(profile => {
+        console.log('profile', userName, profile);
+        if (userName === '[deleted]' || userName === undefined) {
+          return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
+        }
+        // avoid (re)dispatching suspended profiles
+        return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+          [userName, profile.data.icon_img];
+      })
+      .catch(
+        error => {
+          console.log('error', userName, error);
+          console.log('error.status', error.status, 'error.statusText', error.statusText);
+          return rejectWithValue(error.message);
+          // return ['FailedFetch', 'FailedFetch']
+        }
+      )
     //  -----------------------------------axios----------------------------------
 
-    try {
-      const response = await axios.get(`https://www.reddit.com/user/${userName}/about.json`);
-      console.log('axios response', response);
-      
+    // try {
+    //   const response = await axios.get(`https://www.reddit.com/user/${userName}/about.json`);
+    //   console.log('axios response', response);
 
-      axios.interceptors.response.use(function (response) {
-        // Do something with response data
-        console.log('intercept response', response);
-        // return response;
-      }, function (error) {
-        // Do something with response error
-        console.log('intercept error', error);
-        return Promise.reject(error);
-      });
-      if (userName === '[deleted]' || userName === undefined) {
-        return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
-      }
-
-      return response.data.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
-        [userName, response.data.data.icon_img];
-    } catch (e) {
-      console.log('axios error', e);
-      console.log('axios X-Ratelimit-Remaining', e.response.headers.get('X-Ratelimit-Remaining'));
-      console.log('axios error status', e.response.data.error);
-      console.log('axios error headers toJSON', e.response.headers.toJSON());
-      // return ['failedFetch', 'FailedFetch']
-      return rejectWithValue(e.message);
-    }
+    //   if (userName === '[deleted]' || userName === undefined) {
+    //     return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
+    //   }
+    //   // avoid (re)dispatching suspended profiles
+    //   return response.data.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+    //     [userName, response.data.data.icon_img];
+    // } catch (e) {
+    //   console.log('axios error', e);
+    //   console.log('axios X-Ratelimit-Remaining', e.response.headers.get('X-Ratelimit-Remaining'));
+    //   console.log('axios error status', e.response.data.error);
+    //   console.log('axios error headers toJSON', e.response.headers.toJSON());
+    //   // return ['failedFetch', 'FailedFetch']
+    //   return rejectWithValue(e.message);
+    // }
 
 
 
