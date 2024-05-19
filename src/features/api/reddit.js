@@ -18,10 +18,30 @@ const options = {
   // mode: "cors"
 }
 
+// reset session storage
+sessionStorage.clear();
+console.log('session storage cleared');
+
+const fetchQueue = [];
+
 
 const t0 = performance.now();
 function fetchWithDelay(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
-  sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests'))+1);
+  console.log('fetchQueue',fetchQueue);
+  // log requests
+  sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests')) + 1);
+  
+  // reset rate limit reset time once we hit 10 requests
+  if (sessionStorage.getItem('numRequests') > 10) {    
+     fetchQueue.push(url);
+    // one minute from now
+    sessionStorage.setItem('rateLimitReset', new Date().getTime() + 60000);
+    return;
+  }
+
+  console.log(new Date().getTime() > sessionStorage.rateLimitReset);
+
+
   return new Promise((resolve, reject) => {
     fetch(url)
       .then(response => resolve(response))
@@ -150,12 +170,11 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     //  --------------------------------then/catch-------------------------------
 
     return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`,
-    // return fetch(`https://www.reddit.com/user/${userName}/about.json`,
+      // return fetch(`https://www.reddit.com/user/${userName}/about.json`,
       // {'mode': 'no-cors'}
     )
       .then(response => {
-        console.log('numRequests',sessionStorage.getItem('numRequests'));
-        sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests'))+1);
+        console.log('numRequests', sessionStorage.getItem('numRequests'));
         console.log('response', response);
         console.log('response.status', response.status);
         if (response.ok) {
