@@ -23,25 +23,9 @@ sessionStorage.clear();
 console.log('session storage cleared');
 
 const fetchQueue = [];
+const isFetching = false;
 
-
-const t0 = performance.now();
-function fetchWithDelay(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
-  console.log('fetchQueue',fetchQueue);
-  // log requests
-  sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests')) + 1);
-  
-  // reset rate limit reset time once we hit 10 requests
-  if (sessionStorage.getItem('numRequests') > 10) {    
-     fetchQueue.push(url);
-    // one minute from now
-    sessionStorage.setItem('rateLimitReset', new Date().getTime() + 60000);
-    return;
-  }
-
-  console.log(new Date().getTime() > sessionStorage.rateLimitReset);
-
-
+function processFetchQueue(url, delay) {
   return new Promise((resolve, reject) => {
     fetch(url)
       .then(response => resolve(response))
@@ -52,6 +36,34 @@ function fetchWithDelay(url, delay = 1000) { // delay must be at least a second 
       resolve(null); // Resolve after the delay even if fetch fails
     }, delay);
   });
+}
+
+const t0 = performance.now();
+function fetchWithDelay(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
+
+  // set rate limit reset time for one minute from now on first request
+  if (sessionStorage.getItem('numRequests') === '1') {
+    sessionStorage.setItem('rateLimitReset', new Date().getTime() + 60000);
+    // one minute from now clear numRequests and rateLimitReset
+    setTimeout(() => {
+      console.log('clearing session storage');
+      sessionStorage.clear();
+    }, 60000)
+  }
+
+  // at 10 requests start adding urls to the fetch queue
+  if (sessionStorage.getItem('numRequests') >= 10) {
+    fetchQueue.push({url, delay});
+    return;
+  }
+
+  // has the rate-limit reset?
+  const isLimitReset = new Date().getTime() > sessionStorage.rateLimitReset;
+
+  // log number of fetch requests
+  sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests')) + 1);
+
+  return processFetchQueue(url, delay)
 }
 
 
