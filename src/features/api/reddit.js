@@ -24,8 +24,9 @@ console.log('session storage cleared');
 
 const fetchQueue = [];
 const isFetching = false;
+const t0 = performance.now();
 
-function processFetchQueue(url, delay) {
+function fetchWithDelay(url, delay) {
   return new Promise((resolve, reject) => {
     fetch(url)
       .then(response => resolve(response))
@@ -38,11 +39,11 @@ function processFetchQueue(url, delay) {
   });
 }
 
-const t0 = performance.now();
-function fetchWithDelay(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
+function fetchThrottle(url, delay = 6000) { // delay must be at least a second or setTimeout will resolve before fetch is done
 
+  let numRequests = sessionStorage.getItem('numRequests'); 
   // set rate limit reset time for one minute from now on first request
-  if (sessionStorage.getItem('numRequests') === '1') {
+  if (numRequests === '1') {
     sessionStorage.setItem('rateLimitReset', new Date().getTime() + 60000);
     // one minute from now clear numRequests and rateLimitReset
     setTimeout(() => {
@@ -50,22 +51,30 @@ function fetchWithDelay(url, delay = 1000) { // delay must be at least a second 
       sessionStorage.clear();
     }, 60000)
   }
-
-  // at 10 requests start adding urls to the fetch queue
-  if (sessionStorage.getItem('numRequests') >= 10) {
-    fetchQueue.push({url, delay});
-    return;
-  }
-
   // has the rate-limit reset?
   const isLimitReset = new Date().getTime() > sessionStorage.rateLimitReset;
 
+  // // at 10 requests start adding urls to the fetch queue
+  // if (numRequests >= 10) {
+
+  //   delay += 1000;
+  // }
+  // if (numRequests >= 20) {
+
+  //   delay += 2000;
+  // }
+  // if (numRequests >= 30) {
+  //   delay += 3000;
+  // }
+  // if (isLimitReset) {
+  //   delay = 1000;
+  // }
+  console.log('delay', delay, 'numRequests', numRequests);
   // log number of fetch requests
-  sessionStorage.setItem('numRequests', Number(sessionStorage.getItem('numRequests')) + 1);
+  sessionStorage.setItem('numRequests', Number(numRequests) + 1);
 
-  return processFetchQueue(url, delay)
+  return fetchWithDelay(url, delay)
 }
-
 
 
 // Fetch list of popular subreddits
@@ -76,7 +85,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch('https://www.reddit.com/subreddits.json');
       // const response = await fetch('http://localhost:8000/subreddits/1');
-      const response = await fetchWithDelay(`${apiRootTesting}${subredditsPathName}`);
+      const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`);
       // const response = await fetch(`${apiRootTesting}${subredditsPathName}`);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -98,7 +107,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
       // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
-      const response = await fetchWithDelay(`${apiRootTesting}r/${path}`);
+      const response = await fetchThrottle(`${apiRootTesting}r/${path}`);
       // const response = await fetch(`${apiRootTesting}r/${path}`);
       if (!response.ok) {
         throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -116,7 +125,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
 export const getSubredditComments = createAsyncThunk('subreddits/getSubredditComments',
   async ({ permalink, postId }, { rejectWithValue }) => {
     try {
-      const response = await fetchWithDelay(`https://www.reddit.com${permalink}.json`);
+      const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`);
       // const response = await fetch(`https://www.reddit.com${permalink}.json`);
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -181,7 +190,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     // }
     //  --------------------------------then/catch-------------------------------
 
-    return fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`,
+    return fetchThrottle(`https://www.reddit.com/user/${userName}/about.json`,
       // return fetch(`https://www.reddit.com/user/${userName}/about.json`,
       // {'mode': 'no-cors'}
     )
