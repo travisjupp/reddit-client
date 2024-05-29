@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionButton, Button, Dropdown, DropdownButton, Nav } from 'react-bootstrap';
 import { getPopSubredditsList, getSubredditPosts } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,12 +20,13 @@ function Sidebar(props) {
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
 
     const posts = useSelector(selectSubredditPosts);
+    const [postTitle, setPostTitle] = useState('Home');
 
-    const handlePosts = (param) => {
-        if (posts[0]?.data.subreddit !== param){ // check if posts are cached before dispatching fetch (avoid hitting rate-limits)
-            dispatch(getSubredditPosts(param));
+    useEffect(() => {
+        if (posts[0]?.data.subreddit !== postTitle) { // check if posts are cached before dispatching fetch (avoid hitting rate-limits)
+            dispatch(getSubredditPosts(postTitle));
         }
-    }
+    }, [dispatch, postTitle]);
 
     while (status === 'loading') {
         return <StatusLoader />
@@ -63,7 +64,7 @@ function Sidebar(props) {
                                             // href={`${apiRoot}${subredditListItem.url}`}
                                             href={`#`}
                                             onClick={() => {
-                                                handlePosts(subreddit.data.display_name);
+                                                setPostTitle(subreddit.data.display_name);
                                                 return toggleOffcanvas ? toggleOffcanvas() : null;
                                             }}>
                                             <Avatar name={subreddit.data.title} src={subreddit.data.icon_img} />

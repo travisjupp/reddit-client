@@ -35,7 +35,7 @@ function fetchWithDelay(url, delay) {
   });
 }
 
-function fetchThrottle(url, delay = 6000) { // delay must be at least a second or setTimeout will resolve before fetch is done
+function fetchThrottle(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
 
   let numRequests = sessionStorage.getItem('numRequests'); 
   // set rate limit reset time for one minute from now on first request
