@@ -24,17 +24,13 @@ console.log('session storage cleared');
 
 const fetchQueue = [];
 const isFetching = false;
-const t0 = performance.now();
 
 function fetchWithDelay(url, delay) {
   return new Promise((resolve, reject) => {
+    setTimeout(() => {
     fetch(url)
       .then(response => resolve(response))
       .catch(error => reject(error));
-    setTimeout(() => {
-      const t1 = performance.now();
-      // console.log(`Call took ${t1 - t0} milliseconds.`);
-      resolve(null); // Resolve after the delay even if fetch fails
     }, delay);
   });
 }
@@ -54,21 +50,6 @@ function fetchThrottle(url, delay = 6000) { // delay must be at least a second o
   // has the rate-limit reset?
   const isLimitReset = new Date().getTime() > sessionStorage.rateLimitReset;
 
-  // // at 10 requests start adding urls to the fetch queue
-  // if (numRequests >= 10) {
-
-  //   delay += 1000;
-  // }
-  // if (numRequests >= 20) {
-
-  //   delay += 2000;
-  // }
-  // if (numRequests >= 30) {
-  //   delay += 3000;
-  // }
-  // if (isLimitReset) {
-  //   delay = 1000;
-  // }
   console.log('delay', delay, 'numRequests', numRequests);
   // log number of fetch requests
   sessionStorage.setItem('numRequests', Number(numRequests) + 1);
@@ -215,8 +196,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       })
       .catch(
         error => {
-          console.log('error', userName, error);
-          console.log('error.status', error.status, 'error.statusText', error.statusText);
+          console.error('error', userName, error);
           return rejectWithValue(error.message);
           // return ['FailedFetch', 'FailedFetch']
         }
