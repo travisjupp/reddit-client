@@ -14,18 +14,18 @@ const isFetching = false;
 function fetchWithDelay(url, delay) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-    fetch(url)
-      .then(response => resolve(response))
-      .catch(error => reject(error));
+      fetch(url)
+        .then(response => resolve(response))
+        .catch(error => reject(error));
     }, delay);
   });
 }
 
-function fetchThrottle(url, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
-
-  let numRequests = sessionStorage.getItem('numRequests'); 
+function fetchThrottle(url, caller, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
+  let numRequests = Number(sessionStorage.getItem('numRequests'));
   // set rate limit reset time for one minute from now on first request
-  if (numRequests === '1') {
+  console.log('typeof numRequests', typeof numRequests);
+  if (numRequests === 1) {
     sessionStorage.setItem('rateLimitReset', new Date().getTime() + 60000);
     // one minute from now clear numRequests and rateLimitReset
     setTimeout(() => {
@@ -34,11 +34,59 @@ function fetchThrottle(url, delay = 1000) { // delay must be at least a second o
     }, 60000)
   }
   // has the rate-limit reset?
-  const isLimitReset = new Date().getTime() > sessionStorage.rateLimitReset;
+  const isLimitReset = new Date().getTime() > Number(sessionStorage.getItem('rateLimitReset'));
+  console.log('isLimitReset', isLimitReset);
 
-  console.log('delay', delay, 'numRequests', numRequests);
+  if (caller === 'avatar') {
+    console.log(numRequests, 'numRequests')
+
+    switch (true) {
+      case numRequests > 10 && numRequests < 20:
+        {
+          console.log('numRequests>10', numRequests);
+          delay = 2000
+          break;
+        }
+      case numRequests >= 20 && numRequests < 30:
+        {
+          console.log('numRequests>20', numRequests);
+          delay = 3000;
+          break;
+        }
+      case numRequests >= 30 && numRequests < 40:
+        {
+          console.log('numRequests>30', numRequests);
+          delay = 4000;
+          break;
+        }
+      case numRequests >= 40 && numRequests < 50:
+        {
+          console.log('numRequests>40', numRequests);
+          delay = 5000;
+          break;
+        }
+      case numRequests >= 50:
+        {
+          console.log('numRequests>50', numRequests);
+          delay = 6000;
+          break;
+        }
+      default:
+        {
+          console.log('numRequests default', numRequests);
+          delay = 1000;
+          break;
+        }
+    }
+  }
+  // if (caller === 'avatar'){
+  //   if(numRequests > 10) {
+  //     delay = 3000;
+  //   }
+  // }
+  console.log('caller', caller, 'delay', delay, 'numRequests', numRequests);
   // log number of fetch requests
-  sessionStorage.setItem('numRequests', Number(numRequests) + 1);
+  sessionStorage.setItem('numRequests', ++numRequests);
 
   return fetchWithDelay(url, delay)
 }
@@ -158,14 +206,11 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     // }
     //  --------------------------------then/catch-------------------------------
 
-    return fetchThrottle(`https://www.reddit.com/user/${userName}/about.json`,
+    return fetchThrottle(`https://www.reddit.com/user/${userName}/about.json`, `avatar`
       // return fetch(`https://www.reddit.com/user/${userName}/about.json`,
       // {'mode': 'no-cors'}
     )
       .then(response => {
-        console.log('numRequests', sessionStorage.getItem('numRequests'));
-        console.log('response', response);
-        console.log('response.status', response.status);
         if (response.ok) {
           return response.json();
         }
