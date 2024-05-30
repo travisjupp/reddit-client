@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSubredditComments, getSubredditPosts } from '../api/reddit';
 import Post from '../Post/Post';

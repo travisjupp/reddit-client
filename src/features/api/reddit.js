@@ -1,22 +1,8 @@
-
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
-// import * as toolkit from "@reduxjs/toolkit";
-
-// import * as toolkitRaw from '@reduxjs/toolkit';
-// const { createAsyncThunk } = toolkitRaw.default ?? toolkitRaw;
-// const { createAsyncThunk } = toolkitRaw;
-
 import axios from 'axios';
 
-
-// export const apiRoot = 'https://www.reddit.com/';
-// export const apiRootTesting = 'http://localhost:8000/';
 export const apiRootTesting = 'http://192.168.0.5:8000/';
 const subredditsPathName = 'subreddits/1';
-const options = {
-  // mode: "cors"
-}
 
 // reset session storage
 sessionStorage.clear();
@@ -65,6 +51,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
     try {
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch('https://www.reddit.com/subreddits.json');
+      // const response = await fetchThrottle('https://www.reddit.com/subreddits.json');
       // const response = await fetch('http://localhost:8000/subreddits/1');
       const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`);
       // const response = await fetch(`${apiRootTesting}${subredditsPathName}`);
