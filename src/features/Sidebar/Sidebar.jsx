@@ -15,7 +15,9 @@ function Sidebar(props) {
     const status = useSelector(selectPopSubredditsListStatus);
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
     const posts = useSelector(selectSubredditPosts);
+
     const [postTitle, setPostTitle] = useState('Home');
+    
 
     useEffect(() => {
         if (!popSubredditsList.length) { // check if popular subreddits are cached before dispatching fetch (avoid hitting rate-limits)
@@ -23,12 +25,12 @@ function Sidebar(props) {
             dispatch(getPopSubredditsList());
         }
     }, [dispatch, popSubredditsList]);
-
-    useEffect(() => {
+    
+    const handlePosts = (postTitle) => {
         if (posts[0]?.data.subreddit !== postTitle) { // check if posts are cached before dispatching fetch (avoid hitting rate-limits)
             dispatch(getSubredditPosts(postTitle));
         }
-    }, [dispatch, posts, postTitle]);
+    }
 
     while (status === 'loading') {
         return <StatusLoader />
@@ -66,7 +68,8 @@ function Sidebar(props) {
                                             // href={`${apiRoot}${subredditListItem.url}`}
                                             href={`#`}
                                             onClick={() => {
-                                                setPostTitle(subreddit.data.display_name);
+                                                // setPostTitle(subreddit.data.display_name);
+                                                handlePosts(subreddit.data.display_name);
                                                 return toggleOffcanvas ? toggleOffcanvas() : null;
                                             }}>
                                             <Avatar name={subreddit.data.title} src={subreddit.data.icon_img} />
@@ -83,3 +86,4 @@ function Sidebar(props) {
 }
 
 export default Sidebar;
+

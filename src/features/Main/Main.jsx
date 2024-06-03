@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSubredditComments, getSubredditPosts } from '../api/reddit';
 import Post from '../Post/Post';
@@ -26,6 +26,10 @@ function Main(props) {
             dispatch(getSubredditComments(permalink));
         }
     }
+
+    useEffect(() => {
+        dispatch(getSubredditPosts('react'));
+    },[dispatch]);
 
     if (postsStatus === 'loading') {
         return <StatusLoader />

@@ -18,6 +18,7 @@ function App() {
         </Row>
         <Row>
           <Col as='aside' md={3} className='d-none d-md-block position-sticky overflow-y-auto top-0' style={{ height: "100vh", border: "solid 1px red" }}>
+            {/* visible only on md and higher */}
             <Sidebar />
           </Col>
           <Col as='main'>
