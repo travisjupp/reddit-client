@@ -39,51 +39,51 @@ function fetchThrottle(url, caller, delay = 1000) { // delay must be at least a 
 
   if (caller === 'avatar') {
     console.log(numRequests, 'numRequests')
+    delay = 6000;
 
-    switch (true) {
-      case numRequests > 10 && numRequests < 20:
-        {
-          console.log('numRequests>10', numRequests);
-          delay = 2000
-          break;
-        }
-      case numRequests >= 20 && numRequests < 30:
-        {
-          console.log('numRequests>20', numRequests);
-          delay = 3000;
-          break;
-        }
-      case numRequests >= 30 && numRequests < 40:
-        {
-          console.log('numRequests>30', numRequests);
-          delay = 4000;
-          break;
-        }
-      case numRequests >= 40 && numRequests < 50:
-        {
-          console.log('numRequests>40', numRequests);
-          delay = 5000;
-          break;
-        }
-      case numRequests >= 50:
-        {
-          console.log('numRequests>50', numRequests);
-          delay = 6000;
-          break;
-        }
-      default:
-        {
-          console.log('numRequests default', numRequests);
-          delay = 1000;
-          break;
-        }
-    }
+//    switch (true) {
+//      case numRequests > 10 && numRequests < 20:
+//        {
+//          console.log('numRequests>10', numRequests);
+//          delay = 2000
+//          break;
+//        }
+//      case numRequests >= 20 && numRequests < 30:
+//        {
+//          console.log('numRequests>20', numRequests);
+//          delay = 3000;
+//          break;
+//        }
+//      case numRequests >= 30 && numRequests < 40:
+//        {
+//          console.log('numRequests>30', numRequests);
+//          delay = 4000;
+//          break;
+//        }
+//      case numRequests >= 40 && numRequests < 50:
+//        {
+//          console.log('numRequests>40', numRequests);
+//          delay = 5000;
+//          break;
+//        }
+//      case numRequests >= 50:
+//        {
+//          console.log('numRequests>50', numRequests);
+//          delay = 6000;
+//          break;
+//        }
+//      default:
+//        {
+//          console.log('numRequests default', numRequests);
+//          delay = 1000;
+//          break;
+//        }
+//    }
+
+  } else {
+    delay = 2000;
   }
-  // if (caller === 'avatar'){
-  //   if(numRequests > 10) {
-  //     delay = 3000;
-  //   }
-  // }
+
   console.log('caller', caller, 'delay', delay, 'numRequests', numRequests);
   // log number of fetch requests
   sessionStorage.setItem('numRequests', ++numRequests);
@@ -101,7 +101,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
       // const response = await fetch('https://www.reddit.com/subreddits.json');
       // const response = await fetchThrottle('https://www.reddit.com/subreddits.json');
       // const response = await fetch('http://localhost:8000/subreddits/1');
-      const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`);
+      const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
       // const response = await fetch(`${apiRootTesting}${subredditsPathName}`);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -123,7 +123,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
       // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
-      const response = await fetchThrottle(`${apiRootTesting}r/${path}`);
+      const response = await fetchThrottle(`${apiRootTesting}r/${path}`, 'posts');
       // const response = await fetch(`${apiRootTesting}r/${path}`);
       if (!response.ok) {
         throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -141,7 +141,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
 export const getSubredditComments = createAsyncThunk('subreddits/getSubredditComments',
   async ({ permalink, postId }, { rejectWithValue }) => {
     try {
-      const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`);
+      const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
       // const response = await fetch(`https://www.reddit.com${permalink}.json`);
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -206,7 +206,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
     // }
     //  --------------------------------then/catch-------------------------------
 
-    return fetchThrottle(`https://www.reddit.com/user/${userName}/about.json`, `avatar`
+    return fetchThrottle(`https://www.reddit.com/user/${userName}/about.json`, 'avatar'
       // return fetch(`https://www.reddit.com/user/${userName}/about.json`,
       // {'mode': 'no-cors'}
     )
