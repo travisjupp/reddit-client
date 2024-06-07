@@ -22,12 +22,14 @@ function Header(props) {
             searchValue: ""
         }
     );
+
     const handleChange = (e) => {
         const key = e.target.id;
         setData(() => {
             return { [key]: e.target.value };
         })
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(getSubredditPosts(data.searchValue));

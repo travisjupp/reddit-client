@@ -9,7 +9,7 @@ sessionStorage.clear();
 console.log('session storage cleared');
 
 const fetchQueue = [];
-const isFetching = false;
+let isFetching = false;
 
 function fetchWithDelay(url, delay) {
   return new Promise((resolve, reject) => {
@@ -21,10 +21,44 @@ function fetchWithDelay(url, delay) {
   });
 }
 
+function processQueue() {
+  if (!isFetching && fetchQueue.length > 0) {
+    // isFetching = true;
+    const {url, delay, caller} = fetchQueue.shift();
+    return fetchWithDelay(url, delay)
+      .then(response => {
+        if (response) {
+          const json = response.json();
+          // json.then(r => {
+          //   console.log('r =>', r);
+          // });
+          return json; 
+        } else {
+          // handle timeout
+          console.log('else');
+        }
+        isFetching = false;
+        processQueue();
+      })
+      // .catch(error => {
+      //   console.log('Error: ', error.message);
+      //   // handle fetch error
+      //   isFetching = false;
+      //   processQueue();
+      // });
+  }
+}
+
+function handleQueue(request) {
+  fetchQueue.push(request);
+  return processQueue();
+}
+
+// console.log('hq =>', handleQueue({url: 'http://192.168.0.5:8000/subreddits/1', delay: 2000, caller: 'pops'}).then(r=>console.log('r =>', r)));
+
 function fetchThrottle(url, caller, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
   let numRequests = Number(sessionStorage.getItem('numRequests'));
   // set rate limit reset time for one minute from now on first request
-  console.log('typeof numRequests', typeof numRequests);
   if (numRequests === 1) {
     sessionStorage.setItem('rateLimitReset', new Date().getTime() + 60000);
     // one minute from now clear numRequests and rateLimitReset
@@ -100,8 +134,9 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch('https://www.reddit.com/subreddits.json');
       // const response = await fetchThrottle('https://www.reddit.com/subreddits.json');
-      // const response = await fetch('http://localhost:8000/subreddits/1');
-      const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
+      // const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
+      const response = await handleQueue({url: `${apiRootTesting}${subredditsPathName}`, delay: 2000, caller: 'pops'});
+      console.log('res =>', response);
       // const response = await fetch(`${apiRootTesting}${subredditsPathName}`);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -174,7 +209,7 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
   }
 )
 
-// Fetch avatars from user profiles 
+// Fetch avatars from user profiles
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   async (userName, { rejectWithValue }) => {
     //  --------------------------------try/catch-------------------------------

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Accordion, Nav } from 'react-bootstrap';
 import { getPopSubredditsList, getSubredditPosts } from '../api/reddit';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,15 +10,11 @@ import { selectSubredditPosts } from '../../store/subredditPostsSlice';
 function Sidebar(props) {
     const { toggleOffcanvas } = props;
     const dispatch = useDispatch();
-
     const popSubredditsList = useSelector(selectPopSubredditsList);
     const status = useSelector(selectPopSubredditsListStatus);
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
     const posts = useSelector(selectSubredditPosts);
-
-    const [postTitle, setPostTitle] = useState('Home');
     
-
     useEffect(() => {
         if (!popSubredditsList.length) { // check if popular subreddits are cached before dispatching fetch (avoid hitting rate-limits)
             console.log('dispatching getPopSubredditsList');
