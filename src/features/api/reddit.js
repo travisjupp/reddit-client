@@ -28,24 +28,24 @@ function processQueue() {
     return fetchWithDelay(url, delay)
       .then(response => {
         if (response) {
-          const json = response.json();
+          // const json = response.json();
           // json.then(r => {
           //   console.log('r =>', r);
           // });
-          return json; 
+          return response; 
         } else {
           // handle timeout
           console.log('else');
         }
-        isFetching = false;
+        // isFetching = false;
         processQueue();
       })
-      // .catch(error => {
-      //   console.log('Error: ', error.message);
-      //   // handle fetch error
-      //   isFetching = false;
-      //   processQueue();
-      // });
+      .catch(error => {
+        console.log('Error: ', error.message);
+        // handle fetch error
+        // isFetching = false;
+        processQueue();
+      });
   }
 }
 
@@ -54,7 +54,11 @@ function handleQueue(request) {
   return processQueue();
 }
 
-// console.log('hq =>', handleQueue({url: 'http://192.168.0.5:8000/subreddits/1', delay: 2000, caller: 'pops'}).then(r=>console.log('r =>', r)));
+handleQueue({url: 'http://192.168.0.5:8000/subreddits/1', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
+
+handleQueue({url: 'http://192.168.0.5:8000/r/react', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
+
+handleQueue({url: 'http://192.168.0.5:8000/user', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
 
 function fetchThrottle(url, caller, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
   let numRequests = Number(sessionStorage.getItem('numRequests'));
