@@ -17,7 +17,16 @@ const initialState = {
 const subredditPostsSlice = createSlice({
     name: 'subredditPosts',
     initialState,
-    reducers: {},
+    reducers: {
+        filterPosts(state, action) {
+            const query = action.payload;
+            console.log('query =>', query);
+            const filteredPosts = state.posts.filter(post =>
+                post.data.title.toLowerCase().includes(query.toLowerCase()));
+            console.log('filteredPosts =>', filteredPosts);
+            state.posts = filteredPosts;
+        }
+    },
     extraReducers: builder => {
         builder
             .addCase(getSubredditPosts.pending, (state, action) => {
@@ -47,7 +56,7 @@ const subredditPostsSlice = createSlice({
             })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
                 state.avatarsStatus = 'succeeded';
-                console.log('action.payload',action.payload);
+                // console.log('action.payload',action.payload);
                 const key = action.payload[0];
                 const val = action.payload[1];
                 state.avatars[key] = val;
@@ -66,6 +75,8 @@ const subredditPostsSlice = createSlice({
             })
     }
 })
+
+export const {filterPosts} = subredditPostsSlice.actions;
 
 export default subredditPostsSlice.reducer;
 

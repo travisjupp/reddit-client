@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Form, Nav, Navbar, Col, Offcanvas, InputGroup } from 'react-bootstrap';
+import { Button, Form, Nav, Navbar, Col, Offcanvas, InputGroup, Badge } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { getSubredditPosts } from '../api/reddit';
-import { BsSearch } from "react-icons/bs";
+import { BsFillFilterCircleFill, BsSearch } from "react-icons/bs";
 import Sidebar from '../Sidebar/Sidebar';
+import {filterPosts} from '../../store/subredditPostsSlice';
 
 const nbToggle = {
     border: 'none',
@@ -32,7 +33,7 @@ function Header(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(getSubredditPosts(data.searchValue));
+        dispatch(filterPosts(data.searchValue));
         return show ? toggleOffcanvas() : null;
     };
 
@@ -76,7 +77,7 @@ function Header(props) {
                                         id="searchValue"
                                         value={data.searchValue}
                                         onChange={handleChange}
-                                        placeholder="placeholder"
+                                        placeholder="Filter Posts 😀"
                                         className=""
                                         aria-labelledby="searchForm"
 
@@ -89,7 +90,13 @@ function Header(props) {
                                         // href="#" 
                                         onClick={handleSubmit}
                                         variant="secondary"
-                                        aria-labelledby='searchForm'><BsSearch aria-labelledby='searchForm' /></Button>
+                                        aria-labelledby='searchForm'>
+                                    {/* <BsSearch aria-labelledby='searchForm' /> */}
+                                    <BsFillFilterCircleFill aria-labelledby='searchForm' />
+                                        <Badge pill bg="danger"
+                                            style={{position: "absolute", top: 9, right: 9, fontSize: 1, width: 8, height: 8}}
+                                        >&nbsp;</Badge>
+                                    </Button>
                                 </InputGroup>
                             </Form>
                             {/* .d-none .d-md-block .d-xl-none .d-xxl-none will hide the element for all screen sizes except on medium and large devices. */}

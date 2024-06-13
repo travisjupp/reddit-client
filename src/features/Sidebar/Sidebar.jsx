@@ -14,7 +14,7 @@ function Sidebar(props) {
     const status = useSelector(selectPopSubredditsListStatus);
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
     const posts = useSelector(selectSubredditPosts);
-    
+
     useEffect(() => {
         if (!popSubredditsList.length) { // check if popular subreddits are cached before dispatching fetch (avoid hitting rate-limits)
             console.log('dispatching getPopSubredditsList');
