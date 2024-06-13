@@ -12,8 +12,7 @@ Start the server with `npm start` and visit http://localhost:3000/
 
 ## Wireframes
 
-Wireframing bootstrap components [Figma](https://www.figma.com/file/L8qdk7mzh4GnUN0HOkTpii/reddit-client?type=design&node-id=0%3A1&mode=design&t=uZ60SM6BRez8vcfv-1)
-
+Wireframing bootstrap components [Figma](https://www.figma.com/proto/L8qdk7mzh4GnUN0HOkTpii/reddit-client?type=design&node-id=364-659&t=hUruYyVDPgVVrY0L-1&scaling=min-zoom&page-id=0%3A1)
 
 ## Technologies used
 
@@ -27,10 +26,12 @@ Wireframing bootstrap components [Figma](https://www.figma.com/file/L8qdk7mzh4Gn
 - Jest
 - DiceBear/identicon
 - json-server
+- Rehype raw
+- He
 
-## Features
+<!-- ## Features -->
 
 
 
-## Future work
+<!-- ## Future work -->
 
