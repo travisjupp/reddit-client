@@ -26,39 +26,42 @@ function processQueue() {
     // isFetching = true;
     const {url, delay, caller} = fetchQueue.shift();
     return fetchWithDelay(url, delay)
-      .then(response => {
-        if (response) {
-          // const json = response.json();
-          // json.then(r => {
-          //   console.log('r =>', r);
-          // });
-          return response; 
-        } else {
-          // handle timeout
-          console.log('else');
-        }
-        // isFetching = false;
-        processQueue();
-      })
-      .catch(error => {
-        console.log('Error: ', error.message);
-        // handle fetch error
-        // isFetching = false;
-        processQueue();
-      });
+      // .then(response => {
+      //   if (response) {
+      //     // const json = response.json();
+      //     // json.then(r => {
+      //     //   console.log('r =>', r);
+      //     // });
+      //     // isFetching = false;
+      //     return response; 
+      //   } else {
+      //     // handle timeout
+      //     console.log('else');
+      //   }
+      //   // isFetching = false;
+      //   processQueue();
+      // })
+      // .catch(error => {
+      //   console.log('Error: ', error.message);
+      //   // handle fetch error
+      //   // isFetching = false;
+      //   processQueue();
+      // });
   }
 }
 
 function handleQueue(request) {
+  console.log('now pushing request', request);
   fetchQueue.push(request);
   return processQueue();
 }
 
-handleQueue({url: 'http://192.168.0.5:8000/subreddits/1', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
 
-handleQueue({url: 'http://192.168.0.5:8000/r/react', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
+// handleQueue({url: 'http://192.168.0.5:8000/subreddits/1', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
 
-handleQueue({url: 'http://192.168.0.5:8000/user', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
+// handleQueue({url: 'http://192.168.0.5:8000/r/react', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
+
+// handleQueue({url: 'http://192.168.0.5:8000/user', delay: 20000, caller: 'pops'}).then(r=>console.log('r =>', r));
 
 function fetchThrottle(url, caller, delay = 1000) { // delay must be at least a second or setTimeout will resolve before fetch is done
   let numRequests = Number(sessionStorage.getItem('numRequests'));
@@ -73,7 +76,7 @@ function fetchThrottle(url, caller, delay = 1000) { // delay must be at least a 
   }
   // has the rate-limit reset?
   const isLimitReset = new Date().getTime() > Number(sessionStorage.getItem('rateLimitReset'));
-  console.log('isLimitReset', isLimitReset);
+  console.log({ isLimitReset });
 
   if (caller === 'avatar') {
     console.log(numRequests, 'numRequests')
@@ -267,7 +270,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       })
       .catch(
         error => {
-          console.error('error', userName, error);
+          // console.error('error', userName, error);
           return rejectWithValue(error.message);
           // return ['FailedFetch', 'FailedFetch']
         }

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 // import * as toolkit from "@reduxjs/toolkit";
 import { getSubredditPosts, getUserAvatar } from "../features/api/reddit.js";
 // import * as toolkitRaw from '@reduxjs/toolkit';
@@ -9,6 +9,8 @@ const initialState = {
     postsStatus: 'uninitialized',
     avatarsStatus: 'uninitialized',
     posts: [],
+    isFiltered: false,
+    postsTemp: [],
     avatars: {},
     postsErrorState: null,
     avatarsErrorState: null,
@@ -21,10 +23,18 @@ const subredditPostsSlice = createSlice({
         filterPosts(state, action) {
             const query = action.payload;
             console.log('query =>', query);
-            const filteredPosts = state.posts.filter(post =>
+            const filteredPosts = state.postsTemp.filter(post =>
                 post.data.title.toLowerCase().includes(query.toLowerCase()));
             console.log('filteredPosts =>', filteredPosts);
-            state.posts = filteredPosts;
+            state.isFiltered = true; // flag isFiltered on
+            // state.postsTemp = state.posts; // move posts to temp
+            state.posts = filteredPosts; // show filtered posts
+        },
+        unfilterPosts(state, action) {
+            const query = action.payload;
+            state.isFiltered = false;
+            state.posts = state.postsTemp;
+            // state.postsTemp = [];
         }
     },
     extraReducers: builder => {
@@ -35,6 +45,7 @@ const subredditPostsSlice = createSlice({
             .addCase(getSubredditPosts.fulfilled, (state, action) => {
                 state.postsStatus = 'succeeded';
                 state.posts = action.payload;
+                state.postsTemp = state.posts;
             })
             .addCase(getSubredditPosts.rejected, (state, action) => {
                 state.postsStatus = 'failed';
@@ -76,7 +87,7 @@ const subredditPostsSlice = createSlice({
     }
 })
 
-export const {filterPosts} = subredditPostsSlice.actions;
+export const {filterPosts, unfilterPosts} = subredditPostsSlice.actions;
 
 export default subredditPostsSlice.reducer;
 
@@ -91,3 +102,5 @@ export const selectSubredditPostsError = state => state.subredditPosts.postsErro
 export const selectSubredditAvatarsError = state => state.subredditPosts.avatarsErrorState;
 
 export const selectUserAvatars = state => state.subredditPosts.avatars;
+
+export const selectIsPostsFiltered = state => state.subredditPosts.isFiltered;

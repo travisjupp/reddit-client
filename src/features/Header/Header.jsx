@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Form, Nav, Navbar, Col, Offcanvas, InputGroup, Badge } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { getSubredditPosts } from '../api/reddit';
-import { BsFillFilterCircleFill, BsSearch } from "react-icons/bs";
+import React, {useState} from 'react';
+import {Badge, Button, Col, Form, InputGroup, Nav, Navbar, Offcanvas} from 'react-bootstrap';
+import {BsFillFilterCircleFill, BsSearch} from "react-icons/bs";
+import {useDispatch, useSelector} from 'react-redux';
+import {filterPosts, selectIsPostsFiltered, unfilterPosts} from '../../store/subredditPostsSlice';
 import Sidebar from '../Sidebar/Sidebar';
-import {filterPosts} from '../../store/subredditPostsSlice';
+import {getSubredditPosts} from '../api/reddit';
 
 const nbToggle = {
     border: 'none',
@@ -23,17 +23,18 @@ function Header(props) {
             searchValue: ""
         }
     );
-
+    const isPostsFiltered = useSelector(selectIsPostsFiltered);
     const handleChange = (e) => {
         const key = e.target.id;
-        setData(() => {
-            return { [key]: e.target.value };
-        })
+        const data = { [key]: e.target.value };
+        setData(() => data);
+        dispatch(filterPosts(data.searchValue));
+        if (data.searchValue === "") dispatch(unfilterPosts());
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(filterPosts(data.searchValue));
+        // dispatch(filterPosts(data.searchValue));
         return show ? toggleOffcanvas() : null;
     };
 
@@ -93,9 +94,9 @@ function Header(props) {
                                         aria-labelledby='searchForm'>
                                     {/* <BsSearch aria-labelledby='searchForm' /> */}
                                     <BsFillFilterCircleFill aria-labelledby='searchForm' />
-                                        <Badge pill bg="danger"
+                                        { isPostsFiltered && <Badge pill bg="danger"
                                             style={{position: "absolute", top: 9, right: 9, fontSize: 1, width: 8, height: 8}}
-                                        >&nbsp;</Badge>
+                                        >&nbsp;</Badge> }
                                     </Button>
                                 </InputGroup>
                             </Form>

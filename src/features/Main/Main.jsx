@@ -39,7 +39,7 @@ function Main(props) {
 
         return (
             <>
-                <h1>r/{posts[0].data.subreddit}</h1>
+                <h1>r/{posts[0]?.data.subreddit}</h1>
 
                 {posts.map(post => {
 
