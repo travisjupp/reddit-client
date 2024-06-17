@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserAvatar } from '../api/reddit';
-import { selectUserAvatars } from '../../store/subredditPostsSlice';
-import Avatar from "../Avatar/Avatar";
-import Comment from "../Comment/Comment"
-import Markdown from 'react-markdown';
 import Holder from 'holderjs';
-import { BsChatQuote, BsChatQuoteFill, BsArrowUpCircle, BsArrowUpCircleFill, BsArrowDownCircle, BsArrowDownCircleFill, BsShare, BsShareFill } from "react-icons/bs";
-import { Button, Container, Row, Col, Card, Badge, Stack, Collapse, Fade, Placeholder } from 'react-bootstrap';
-import { selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsStatus, selectSubredditCommentsPostId } from '../../store/subredditCommentsSlice.js';
-import validateAvatarImgURL from '../../utils/validateImgURL.js';
+import React, {useEffect, useRef, useState} from 'react';
+import {Badge, Button, Card, Col, Collapse, Container, Fade, Placeholder, Row, Stack} from 'react-bootstrap';
+import {BsArrowDownCircle, BsArrowDownCircleFill, BsArrowUpCircle, BsArrowUpCircleFill, BsChatQuote, BsChatQuoteFill, BsShare, BsShareFill} from "react-icons/bs";
+import Markdown from 'react-markdown';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsPostId, selectSubredditCommentsStatus} from '../../store/subredditCommentsSlice.js';
+import {selectUserAvatars} from '../../store/subredditPostsSlice';
 import formatPostText from '../../utils/formatPostText.js';
+import validateAvatarImgURL from '../../utils/validateImgURL.js';
+import Avatar from "../Avatar/Avatar";
+import Comment from "../Comment/Comment";
+import {getUserAvatar} from '../api/reddit';
 
 import rehypeRaw from 'rehype-raw';
 import Toaster from '../../components/Toast/Toast.jsx';
-import { getSubredditComments } from '../api/reddit';
+import {getSubredditComments} from '../api/reddit';
 
 function Post(props) {
   const { postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText,
