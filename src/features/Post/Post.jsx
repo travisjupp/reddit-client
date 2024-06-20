@@ -38,7 +38,7 @@ function Post(props) {
   // get user avatar
   useEffect(() => {
     if (!avatars[postAuthor] && postAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
-      console.log('<Post>dispatching for ', postAuthor);
+      // console.log('<Post>dispatching for ', postAuthor);
       dispatch(getUserAvatar(postAuthor));
     }
   }, [dispatch, postAuthor]);
