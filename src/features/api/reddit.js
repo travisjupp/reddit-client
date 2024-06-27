@@ -147,7 +147,10 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       return profile.data.is_suspended ? [postAuthor , 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
         [postAuthor , profile.data.icon_img]
     } catch (e) {
-      console.error('Avatar Error:',postAuthor , e.message, e);
+      console.error('Avatar Error:', postAuthor, e.message);
+      let supposedNonSerialError = JSON.stringify(e);
+      console.log('JSON.parse(supposedNonSerialError)',JSON.parse(supposedNonSerialError));
+      console.log('JSON.stringify(e)', postAuthor, JSON.stringify(e), '\n e',e);
       return rejectWithValue(e);
     }
   }
