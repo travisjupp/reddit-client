@@ -7,8 +7,9 @@ const subredditsPathName = 'subreddits/1';
 sessionStorage.clear();
 console.log('session storage cleared');
 
-async function fetchThrottle(url, caller) { 
+async function fetchThrottle(url, caller, signal) { 
   // We mainly throttle requests for user avatars since this hits the endpoint the most frequently. Since user avatars aren't integral (any avatars not loaded with be shimmed with an identicon), a _pseudo_ fetch-queue delays each request. Each call to `fetchThrottle` from `getUserAvatar` adds its delay to the `delayTime` which is ultimately cleared out with `rateLimitReset` and any other session storage items. 
+
   let delayTime = Number(sessionStorage.getItem('delayTime'));
   let delay = (ms) => new Promise(res => setTimeout(res, ms));
   let numRequests = Number(sessionStorage.getItem('numRequests'));
@@ -28,10 +29,10 @@ async function fetchThrottle(url, caller) {
   sessionStorage.setItem('numRequests', ++numRequests);
 
   if (caller === 'avatar') {
-    sessionStorage.setItem('delayTime', delayTime+=6000);
+    sessionStorage.setItem('delayTime', delayTime+=1000);
     console.log('delayTime',delayTime);
     await delay(delayTime);
-    return fetch(url);
+    return fetch(url, {signal});
   } else {
     return fetch(url);
   }
@@ -119,11 +120,11 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
 
 // Fetch avatars from user profiles
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
-  async (userName, { rejectWithValue }) => {
+  async (postAuthor, { rejectWithValue, signal }) => {
     //  --------------------------------try/catch-------------------------------
     try {
       // avoid (re)dispatching deleted/undefined profiles
-      if (userName === '[deleted]' || userName === undefined) {
+      if (postAuthor === '[deleted]' || postAuthor === undefined) {
         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
       }
       // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
@@ -132,7 +133,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // const response = await fetch(`http://httpstat.us/429`);
       // const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
       // const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
-      const response = await fetchThrottle(`https://www.reddit.com/user/${userName}/about.json`, 'avatar');
+      const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor }/about.json`, 'avatar', signal);
 
       console.log('response', response);
       if (!response?.ok) {
@@ -143,11 +144,11 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
 
       console.log('profile',profile);
       // avoid (re)dispatching suspended profiles
-      return profile.data.is_suspended ? [userName, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
-        [userName, profile.data.icon_img]
+      return profile.data.is_suspended ? [postAuthor , 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+        [postAuthor , profile.data.icon_img]
     } catch (e) {
-      console.error('Avatar Error:', userName, e.message);
-      return rejectWithValue(e.message);
+      console.error('Avatar Error:',postAuthor , e.message, e);
+      return rejectWithValue(e);
     }
   }
 );

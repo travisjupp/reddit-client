@@ -33,14 +33,18 @@ function Post(props) {
   }, []);
 
   const dispatch = useDispatch();
-
   const avatars = useSelector(selectUserAvatars);
+
   // get user avatar
   useEffect(() => {
     if (!avatars[postAuthor] && postAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
-      // console.log('<Post>dispatching for ', postAuthor);
-      dispatch(getUserAvatar(postAuthor));
+      console.log('<Post>dispatching for ', postAuthor);
+    const promise = dispatch(getUserAvatar(postAuthor));
+    return () => {
+      console.log('<Post> cleanup func');
+      promise.abort();
     }
+    };
   }, [dispatch, postAuthor]);
 
   const comments = useSelector(selectSubredditComments);
