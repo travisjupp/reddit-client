@@ -1,7 +1,11 @@
 # reddit-client
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/37d90ab3-7dde-42a5-97b0-686dea5b18fd/deploy-status)](https://app.netlify.com/sites/react-reddit-client/deploys)
+
 ## Description
-Reddit client built with React/Redux using the [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON) 
+Reddit client built with React/Redux using the [Reddit JSON API](https://github.com/reddit-archive/reddit/wiki/JSON)
+
+Live site: https://react-reddit-client.netlify.app/
 
 ## Setup
 
