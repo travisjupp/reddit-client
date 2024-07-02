@@ -83,7 +83,8 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
 
 // Fetch subreddit post comments
 export const getSubredditComments = createAsyncThunk('subreddits/getSubredditComments',
-  async ({ permalink, postId }, { rejectWithValue }) => {
+  async ({ permalink }, { rejectWithValue }) => {
+    console.log('permalink',permalink);
     try {
       const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
       // const response = await fetch(`https://www.reddit.com${permalink}.json`);
@@ -148,10 +149,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
         [postAuthor , profile.data.icon_img]
     } catch (e) {
       console.error('Avatar Error:', postAuthor, e.message);
-      let supposedNonSerialError = JSON.stringify(e);
-      console.log('JSON.parse(supposedNonSerialError)',JSON.parse(supposedNonSerialError));
-      console.log('JSON.stringify(e)', postAuthor, JSON.stringify(e), '\n e',e);
-      return rejectWithValue(e);
+      return rejectWithValue(e.message);
     }
   }
 );
