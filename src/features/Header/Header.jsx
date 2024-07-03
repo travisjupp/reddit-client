@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {Badge, Button, Col, Form, InputGroup, Nav, Navbar, Offcanvas} from 'react-bootstrap';
-import {BsFillFilterCircleFill, BsSearch} from "react-icons/bs";
+import {BsFillFilterCircleFill} from "react-icons/bs";
 import {useDispatch, useSelector} from 'react-redux';
 import {filterPosts, selectIsPostsFiltered, unfilterPosts} from '../../store/subredditPostsSlice';
 import Sidebar from '../Sidebar/Sidebar';
-import {getSubredditPosts} from '../api/reddit';
 
 const nbToggle = {
     border: 'none',
 };
 
-function Header(props) {
+function Header() {
     const [show, setShow] = useState(false);
     const toggleOffcanvas = () => {
         setShow(!show);
