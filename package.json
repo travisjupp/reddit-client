@@ -10,7 +10,7 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "he": "^1.2.0",
-    "moment": "^2.30.1",
+    "luxon": "^3.4.4",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",

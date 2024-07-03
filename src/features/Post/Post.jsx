@@ -1,5 +1,5 @@
 import Holder from 'holderjs';
-import moment from 'moment';
+import {DateTime} from 'luxon';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Badge, Button, Card, Col, Collapse, Container, Row, Stack} from 'react-bootstrap';
 import {BsArrowDownCircle, BsArrowUpCircle, BsArrowUpCircleFill, BsChatQuote, BsShare} from "react-icons/bs";
@@ -17,10 +17,7 @@ import rehypeRaw from 'rehype-raw';
 import Toaster from '../../components/Toast/Toast.jsx';
 
 function Post(props) {
-  const { postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText,
-    postPermalink, score, numberOfComments, handleComments,
-    collapseStates, setCollapseStates,
-  } = props;
+  const {postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   const [hover, setHover] = useState(false);
   const onHover = () => setHover(true);
@@ -94,7 +91,7 @@ function Post(props) {
               // setShow(false);
             }}
           >
-            <div id={`comments-wrapper-${postId}`} style={{ border: '4px double green' }}>
+            <div id={`comments-wrapper-${postId}`} style={{border: '4px double green'}}>
               {comments.map(comment => {
                 return <Comment
                   key={comment.data.id}
@@ -159,20 +156,13 @@ function Post(props) {
                 <Col xs sm={5} xl={7}>
 
                   {/* MOBILE DATE show on xs and sm screen size only */}
-                  <div className="d-md-none date small" style={{ border: 'solid 1px red' }}>
-                    {/* {new Date(postDate * 1000).toString()} */}
-                    {moment.unix(postDate).fromNow()}
-                  </div>
+                  <div className="d-md-none date small" style={{border: 'solid 1px red'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
                   
                   {/* DESKTOP DATE show on md and lg screen size only */ }
-                  <div className="d-none d-md-block d-xl-none d-xxl-none date" style={{ border: 'solid 1px red' }}>
-                  {moment.unix(postDate).fromNow()}
-                  </div>
+                  <div className="d-none d-md-block d-xl-none d-xxl-none date small" style={{border: 'solid 1px red'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
 
-                  {/* DESKTOP DATE show on xl and xxl screen size only */ }
-                  <div className="d-none d-xl-block date" style={{ border: 'solid 1px blue' }}>
-                  {moment.unix(postDate).fromNow()}
-                  </div>
+                  {/* DESKTOP DATE show on xl and xxl screen size only */}
+                  <div className="d-none d-xl-block date small" style={{border: 'solid 1px blue'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
 
                   {/* DESKTOP POSTTEXT show on md and lg screen size only */}
                   <Markdown className="d-none d-md-block d-xl-none d-xxl-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>
