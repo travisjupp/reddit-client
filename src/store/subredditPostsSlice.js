@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 // import * as toolkit from "@reduxjs/toolkit";
 import { getSubredditPosts, getUserAvatar } from "../features/api/reddit.js";
 // import * as toolkitRaw from '@reduxjs/toolkit';
@@ -22,24 +22,19 @@ const subredditPostsSlice = createSlice({
     reducers: {
         filterPosts(state, action) {
             const query = action.payload;
-            console.log('query =>', query);
             const filteredPosts = state.postsTemp.filter(post =>
                 post.data.title.toLowerCase().includes(query.toLowerCase()));
-            console.log('filteredPosts =>', filteredPosts);
             state.isFiltered = true; // flag isFiltered on
-            // state.postsTemp = state.posts; // move posts to temp
             state.posts = filteredPosts; // show filtered posts
         },
-        unfilterPosts(state, action) {
-            const query = action.payload;
+        unfilterPosts(state) {
             state.isFiltered = false;
             state.posts = state.postsTemp;
-            // state.postsTemp = [];
         }
     },
     extraReducers: builder => {
         builder
-            .addCase(getSubredditPosts.pending, (state, action) => {
+            .addCase(getSubredditPosts.pending, (state) => {
                 state.postsStatus = 'loading';
             })
             .addCase(getSubredditPosts.fulfilled, (state, action) => {
@@ -54,13 +49,12 @@ const subredditPostsSlice = createSlice({
                 const { error, meta, payload, type } = action;
                 state.postsErrorState = { message: error.message, meta, payload, type };
             })
-            .addCase(getUserAvatar.pending, (state, action) => {
+            .addCase(getUserAvatar.pending, (state) => {
                 state.avatarsStatus = 'loading';
 
             })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
                 state.avatarsStatus = 'succeeded';
-                console.log('action.payload',action.payload);
                 const key = action.payload[0];
                 const val = action.payload[1];
                 state.avatars[key] = val;
@@ -69,8 +63,6 @@ const subredditPostsSlice = createSlice({
                 state.avatarsStatus = 'failed';
                 // unpack error props
                 const { error, meta, payload, type } = action;
-                console.log('payload',payload);
-                console.log('action', action);
                 state.avatarsErrorState = { message: error.message, meta, payload, type };
             })
     }

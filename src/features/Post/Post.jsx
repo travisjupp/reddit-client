@@ -1,7 +1,8 @@
 import Holder from 'holderjs';
-import React, {useEffect, useRef, useState} from 'react';
-import {Badge, Button, Card, Col, Collapse, Container, Fade, Placeholder, Row, Stack} from 'react-bootstrap';
-import {BsArrowDownCircle, BsArrowDownCircleFill, BsArrowUpCircle, BsArrowUpCircleFill, BsChatQuote, BsChatQuoteFill, BsShare, BsShareFill} from "react-icons/bs";
+import moment from 'moment';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Badge, Button, Card, Col, Collapse, Container, Row, Stack} from 'react-bootstrap';
+import {BsArrowDownCircle, BsArrowUpCircle, BsArrowUpCircleFill, BsChatQuote, BsShare} from "react-icons/bs";
 import Markdown from 'react-markdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsPostId, selectSubredditCommentsStatus} from '../../store/subredditCommentsSlice.js';
@@ -14,7 +15,6 @@ import {getUserAvatar} from '../api/reddit';
 
 import rehypeRaw from 'rehype-raw';
 import Toaster from '../../components/Toast/Toast.jsx';
-import {getSubredditComments} from '../api/reddit';
 
 function Post(props) {
   const { postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText,
@@ -35,17 +35,29 @@ function Post(props) {
   const dispatch = useDispatch();
   const avatars = useSelector(selectUserAvatars);
 
+  // const getAvatar = useCallback(() => {
+  //   if (!avatars[postAuthor] && postAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
+  //     return dispatch(getUserAvatar(postAuthor));
+  //   }
+  // }, [avatars, postAuthor, dispatch]);
+
+  // useEffect(() => {
+  //   const promise = getAvatar();
+  //   return () => {
+  //     console.log('unmounted maybe? =>', postId)
+  //     promise.abort();
+  //   }
+  // }, [getAvatar])
+
   // get user avatar
   useEffect(() => {
     if (!avatars[postAuthor] && postAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
-      console.log('<Post>dispatching for ', postAuthor);
     const promise = dispatch(getUserAvatar(postAuthor));
     return () => {
-      console.log('<Post> cleanup func');
-      promise.abort();
+      promise.abort('Aborted from Post');
     }
     };
-  }, [dispatch, postAuthor]);
+  }, []);
 
   const comments = useSelector(selectSubredditComments);
   const commentsStatus = useSelector(selectSubredditCommentsStatus);
@@ -147,7 +159,20 @@ function Post(props) {
                 <Col xs sm={5} xl={7}>
 
                   {/* MOBILE DATE show on xs and sm screen size only */}
-                  <div className="d-md-none date" style={{ border: 'solid 1px red' }}>{new Date(postDate * 1000).toString()}</div>
+                  <div className="d-md-none date small" style={{ border: 'solid 1px red' }}>
+                    {/* {new Date(postDate * 1000).toString()} */}
+                    {moment.unix(postDate).fromNow()}
+                  </div>
+                  
+                  {/* DESKTOP DATE show on md and lg screen size only */ }
+                  <div className="d-none d-md-block d-xl-none d-xxl-none date" style={{ border: 'solid 1px red' }}>
+                  {moment.unix(postDate).fromNow()}
+                  </div>
+
+                  {/* DESKTOP DATE show on xl and xxl screen size only */ }
+                  <div className="d-none d-xl-block date" style={{ border: 'solid 1px blue' }}>
+                  {moment.unix(postDate).fromNow()}
+                  </div>
 
                   {/* DESKTOP POSTTEXT show on md and lg screen size only */}
                   <Markdown className="d-none d-md-block d-xl-none d-xxl-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>

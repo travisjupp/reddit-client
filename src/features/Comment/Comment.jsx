@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Stack, Collapse, Placeholder, Fade } from "react-bootstrap";
+import { Card, Stack, Placeholder} from "react-bootstrap";
 import Avatar from "../Avatar/Avatar";
-import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import { selectUserAvatars } from "../../store/subredditPostsSlice";
 import { getUserAvatar } from "../api/reddit";
 import validateAvatarImgURL from '../../utils/validateImgURL.js';
@@ -20,7 +19,6 @@ function Comment(props) {
         commentDate,
         commentText,
         commentTextHtml,
-        show,
     } = props;
 
     const dispatch = useDispatch();
@@ -31,7 +29,7 @@ function Comment(props) {
             console.log('<Comment>dispatching for ', commentAuthor);
             dispatch(getUserAvatar(commentAuthor));
         }
-    }, [dispatch, commentAuthor])
+    }, [dispatch, commentAuthor, avatars])
 
     const commentsStatus = useSelector(selectSubredditCommentsStatus);
 

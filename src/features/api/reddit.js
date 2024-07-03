@@ -30,7 +30,7 @@ async function fetchThrottle(url, caller, signal) {
 
   if (caller === 'avatar') {
     sessionStorage.setItem('delayTime', delayTime+=1000);
-    console.log('delayTime',delayTime);
+    // console.log('delayTime',delayTime);
     await delay(delayTime);
     return fetch(url, {signal});
   } else {
@@ -65,7 +65,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
   async (path, { rejectWithValue }) => {
     try {
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
-      // const response = await fetch(`https://www.reddit.com/r/${path}.json`);
+      // const response = await fetchThrottle(`https://www.reddit.com/r/${path}.json`, 'posts');
       // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
       const response = await fetchThrottle(`${apiRootTesting}r/${path}`, 'posts');
       // const response = await fetch(`${apiRootTesting}r/${path}`);
@@ -136,14 +136,11 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
       const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor }/about.json`, 'avatar', signal);
 
-      console.log('response', response);
       if (!response?.ok) {
-        console.log('response?.status',response?.status);
         throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
       }
       const profile = await response.json();
 
-      console.log('profile',profile);
       // avoid (re)dispatching suspended profiles
       return profile.data.is_suspended ? [postAuthor , 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
         [postAuthor , profile.data.icon_img]

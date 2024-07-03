@@ -9,7 +9,7 @@ import Toaster from '../../components/Toast/Toast.jsx';
 import { Button } from 'react-bootstrap';
 import { selectSubredditComments } from '../../store/subredditCommentsSlice.js';
 
-function Main(props) {
+function Main() {
 
     const [collapseStates, setCollapseStates] = useState({});
 
@@ -18,9 +18,7 @@ function Main(props) {
     const posts = useSelector(selectSubredditPosts);
     const postsStatus = useSelector(selectSubredditPostsStatus);
     const postsErrorState = useSelector(selectSubredditPostsError);
-
     const comments = useSelector(selectSubredditComments);
-
     const handleComments = (permalink) => {
         if (`t3_${permalink.postId}` !== comments[0]?.data.parent_id) { // check if comments are cached before dispatching fetch (avoid hitting rate-limits)
             dispatch(getSubredditComments(permalink));
@@ -43,9 +41,7 @@ function Main(props) {
 
                 {posts.map(post => {
 
-
                     return <Post
-
                         key={post.data.id}
                         postId={post.data.id}
                         postTitle={post.data.title}
