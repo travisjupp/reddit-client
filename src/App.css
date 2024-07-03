@@ -98,3 +98,28 @@ form#searchForm a[role="button"] {
 
   }
 } */
+
+/* Post date */
+
+.date {
+    color: red;
+    width: auto;
+    word-break: normal;
+    position: absolute;
+    /* top: 0; */
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+}
+
+/* Main section */
+
+main {
+  background-color: whitesmoke;
+}
+
+/* Card */
+.card {
+  margin-bottom: 1rem;
+}
