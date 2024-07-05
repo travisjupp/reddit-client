@@ -103,8 +103,8 @@ form#searchForm a[role="button"] {
 
 /* Post date */
 .date {
-    font-size: .6rem;
-    color: red;
+    /* font-size: 1rem; */
+    color: #495057;
     width: auto;
     word-break: normal;
     position: absolute;
@@ -116,7 +116,6 @@ form#searchForm a[role="button"] {
 }
 
 /* Main section */
-
 main {
   background-color: whitesmoke;
 }
@@ -124,4 +123,12 @@ main {
 /* Card */
 .card {
   margin-bottom: 1rem;
+}
+
+/* Button */
+
+button {
+  border: none;
+  background-color: transparent;
+  padding: 0;
 }
