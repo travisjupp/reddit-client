@@ -15,14 +15,10 @@ function Header() {
         setShow(!show);
     };
 
+    const [data, setData] = useState( { searchValue: "" });
+    const isPostsFiltered = useSelector(selectIsPostsFiltered);
     const dispatch = useDispatch();
 
-    const [data, setData] = useState(
-        {
-            searchValue: ""
-        }
-    );
-    const isPostsFiltered = useSelector(selectIsPostsFiltered);
     const handleChange = (e) => {
         const key = e.target.id;
         const data = { [key]: e.target.value };

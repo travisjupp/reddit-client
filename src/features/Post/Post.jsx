@@ -2,7 +2,7 @@ import Holder from 'holderjs';
 import {DateTime} from 'luxon';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Badge, Button, Card, Col, Collapse, Container, Row, Stack} from 'react-bootstrap';
-import {BsArrowDownCircle, BsArrowUpCircle, BsArrowUpCircleFill, BsChatQuote, BsShare} from "react-icons/bs";
+import {BsArrowDownCircle, BsArrowDownCircleFill, BsArrowUpCircle, BsArrowUpCircleFill, BsChatQuote, BsShare} from "react-icons/bs";
 import Markdown from 'react-markdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsPostId, selectSubredditCommentsStatus} from '../../store/subredditCommentsSlice.js';
@@ -19,9 +19,8 @@ import Toaster from '../../components/Toast/Toast.jsx';
 function Post(props) {
   const {postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
-  const [hover, setHover] = useState(false);
-  const onHover = () => setHover(true);
-  const onLeave = () => setHover(false);
+  const [upIconHover, setUpIconHover] = useState(false);
+  const [downIconHover, setDownIconHover] = useState(false);
 
   useEffect(() => {
     Holder.run({
@@ -49,12 +48,12 @@ function Post(props) {
   // get user avatar
   useEffect(() => {
     if (!avatars[postAuthor] && postAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
-    const promise = dispatch(getUserAvatar(postAuthor));
-    return () => {
-      promise.abort('Aborted from Post');
-    }
+      const promise = dispatch(getUserAvatar(postAuthor));
+      return () => {
+        promise.abort('Aborted from Post');
+      }
     };
-  }, []);
+  }, [dispatch]);
 
   const comments = useSelector(selectSubredditComments);
   const commentsStatus = useSelector(selectSubredditCommentsStatus);
@@ -64,7 +63,7 @@ function Post(props) {
   const commentsFailedPost = postId === commentsErrorState?.meta.arg.postId; // isolate the post that a comments request errored
 
   const handleCollapse = (postId) => {
-    const updatedStates = { ...collapseStates };
+    const updatedStates = {...collapseStates};
     // make sure all comments are collapsed before expanding (avoid a dead comment button)
     for (let post in updatedStates) {
       if (post === postId) continue;
@@ -75,7 +74,7 @@ function Post(props) {
   }
   const toggleComments = () => {
     !collapseStates[postId] && // only fetch comments if comments not already expanded
-      handleComments({ permalink: postPermalink, postId })
+      handleComments({permalink: postPermalink, postId})
     // !collapseStates[postId] && handleComments({ permalink: 'INTENTIONALLY ERROR THIS OUT FOR TESTING', postId })
     handleCollapse(postId);
   }
@@ -107,8 +106,11 @@ function Post(props) {
       </>)
   }
 
-  const upCircle = () => <BsArrowUpCircle size='1.5em' color='#000000' />;
-  const upCircleFill = () => { return <BsArrowUpCircleFill size='1.5em' color='#000000'></BsArrowUpCircleFill> };
+  const upCircle = (size='1.5em') => <BsArrowUpCircle size={size} color='#000000' />;
+  const upCircleFill = (size='1.5em') => <BsArrowUpCircleFill size={size} color='#000000' />;
+
+  const downCircle = (size='1.5em') => <BsArrowDownCircle size={size} color='#000000' />;
+  const downCircleFill = (size='1.5em') => <BsArrowDownCircleFill size={size} color='#000000' />;
 
   return (
     <>
@@ -119,7 +121,7 @@ function Post(props) {
           alt={altText}
         /> : null}
         <Card.Body>
-          <Card.Title>{postTitle} <div style={{ float: 'right' }}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
+          <Card.Title>{postTitle} <div style={{float: 'right'}}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
           <Card.Text as='div'>{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
             <Container fluid className="p-0">
@@ -134,9 +136,9 @@ function Post(props) {
                 {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
                   <Stack direction="horizontal" gap={1} style={{}} className='justify-content-start'>
-                    <a onMouseOver={onHover} onMouseLeave={onLeave} href='#'>{hover ? upCircleFill() : upCircle()}</a>
-                    {/* <BsArrowUpCircle size='1.5em' color='#000000' /> */}
-                    <BsArrowDownCircle size='1.5em' color='#000000' />
+                    <button onMouseOver={() => setUpIconHover(true)} onMouseLeave={() => setUpIconHover(false)} href='#'>{upIconHover ? upCircleFill() : upCircle()}</button>
+
+                    <button onMouseOver={() => setDownIconHover(true)} onMouseLeave={() => setDownIconHover(false)} href='#'>{downIconHover ? downCircleFill() : downCircle()}</button>
                     <Badge pill className=''>{score}</Badge>
                   </Stack>
                 </Col>
@@ -144,11 +146,9 @@ function Post(props) {
                 {/* DESKTOP ACTION BAR (left side) show on md and larger */}
                 <Col className="d-none d-md-block">
                   <Stack direction="horizontal" gap={2} style={{}} className='justify-content-start'>
-                    <div style={{ border: 'solid 1px red', zIndex: '3' }}>
-                      <BsArrowUpCircle size='3em' color='#000000' />
-                    </div>
-                    <div style={{ border: 'solid 1px red', zIndex: '3' }}>
-                      <BsArrowDownCircle size='3em' color='#000000' />
+                    <button onMouseOver={() => setUpIconHover(true)} onMouseLeave={() => setUpIconHover(false)} href='#'>{upIconHover ? upCircleFill('3em') : upCircle('3em')}</button>
+                    <div>
+                      <button onMouseOver={() => setDownIconHover(true)} onMouseLeave={() => setDownIconHover(false)} href='#'>{downIconHover ? downCircleFill('3em') : downCircle('3em')}</button>
                       <Badge pill className='position-absolute translate-middle-x'>{score}</Badge>
                     </div>
                   </Stack>
@@ -157,8 +157,8 @@ function Post(props) {
 
                   {/* MOBILE DATE show on xs and sm screen size only */}
                   <div className="d-md-none date small" style={{border: 'solid 1px red'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
-                  
-                  {/* DESKTOP DATE show on md and lg screen size only */ }
+
+                  {/* DESKTOP DATE show on md and lg screen size only */}
                   <div className="d-none d-md-block d-xl-none d-xxl-none date small" style={{border: 'solid 1px red'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
 
                   {/* DESKTOP DATE show on xl and xxl screen size only */}
@@ -175,7 +175,7 @@ function Post(props) {
                 {/* MOBILE ACTION BAR (right side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
                   <Stack direction="horizontal" gap={1} style={{}} className='justify-content-end'>
-                    <div style={{ border: 'solid 1px red', zIndex: '3' }}>
+                    <div style={{border: 'solid 1px red', zIndex: '3'}}>
                       <BsShare size='1.5em' color='#000000' />
                     </div>
                     <div className='vr' height='5px'></div>
@@ -187,7 +187,7 @@ function Post(props) {
                       // aria-controls={commentsRef}
                       aria-expanded={collapseStates[postId]}
                       onClick={toggleComments}
-                      style={{ border: 'solid 1px red', zIndex: '3' }}
+                      style={{border: 'solid 1px red', zIndex: '3'}}
                       id={`button-${postId}`}
                     >
                       <BsChatQuote size='1.5em' color='#000000' />
@@ -210,7 +210,7 @@ function Post(props) {
                       aria-controls={`comments-wrapper-${postId}`}
                       aria-expanded={collapseStates[postId]}
                       onClick={toggleComments}
-                      style={{ border: 'solid 1px red', zIndex: '3' }}
+                      style={{border: 'solid 1px red', zIndex: '3'}}
                     >
                       <BsChatQuote size='3em' color='#000000' />
                       <Badge pill className='position-absolute translate-middle-x'>
@@ -224,7 +224,7 @@ function Post(props) {
                         {comments.length !== 0 ? comments[0].data.parent_id === `t3_${postId}` ? comments.length : null : numberOfComments}
                       </Badge>
                     </div>
-                    <div style={{ border: 'solid 1px red', zIndex: '3' }}>
+                    <div style={{border: 'solid 1px red', zIndex: '3'}}>
                       <BsShare size='3em' color='#000000' />
                     </div>
                   </Stack>
@@ -255,7 +255,7 @@ function Post(props) {
             aria-controls={`comments-wrapper-${postId}`}
             aria-expanded={collapseStates[postId]}
             // className=''
-            onClick={() => handleComments({ permalink: postPermalink, postId })}
+            onClick={() => handleComments({permalink: postPermalink, postId})}
           >Retry</Button>
         </Toaster> :
         null
