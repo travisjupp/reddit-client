@@ -1,8 +1,8 @@
 import Holder from 'holderjs';
 import {DateTime} from 'luxon';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Badge, Button, Card, Col, Collapse, Container, Row, Stack} from 'react-bootstrap';
-import {BsArrowDownCircle, BsArrowDownCircleFill, BsArrowUpCircle, BsArrowUpCircleFill, BsChatQuote, BsShare} from "react-icons/bs";
+import {BsChatQuote, BsShare} from "react-icons/bs";
 import Markdown from 'react-markdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsPostId, selectSubredditCommentsStatus} from '../../store/subredditCommentsSlice.js';
@@ -16,11 +16,10 @@ import {getUserAvatar} from '../api/reddit';
 import rehypeRaw from 'rehype-raw';
 import Toaster from '../../components/Toast/Toast.jsx';
 
+import Votes from '../../components/ActionBar/Votes.jsx'
+
 function Post(props) {
   const {postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
-
-  const [upIconHover, setUpIconHover] = useState(false);
-  const [downIconHover, setDownIconHover] = useState(false);
 
   useEffect(() => {
     Holder.run({
@@ -106,12 +105,6 @@ function Post(props) {
       </>)
   }
 
-  const upCircle = (size='1.5em') => <BsArrowUpCircle size={size} color='#000000' />;
-  const upCircleFill = (size='1.5em') => <BsArrowUpCircleFill size={size} color='#000000' />;
-
-  const downCircle = (size='1.5em') => <BsArrowDownCircle size={size} color='#000000' />;
-  const downCircleFill = (size='1.5em') => <BsArrowDownCircleFill size={size} color='#000000' />;
-
   return (
     <>
       <Card id={postId}>
@@ -135,23 +128,12 @@ function Post(props) {
 
                 {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
-                  <Stack direction="horizontal" gap={1} style={{}} className='justify-content-start'>
-                    <button onMouseOver={() => setUpIconHover(true)} onMouseLeave={() => setUpIconHover(false)} href='#'>{upIconHover ? upCircleFill() : upCircle()}</button>
-
-                    <button onMouseOver={() => setDownIconHover(true)} onMouseLeave={() => setDownIconHover(false)} href='#'>{downIconHover ? downCircleFill() : downCircle()}</button>
-                    <Badge pill className=''>{score}</Badge>
-                  </Stack>
+                  <Votes stackGap={1} iconSize={'1.5em'} score={score} />
                 </Col>
 
                 {/* DESKTOP ACTION BAR (left side) show on md and larger */}
                 <Col className="d-none d-md-block">
-                  <Stack direction="horizontal" gap={2} style={{}} className='justify-content-start'>
-                    <button onMouseOver={() => setUpIconHover(true)} onMouseLeave={() => setUpIconHover(false)} href='#'>{upIconHover ? upCircleFill('3em') : upCircle('3em')}</button>
-                    <div>
-                      <button onMouseOver={() => setDownIconHover(true)} onMouseLeave={() => setDownIconHover(false)} href='#'>{downIconHover ? downCircleFill('3em') : downCircle('3em')}</button>
-                      <Badge pill className='position-absolute translate-middle-x'>{score}</Badge>
-                    </div>
-                  </Stack>
+                  <Votes stackGap={2} iconSize={'3em'} score={score} badgeStyle={'position-absolute translate-middle-x'} />
                 </Col>
                 <Col xs sm={5} xl={7}>
 
