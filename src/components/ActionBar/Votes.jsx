@@ -14,11 +14,11 @@ const Votes = (props) => {
     <>
       <Stack direction="horizontal" gap={stackGap} style={{}} className='justify-content-start'>
         <button onMouseOver={() => setUpIconHover(true)} onMouseLeave={() => setUpIconHover(false)} href='#'>{upIconHover ? upCircleFill() : upCircle()}</button>
-        <div style={{width: "max-content"}}>
+        <div style={{minWidth: "max-content"}}>
           <button style={{paddingRight: ".25rem"}} onMouseOver={() => setDownIconHover(true)} onMouseLeave={() => setDownIconHover(false)} href='#'>{downIconHover ? downCircleFill() : downCircle()}</button>
           <Badge pill className={badgeStyle}>{score}</Badge>
         </div>
-      </Stack >
+      </Stack>
     </>
   )
 }
