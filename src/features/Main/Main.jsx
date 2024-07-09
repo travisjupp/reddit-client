@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getSubredditComments, getSubredditPosts } from '../api/reddit';
-import Post from '../Post/Post';
+import React, {useEffect, useState} from 'react';
+import {Button} from 'react-bootstrap';
+import {useDispatch, useSelector} from 'react-redux';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
-import { selectSubredditPosts, selectSubredditPostsStatus, selectSubredditPostsError } from '../../store/subredditPostsSlice.js';
-import validatePostImgURL from '../../utils/validateImgURL.js'
 import Toaster from '../../components/Toast/Toast.jsx';
-import { Button } from 'react-bootstrap';
-import { selectSubredditComments } from '../../store/subredditCommentsSlice.js';
+import {selectSubredditComments} from '../../store/subredditCommentsSlice.js';
+import {selectSubredditPosts, selectSubredditPostsError, selectSubredditPostsStatus} from '../../store/subredditPostsSlice.js';
+import validatePostImgURL from '../../utils/validateImgURL.js';
+import Post from '../Post/Post';
+import {getSubredditComments, getSubredditPosts} from '../api/reddit';
 
 function Main() {
 

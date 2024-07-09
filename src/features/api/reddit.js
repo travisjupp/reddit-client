@@ -7,7 +7,7 @@ const subredditsPathName = 'subreddits/1';
 sessionStorage.clear();
 console.log('session storage cleared');
 
-async function fetchThrottle(url, caller, signal) { 
+async function fetchThrottle(url, caller, signal) {
   // We mainly throttle requests for user avatars since this hits the endpoint the most frequently. Since user avatars aren't integral (any avatars not loaded with be shimmed with an identicon), a _pseudo_ fetch-queue delays each request. Each call to `fetchThrottle` from `getUserAvatar` adds its delay to the `delayTime` which is ultimately cleared out with `rateLimitReset` and any other session storage items. 
 
   let delayTime = Number(sessionStorage.getItem('delayTime'));
@@ -29,7 +29,7 @@ async function fetchThrottle(url, caller, signal) {
   sessionStorage.setItem('numRequests', ++numRequests);
 
   if (caller === 'avatar') {
-    sessionStorage.setItem('delayTime', delayTime+=1000);
+    sessionStorage.setItem('delayTime', delayTime += 1000);
     // console.log('delayTime',delayTime);
     await delay(delayTime);
     return fetch(url, {signal});
@@ -41,7 +41,7 @@ async function fetchThrottle(url, caller, signal) {
 // Fetch list of popular subreddits
 // Populates the sidebar on first load with https://www.reddit.com/subreddits
 export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubredditsList',
-  async (_, { rejectWithValue }) => {
+  async (_, {rejectWithValue}) => {
     try {
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetch('https://www.reddit.com/subreddits.json');
@@ -62,7 +62,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
 
 // Fetch subreddits eg. /r/MapPorn
 export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts',
-  async (path, { rejectWithValue }) => {
+  async (path, {rejectWithValue}) => {
     try {
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
       // const response = await fetchThrottle(`https://www.reddit.com/r/${path}.json`, 'posts');
@@ -83,8 +83,8 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
 
 // Fetch subreddit post comments
 export const getSubredditComments = createAsyncThunk('subreddits/getSubredditComments',
-  async ({ permalink }, { rejectWithValue }) => {
-    console.log('permalink',permalink);
+  async ({permalink}, {rejectWithValue}) => {
+    console.log('permalink', permalink);
     try {
       const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
       // const response = await fetch(`https://www.reddit.com${permalink}.json`);
@@ -121,8 +121,7 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
 
 // Fetch avatars from user profiles
 export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
-  async (postAuthor, { rejectWithValue, signal }) => {
-    //  --------------------------------try/catch-------------------------------
+  async (postAuthor, {rejectWithValue, signal}) => {
     try {
       // avoid (re)dispatching deleted/undefined profiles
       if (postAuthor === '[deleted]' || postAuthor === undefined) {
@@ -134,7 +133,7 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       // const response = await fetch(`http://httpstat.us/429`);
       // const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
       // const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
-      const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor }/about.json`, 'avatar', signal);
+      const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor}/about.json`, 'avatar', signal);
 
       if (!response?.ok) {
         throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
@@ -142,11 +141,24 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       const profile = await response.json();
 
       // avoid (re)dispatching suspended profiles
-      return profile.data.is_suspended ? [postAuthor , 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
-        [postAuthor , profile.data.icon_img]
+      return profile.data.is_suspended ? [postAuthor, 'PROFILE_SUSPENDED_NO_AVATAR_DATA'] :
+        [postAuthor, profile.data.icon_img]
     } catch (e) {
       console.error('Avatar Error:', postAuthor, e.message);
       return rejectWithValue(e.message);
+    }
+  },
+  {
+    condition(postAuthor, {getState}) {
+      const state = getState();
+      const avatars = state.subredditPosts.avatars;
+      // if (!avatars[postAuthor] && postAuthor !== undefined) {
+      //   console.log('avatar not cached => ', postAuthor);
+      // }
+      if (avatars[postAuthor]) { // if avatar is cached cancel thunk
+        console.log('aborting =>', postAuthor);
+        return false;
+      }
     }
   }
 );

@@ -1,10 +1,13 @@
 import Holder from 'holderjs';
 import {DateTime} from 'luxon';
-import React, {useCallback, useEffect} from 'react';
-import {Badge, Button, Card, Col, Collapse, Container, Row, Stack} from 'react-bootstrap';
-import {BsChatQuote, BsShare} from "react-icons/bs";
+import React, {useEffect} from 'react';
+import {Button, Card, Col, Collapse, Container, Row} from 'react-bootstrap';
 import Markdown from 'react-markdown';
 import {useDispatch, useSelector} from 'react-redux';
+import rehypeRaw from 'rehype-raw';
+import Social from '../../components/ActionBar/Social.jsx';
+import Votes from '../../components/ActionBar/Votes.jsx';
+import Toaster from '../../components/Toast/Toast.jsx';
 import {selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsPostId, selectSubredditCommentsStatus} from '../../store/subredditCommentsSlice.js';
 import {selectUserAvatars} from '../../store/subredditPostsSlice';
 import formatPostText from '../../utils/formatPostText.js';
@@ -12,13 +15,6 @@ import validateAvatarImgURL from '../../utils/validateImgURL.js';
 import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
-
-import rehypeRaw from 'rehype-raw';
-import Toaster from '../../components/Toast/Toast.jsx';
-
-import Votes from '../../components/ActionBar/Votes.jsx'
-
-import Social from '../../components/ActionBar/Social.jsx';
 
 function Post(props) {
   const {postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
@@ -47,13 +43,12 @@ function Post(props) {
   // }, [getAvatar])
 
   // get user avatar
-  useEffect(() => {
-    if (!avatars[postAuthor] && postAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
+  useEffect(() => { 
+      console.log('dispatching', postAuthor);
       const promise = dispatch(getUserAvatar(postAuthor));
       return () => {
         promise.abort('Aborted from Post');
       }
-    };
   }, [dispatch]);
 
   const comments = useSelector(selectSubredditComments);
@@ -190,32 +185,42 @@ function Post(props) {
 
                 {/* DESKTOP ACTION BAR (right side) show on md and larger */}
                 <Col className='d-none d-md-block'>
-                  <Stack direction="horizontal" gap={2} style={{}} className='justify-content-end'>
-                    <div
-                      role="button"
-                      // data-bs-toggle="collapse"
-                      // data-bs-target={`#comments-wrapper-${postId}`}
-                      aria-controls={`comments-wrapper-${postId}`}
-                      aria-expanded={collapseStates[postId]}
-                      onClick={toggleComments}
-                      style={{border: 'solid 1px red', zIndex: '3'}}
-                    >
-                      <BsChatQuote size='3em' color='#000000' />
-                      <Badge pill className='position-absolute translate-middle-x'>
-                        {/* Overlay actual number of comments when comments clicked/loaded. 
-                          numberOfComments not accurate, but good enough on initial load.  */}
-                        {numberOfComments}
-                      </Badge>
-                      <Badge pill className='position-absolute translate-middle-x'>
-                        {/* Overlay actual number of comments when comments clicked/loaded. 
-                          numberOfComments not accurate, but good enough on initial load.  */}
-                        {comments.length !== 0 ? comments[0].data.parent_id === `t3_${postId}` ? comments.length : null : numberOfComments}
-                      </Badge>
-                    </div>
-                    <div style={{border: 'solid 1px red', zIndex: '3'}}>
-                      <BsShare size='3em' color='#000000' />
-                    </div>
-                  </Stack>
+                  {/* <Stack direction="horizontal" gap={2} style={{}} className='justify-content-end'> */}
+                  {/*   <div */}
+                  {/*     role="button" */}
+                  {/*     // data-bs-toggle="collapse" */}
+                  {/*     // data-bs-target={`#comments-wrapper-${postId}`} */}
+                  {/*     aria-controls={`comments-wrapper-${postId}`} */}
+                  {/*     aria-expanded={collapseStates[postId]} */}
+                  {/*     onClick={toggleComments} */}
+                  {/*     style={{border: 'solid 1px red', zIndex: '3'}} */}
+                  {/*   > */}
+                  {/*     <BsChatQuote size='3em' color='#000000' /> */}
+                  {/*     <Badge pill className='position-absolute translate-middle-x'> */}
+                  {/*       {/1* Overlay actual number of comments when comments clicked/loaded. */}
+                  {/*         numberOfComments not accurate, but good enough on initial load.  *1/} */}
+                  {/*       {numberOfComments} */}
+                  {/*     </Badge> */}
+                  {/*     <Badge pill className='position-absolute translate-middle-x'> */}
+                  {/*       {/1* Overlay actual number of comments when comments clicked/loaded. */}
+                  {/*         numberOfComments not accurate, but good enough on initial load.  *1/} */}
+                  {/*       {comments.length !== 0 ? comments[0].data.parent_id === `t3_${postId}` ? comments.length : null : numberOfComments} */}
+                  {/*     </Badge> */}
+                  {/*   </div> */}
+                  {/*   <div style={{border: 'solid 1px red', zIndex: '3'}}> */}
+                  {/*     <BsShare size='3em' color='#000000' /> */}
+                  {/*   </div> */}
+                  {/* </Stack> */}
+                  <Social
+                    iconSize="3em"
+                    badgeStyle="position-absolute translate-middle-x"
+                    stackGap={1}
+                    comments={comments}
+                    postId={postId}
+                    collapseStates={collapseStates}
+                    toggleComments={toggleComments}
+                    numberOfComments={numberOfComments}
+                  />
                 </Col>
               </Row>
             </Container>
