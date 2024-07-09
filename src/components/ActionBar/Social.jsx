@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {BsChatQuote, BsChatQuoteFill, BsShare, BsShareFill} from "react-icons/bs";
 import {Badge, Stack} from "react-bootstrap";
+import {BsChatQuote, BsChatQuoteFill, BsShare, BsShareFill} from "react-icons/bs";
 
 const Social= (props) => {
   const {stackGap, iconSize = '1.5em', comments, postId, collapseStates, toggleComments, numberOfComments, badgeStyle} = props;
@@ -13,12 +13,12 @@ const Social= (props) => {
   return (
     <>
       <Stack direction="horizontal" gap={stackGap} style={{}} className='justify-content-end'>
-        <button onMouseOver={() => setShareIconHover(true)} onMouseLeave={() => setShareIconHover(false)} href='#'>{upIconHover ? shareIconFill() : shareIcon()}</button>
+        <button onMouseOver={() => setShareIconHover(true)} onMouseLeave={() => setShareIconHover(false)} href='#'>{shareIconHover ? shareIconFill() : shareIcon()}</button>
         <div className="vr" height="5px"></div>
 
         <div style={{minWidth: "max-content"}}>
           <button
-            style={{}}
+            style={{paddingRight: ".25rem"}}
             onMouseOver={() => setChatIconHover(true)}
             onMouseLeave={() => setChatIconHover(false)}
             href='#'

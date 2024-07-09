@@ -18,6 +18,8 @@ import Toaster from '../../components/Toast/Toast.jsx';
 
 import Votes from '../../components/ActionBar/Votes.jsx'
 
+import Social from '../../components/ActionBar/Social.jsx';
+
 function Post(props) {
   const {postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
@@ -108,11 +110,7 @@ function Post(props) {
   return (
     <>
       <Card id={postId}>
-        {postImgSrc ? <Card.Img
-          variant="top"
-          src={postImgSrc}
-          alt={altText}
-        /> : null}
+        {postImgSrc ? <Card.Img variant="top" src={postImgSrc} alt={altText} /> : null}
         <Card.Body>
           <Card.Title>{postTitle} <div style={{float: 'right'}}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
@@ -156,30 +154,38 @@ function Post(props) {
 
                 {/* MOBILE ACTION BAR (right side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
-                  <Stack direction="horizontal" gap={1} style={{}} className='justify-content-end'>
-                    <div style={{border: 'solid 1px red', zIndex: '3'}}>
-                      <BsShare size='1.5em' color='#000000' />
-                    </div>
-                    <div className='vr' height='5px'></div>
-                    <div
-                      role="button"
-                      // data-bs-toggle="collapse"
-                      // data-bs-target={`#comments-wrapper-${postId}`}
-                      aria-controls={`comments-wrapper-${postId}`}
-                      // aria-controls={commentsRef}
-                      aria-expanded={collapseStates[postId]}
-                      onClick={toggleComments}
-                      style={{border: 'solid 1px red', zIndex: '3'}}
-                      id={`button-${postId}`}
-                    >
-                      <BsChatQuote size='1.5em' color='#000000' />
-                    </div>
-                    <Badge pill>
-                      {/* Overlay actual number of comments when comments clicked/loaded.
-                            numberOfComments not accurate, but good enough on initial load.  */}
-                      {comments.length !== 0 && comments[0].data.parent_id === `t3_${postId}` ? comments.length : numberOfComments}
-                    </Badge>
-                  </Stack>
+                  {/* <Stack direction="horizontal" gap={1} style={{}} className='justify-content-end'> */}
+                  {/*   <div style={{border: 'solid 1px red', zIndex: '3'}}> */}
+                  {/*     <BsShare size='1.5em' color='#000000' /> */}
+                  {/*   </div> */}
+                  {/*   <div className='vr' height='5px'></div> */}
+                  {/*   <div */}
+                  {/*     role="button" */}
+                  {/*     // data-bs-toggle="collapse" */}
+                  {/*     // data-bs-target={`#comments-wrapper-${postId}`} */}
+                  {/*     aria-controls={`comments-wrapper-${postId}`} */}
+                  {/*     // aria-controls={commentsRef} */}
+                  {/*     aria-expanded={collapseStates[postId]} */}
+                  {/*     onClick={toggleComments} */}
+                  {/*     style={{border: 'solid 1px red', zIndex: '3'}} */}
+                  {/*     id={`button-${postId}`} */}
+                  {/*   > */}
+                  {/*     <BsChatQuote size='1.5em' color='#000000' /> */}
+                  {/*   </div> */}
+                  {/*   <Badge pill> */}
+                  {/*     {/1* Overlay actual number of comments when comments clicked/loaded. */}
+                  {/*           numberOfComments not accurate, but good enough on initial load.  *1/} */}
+                  {/*     {comments.length !== 0 && comments[0].data.parent_id === `t3_${postId}` ? comments.length : numberOfComments} */}
+                  {/*   </Badge> */}
+                  {/* </Stack> */}
+                  <Social
+                    stackGap={1}
+                    comments={comments}
+                    postId={postId}
+                    collapseStates={collapseStates}
+                    toggleComments={toggleComments}
+                    numberOfComments={numberOfComments}
+                  />
                 </Col>
 
                 {/* DESKTOP ACTION BAR (right side) show on md and larger */}
