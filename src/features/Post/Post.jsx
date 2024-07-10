@@ -49,7 +49,7 @@ function Post(props) {
       return () => {
         promise.abort('Aborted from Post');
       }
-  }, [dispatch]);
+  }, [dispatch, postAuthor]);
 
   const comments = useSelector(selectSubredditComments);
   const commentsStatus = useSelector(selectSubredditCommentsStatus);

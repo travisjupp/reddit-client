@@ -25,14 +25,12 @@ function Comment(props) {
 
     const avatars = useSelector(selectUserAvatars);
     useEffect(() => {
-        if (!avatars[commentAuthor] && commentAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
             console.log('<Comment>dispatching for ', commentAuthor);
             const promise = dispatch(getUserAvatar(commentAuthor));
             return () => {
                 promise.abort();
             }
-        }
-    }, [dispatch]);
+    }, [dispatch, commentAuthor]);
 
     const commentsStatus = useSelector(selectSubredditCommentsStatus);
 
