@@ -116,6 +116,15 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
       console.error('Comments Error:', e.message);
       return rejectWithValue(e.message);
     }
+  },
+  {
+    condition(permalink, {getState}){
+      const {subredditComments: {comments}} = getState();
+      if (`t3_${permalink.postId}` === comments[0]?.data.parent_id){
+        console.log('Comments cached, cancelling Thunk =>', permalink);
+        return false;
+      }
+    }
   }
 )
 
@@ -150,13 +159,9 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   },
   {
     condition(postAuthor, {getState}) {
-      const state = getState();
-      const avatars = state.subredditPosts.avatars;
-      // if (!avatars[postAuthor] && postAuthor !== undefined) {
-      //   console.log('avatar not cached => ', postAuthor);
-      // }
+      const {subredditPosts: {avatars}} = getState();
       if (avatars[postAuthor]) { // if avatar is cached cancel thunk
-        console.log('aborting =>', postAuthor);
+        console.log('Avatar cached, cancelling thunk =>', postAuthor);
         return false;
       }
     }

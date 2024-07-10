@@ -10,19 +10,13 @@ import Post from '../Post/Post';
 import {getSubredditComments, getSubredditPosts} from '../api/reddit';
 
 function Main() {
-
     const [collapseStates, setCollapseStates] = useState({});
-
     const dispatch = useDispatch();
-
     const posts = useSelector(selectSubredditPosts);
     const postsStatus = useSelector(selectSubredditPostsStatus);
     const postsErrorState = useSelector(selectSubredditPostsError);
-    const comments = useSelector(selectSubredditComments);
     const handleComments = (permalink) => {
-        if (`t3_${permalink.postId}` !== comments[0]?.data.parent_id) { // check if comments are cached before dispatching fetch (avoid hitting rate-limits)
             dispatch(getSubredditComments(permalink));
-        }
     }
 
     useEffect(() => {
