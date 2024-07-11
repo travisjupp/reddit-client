@@ -3,7 +3,6 @@ import {Button} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import Toaster from '../../components/Toast/Toast.jsx';
-import {selectSubredditComments} from '../../store/subredditCommentsSlice.js';
 import {selectSubredditPosts, selectSubredditPostsError, selectSubredditPostsStatus} from '../../store/subredditPostsSlice.js';
 import validatePostImgURL from '../../utils/validateImgURL.js';
 import Post from '../Post/Post';
