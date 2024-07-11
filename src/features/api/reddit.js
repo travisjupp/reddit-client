@@ -78,6 +78,15 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       console.error('Posts Error:', e.message);
       return rejectWithValue(e.message);
     }
+  },
+  {
+    condition(postTitle, {getState}){
+      const {subredditPosts: {posts}} = getState();
+      console.log('postTitle', postTitle,'posts[0]?.data.subreddit', posts[0]?.data.subreddit);
+      if(posts[0]?.data.subreddit === postTitle){
+        console.log('Posts cached, cancelling thunk =>', postTitle);
+      }
+    }
   }
 );
 
