@@ -1,11 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 // import * as toolkit from "@reduxjs/toolkit";
-import { getPopSubredditsList } from "../features/api/reddit.js";
+import {getPopSubredditsList} from "../features/api/reddit.js";
 // import * as toolkitRaw from '@reduxjs/toolkit';
 // const { createSlice } = toolkitRaw.createSlice ?? toolkitRaw;
 // const { createSlice } = toolkitRaw.createSlice ?? toolkitRaw;
-
-
 
 const initialState = {
     status: 'unitialized',
@@ -19,7 +17,7 @@ const subredditSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(getPopSubredditsList.pending, (state, action) => {
+            .addCase(getPopSubredditsList.pending, (state) => {
                 state.status = 'loading';
                 // console.log('pending action =>', action);
             })
@@ -32,8 +30,8 @@ const subredditSlice = createSlice({
                 state.status = 'failed';
                 state.subreddits = [];
                 // unpack error props
-                const { error, meta, payload, type } = action;
-                state.error = { error, meta, payload, type };
+                const {error, meta, payload, type} = action;
+                state.error = {error, meta, payload, type};
                 // console.log('state.error', state.error);
                 // console.log('rejected action =>', action);
                 // console.log('state.error => action.error', action.error);
@@ -46,12 +44,6 @@ const subredditSlice = createSlice({
 
 export default subredditSlice.reducer;
 export const selectPopSubredditsList = (state) => state.subreddits.subreddits;
-
-// export const selectPopSubredditTitles = (state) => {
-//     const data = state.subreddits.subreddits;
-//     return data.map(subreddit => [subreddit.data.title, subreddit.data.url, subreddit.data.icon_img]);
-// };
-
 
 export const selectPopSubredditsListStatus = (state) => {
     const status = state.subreddits.status;
