@@ -23,9 +23,7 @@ function Sidebar(props) {
     }, [dispatch, popSubredditsList]);
     
     const handlePosts = (postTitle) => {
-        if (posts[0]?.data.subreddit !== postTitle) { // check if posts are cached before dispatching fetch (avoid hitting rate-limits)
             dispatch(getSubredditPosts(postTitle));
-        }
     }
 
     while (status === 'loading') {
