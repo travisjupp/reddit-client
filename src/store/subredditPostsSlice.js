@@ -9,6 +9,7 @@ const initialState = {
     postsStatus: 'uninitialized',
     avatarsStatus: 'uninitialized',
     posts: [],
+    postsOb: {},
     isFiltered: false,
     postsTemp: [],
     avatars: {},
@@ -39,12 +40,17 @@ const subredditPostsSlice = createSlice({
             })
             .addCase(getSubredditPosts.fulfilled, (state, action) => {
                 state.postsStatus = 'succeeded';
+                console.log('action.meta',action.meta);
                 state.posts = action.payload;
+                state.postsOb.current = action.meta.arg;
+                state.postsOb[action.meta.arg] = action.payload;
                 state.postsTemp = state.posts;
             })
             .addCase(getSubredditPosts.rejected, (state, action) => {
                 state.postsStatus = 'failed';
-                state.posts = [];
+                console.log('thunk rejected =>', action.meta.arg);
+                state.postsOb.current = action.meta.arg;
+                // state.posts = [];
                 // unpack error props
                 const { error, meta, payload, type } = action;
                 state.postsErrorState = { message: error.message, meta, payload, type };
@@ -73,6 +79,8 @@ export const {filterPosts, unfilterPosts} = subredditPostsSlice.actions;
 export default subredditPostsSlice.reducer;
 
 export const selectSubredditPosts = state => state.subredditPosts.posts;
+
+export const selectSubredditPostsOb = state => state.subredditPosts.postsOb;
 
 export const selectSubredditPostsStatus = state => state.subredditPosts.postsStatus;
 

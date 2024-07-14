@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import Toaster from '../../components/Toast/Toast.jsx';
-import {selectSubredditPosts, selectSubredditPostsError, selectSubredditPostsStatus} from '../../store/subredditPostsSlice.js';
+import {selectSubredditPostsError, selectSubredditPostsOb, selectSubredditPostsStatus} from '../../store/subredditPostsSlice.js';
 import validatePostImgURL from '../../utils/validateImgURL.js';
 import Post from '../Post/Post';
 import {getSubredditComments, getSubredditPosts} from '../api/reddit';
@@ -11,16 +11,16 @@ import {getSubredditComments, getSubredditPosts} from '../api/reddit';
 function Main() {
     const [collapseStates, setCollapseStates] = useState({});
     const dispatch = useDispatch();
-    const posts = useSelector(selectSubredditPosts);
+    const postsOb = useSelector(selectSubredditPostsOb);
     const postsStatus = useSelector(selectSubredditPostsStatus);
     const postsErrorState = useSelector(selectSubredditPostsError);
     const handleComments = (permalink) => {
-            dispatch(getSubredditComments(permalink));
+        dispatch(getSubredditComments(permalink));
     }
 
     useEffect(() => {
         dispatch(getSubredditPosts('react'));
-    },[dispatch]);
+    }, [dispatch]);
 
     if (postsStatus === 'loading') {
         return <StatusLoader />
@@ -30,10 +30,9 @@ function Main() {
 
         return (
             <>
-                <h1>r/{posts[0]?.data.subreddit}</h1>
+                <h1>r/{postsOb.current}</h1>
 
-                {posts.map(post => {
-
+                {postsOb[postsOb.current].map(post => {
                     return <Post
                         key={post.data.id}
                         postId={post.data.id}
@@ -77,7 +76,6 @@ function Main() {
             </>
         )
     }
-
 }
 
 export default Main;

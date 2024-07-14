@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import {createAsyncThunk} from '@reduxjs/toolkit';
 
 export const apiRootTesting = 'http://192.168.0.5:8000/';
 const subredditsPathName = 'subreddits/1';
@@ -62,13 +62,19 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
 
 // Fetch subreddits eg. /r/MapPorn
 export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts',
-  async (path, {rejectWithValue}) => {
+  async (postTitle, {rejectWithValue, getState}) => {
     try {
+      // check if posts cached
+      const {subredditPosts: {postsOb}} = getState();
+      if (typeof postsOb[postTitle] === 'object') {
+        console.info('Posts cached, not fetching=> r\/', postTitle);
+        return postsOb[postTitle]; // replace original posts on early return 
+      }
       // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
-      // const response = await fetchThrottle(`https://www.reddit.com/r/${path}.json`, 'posts');
+      // const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
       // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
-      const response = await fetchThrottle(`${apiRootTesting}r/${path}`, 'posts');
-      // const response = await fetch(`${apiRootTesting}r/${path}`);
+      const response = await fetchThrottle(`${apiRootTesting}r/${postTitle}`, 'posts');
+      // const response = await fetch(`${apiRootTesting}r/${postTitle}`);
       if (!response.ok) {
         throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -77,16 +83,6 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
     } catch (e) {
       console.error('Posts Error:', e.message);
       return rejectWithValue(e.message);
-    }
-  },
-  {
-    condition(postTitle, {getState}){
-      const {subredditPosts: {posts}} = getState();
-      console.log('postTitle', postTitle,'posts[0]?.data.subreddit', posts[0]?.data.subreddit);
-      if(posts[0]?.data.subreddit === postTitle){
-        console.log('Posts cached, cancelling thunk =>', postTitle);
-        return false;
-      }
     }
   }
 );
@@ -128,9 +124,9 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
     }
   },
   {
-    condition(permalink, {getState}){
+    condition(permalink, {getState}) {
       const {subredditComments: {comments}} = getState();
-      if (`t3_${permalink.postId}` === comments[0]?.data.parent_id){
+      if (`t3_${permalink.postId}` === comments[0]?.data.parent_id) {
         console.log('Comments cached, cancelling Thunk =>', permalink);
         return false;
       }
