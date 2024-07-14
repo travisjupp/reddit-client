@@ -1,19 +1,17 @@
-import React, { useEffect } from 'react';
-import { Accordion, Nav } from 'react-bootstrap';
-import { getPopSubredditsList, getSubredditPosts } from '../api/reddit';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectPopSubredditsList, selectPopSubredditsListError, selectPopSubredditsListStatus } from '../../store/subredditSlice';
+import React, {useEffect} from 'react';
+import {Accordion, Nav} from 'react-bootstrap';
+import {getPopSubredditsList, getSubredditPosts} from '../api/reddit';
+import {useDispatch, useSelector} from 'react-redux';
+import {selectPopSubredditsList, selectPopSubredditsListError, selectPopSubredditsListStatus} from '../../store/subredditSlice';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import Avatar from '../Avatar/Avatar';
-import { selectSubredditPosts } from '../../store/subredditPostsSlice';
 
 function Sidebar(props) {
-    const { toggleOffcanvas } = props;
+    const {toggleOffcanvas} = props;
     const dispatch = useDispatch();
     const popSubredditsList = useSelector(selectPopSubredditsList);
     const status = useSelector(selectPopSubredditsListStatus);
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
-    const posts = useSelector(selectSubredditPosts);
 
     useEffect(() => {
         if (!popSubredditsList.length) { // check if popular subreddits are cached before dispatching fetch (avoid hitting rate-limits)
@@ -21,9 +19,9 @@ function Sidebar(props) {
             dispatch(getPopSubredditsList());
         }
     }, [dispatch, popSubredditsList]);
-    
+
     const handlePosts = (postTitle) => {
-            dispatch(getSubredditPosts(postTitle));
+        dispatch(getSubredditPosts(postTitle));
     }
 
     while (status === 'loading') {
@@ -37,9 +35,9 @@ function Sidebar(props) {
         return (
             <>
                 <code>{popSubredditsListErrorState.error.message}</code>
-                <pre style={{ whiteSpace: 'pre-wrap' }}>
+                <pre style={{whiteSpace: 'pre-wrap'}}>
                     {popSubredditsListErrorState.payload}<hr />
-                    <code style={{ wordBreak: 'break-word' }}>{errorStr}</code>
+                    <code style={{wordBreak: 'break-word'}}>{errorStr}</code>
                 </pre>
             </>
 
@@ -76,7 +74,6 @@ function Sidebar(props) {
             </>
         );
     }
-
 }
 
 export default Sidebar;
