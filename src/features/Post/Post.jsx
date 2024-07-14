@@ -28,20 +28,6 @@ function Post(props) {
   const dispatch = useDispatch();
   const avatars = useSelector(selectUserAvatars);
 
-  // const getAvatar = useCallback(() => {
-  //   if (!avatars[postAuthor] && postAuthor !== undefined) { // check if avatar is cached before dispatching fetch (avoid hitting rate-limits)
-  //     return dispatch(getUserAvatar(postAuthor));
-  //   }
-  // }, [avatars, postAuthor, dispatch]);
-
-  // useEffect(() => {
-  //   const promise = getAvatar();
-  //   return () => {
-  //     console.log('unmounted maybe? =>', postId)
-  //     promise.abort();
-  //   }
-  // }, [getAvatar])
-
   // get user avatar
   useEffect(() => { 
       console.log('dispatching', postAuthor);
