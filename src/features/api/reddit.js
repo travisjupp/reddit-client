@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 export const apiRootTesting = 'http://192.168.0.5:8000/';
-const subredditsPathName = 'subreddits/1';
+// const subredditsPathName = 'subreddits/1';
 
 // reset session storage
 sessionStorage.clear();
@@ -44,9 +44,8 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
   async (_, {rejectWithValue}) => {
     try {
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
-      // const response = await fetch('https://www.reddit.com/subreddits.json');
-      // const response = await fetchThrottle('https://www.reddit.com/subreddits.json');
-      const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
+      const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
+      // const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
       console.log('res =>', response);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -65,16 +64,13 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
   async (postTitle, {rejectWithValue, getState}) => {
     try {
       // check if posts cached
-      const {subredditPosts: {postsOb}} = getState();
-      if (typeof postsOb[postTitle] === 'object') {
-        console.info('Posts cached, not fetching=> r\/', postTitle);
-        return postsOb[postTitle]; // replace original posts on early return 
+      const {subredditPosts: {posts}} = getState();
+      if (typeof posts[postTitle] === 'object') {
+        console.info('Posts cached, not fetching=> r/', postTitle);
+        return posts[postTitle]; // replace original posts on early return 
       }
-      // const response = await fetch(`https://www.reddit.com/r/TEST_REDDIT_ERROR_RESPONSE.json`);
-      // const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
-      // const response = await fetch(`${apiRootTesting}r/MapPorn`);`
-      const response = await fetchThrottle(`${apiRootTesting}r/${postTitle}`, 'posts');
-      // const response = await fetch(`${apiRootTesting}r/${postTitle}`);
+      const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
+      // const response = await fetchThrottle(`${apiRootTesting}r/${postTitle}`, 'posts');
       if (!response.ok) {
         throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -93,7 +89,6 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
     console.log('permalink', permalink);
     try {
       const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
-      // const response = await fetch(`https://www.reddit.com${permalink}.json`);
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -142,12 +137,6 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       if (postAuthor === '[deleted]' || postAuthor === undefined) {
         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
       }
-      // const response = await fetch(`https://www.reddit.com/user/TEST_REDDIT_ERROR_RESPONSE/about.json`);
-      // const response = await fetch(`${apiRootTesting}user/${userName}`);
-      // const response = await fetch(`BAD_URL`);
-      // const response = await fetch(`http://httpstat.us/429`);
-      // const response = await fetch(`https://www.reddit.com/user/${userName}/about.json`);
-      // const response = await fetchWithDelay(`https://www.reddit.com/user/${userName}/about.json`);
       const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor}/about.json`, 'avatar', signal);
 
       if (!response?.ok) {
