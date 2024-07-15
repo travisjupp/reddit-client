@@ -1,15 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-// import * as toolkit from "@reduxjs/toolkit";
-import { getSubredditPosts, getUserAvatar } from "../features/api/reddit.js";
-// import * as toolkitRaw from '@reduxjs/toolkit';
-// const { createSlice } = toolkitRaw.createSlice ?? toolkitRaw;
-// const { createSlice } = toolkitRaw;
+import {createSlice} from "@reduxjs/toolkit";
+import {getSubredditPosts, getUserAvatar} from "../features/api/reddit.js";
 
 const initialState = {
     postsStatus: 'uninitialized',
     avatarsStatus: 'uninitialized',
-    posts: [],
-    postsOb: {},
+    posts: {},
     isFiltered: false,
     postsTemp: [],
     avatars: {},
@@ -26,11 +21,10 @@ const subredditPostsSlice = createSlice({
             const filteredPosts = state.postsTemp.filter(post =>
                 post.data.title.toLowerCase().includes(query.toLowerCase()));
             state.isFiltered = true; // flag isFiltered on
-            state.posts = filteredPosts; // show filtered posts
+            state.posts[state.posts.current] = filteredPosts; // show filtered posts
         },
         unfilterPosts(state) {
             state.isFiltered = false;
-            state.posts = state.postsTemp;
         }
     },
     extraReducers: builder => {
@@ -40,20 +34,19 @@ const subredditPostsSlice = createSlice({
             })
             .addCase(getSubredditPosts.fulfilled, (state, action) => {
                 state.postsStatus = 'succeeded';
-                console.log('action.meta',action.meta);
-                state.posts = action.payload;
-                state.postsOb.current = action.meta.arg;
-                state.postsOb[action.meta.arg] = action.payload;
-                state.postsTemp = state.posts;
+                console.log('action.meta', action.meta);
+                state.posts.current = action.meta.arg;
+                state.posts[action.meta.arg] = action.payload;
+                state.postsTemp = state.posts[action.meta.arg];
+
             })
             .addCase(getSubredditPosts.rejected, (state, action) => {
                 state.postsStatus = 'failed';
                 console.log('thunk rejected =>', action.meta.arg);
-                state.postsOb.current = action.meta.arg;
-                // state.posts = [];
+                state.posts.current = action.meta.arg;
                 // unpack error props
-                const { error, meta, payload, type } = action;
-                state.postsErrorState = { message: error.message, meta, payload, type };
+                const {error, meta, payload, type} = action;
+                state.postsErrorState = {message: error.message, meta, payload, type};
             })
             .addCase(getUserAvatar.pending, (state) => {
                 state.avatarsStatus = 'loading';
@@ -68,8 +61,8 @@ const subredditPostsSlice = createSlice({
             .addCase(getUserAvatar.rejected, (state, action) => {
                 state.avatarsStatus = 'failed';
                 // unpack error props
-                const { error, meta, payload, type } = action;
-                state.avatarsErrorState = { message: error.message, meta, payload, type };
+                const {error, meta, payload, type} = action;
+                state.avatarsErrorState = {message: error.message, meta, payload, type};
             })
     }
 })
@@ -79,8 +72,6 @@ export const {filterPosts, unfilterPosts} = subredditPostsSlice.actions;
 export default subredditPostsSlice.reducer;
 
 export const selectSubredditPosts = state => state.subredditPosts.posts;
-
-export const selectSubredditPostsOb = state => state.subredditPosts.postsOb;
 
 export const selectSubredditPostsStatus = state => state.subredditPosts.postsStatus;
 
