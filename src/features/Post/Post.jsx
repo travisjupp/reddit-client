@@ -11,13 +11,14 @@ import Toaster from '../../components/Toast/Toast.jsx';
 import {selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsPostId, selectSubredditCommentsStatus} from '../../store/subredditCommentsSlice.js';
 import {selectUserAvatars} from '../../store/subredditPostsSlice';
 import formatPostText from '../../utils/formatPostText.js';
+import formatPostMedia from '../../utils/formatPostMedia.js';
 import validateAvatarImgURL from '../../utils/validateImgURL.js';
 import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 
 function Post(props) {
-  const {postId, postAuthor, postDate, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
+  const {postId, postAuthor, postDate, postMedia, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   useEffect(() => {
     Holder.run({
@@ -29,12 +30,12 @@ function Post(props) {
   const avatars = useSelector(selectUserAvatars);
 
   // get user avatar
-  useEffect(() => { 
-      console.log('dispatching', postAuthor);
-      const promise = dispatch(getUserAvatar(postAuthor));
-      return () => {
-        promise.abort('Aborted from Post');
-      }
+  useEffect(() => {
+    console.log('dispatching', postAuthor);
+    const promise = dispatch(getUserAvatar(postAuthor));
+    return () => {
+      promise.abort('Aborted from Post');
+    }
   }, [dispatch, postAuthor]);
 
   const comments = useSelector(selectSubredditComments);
@@ -102,6 +103,14 @@ function Post(props) {
               <Row className='d-md-none'>
                 <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
               </Row>
+
+              {/* MOBILE POSTMEDIA show on xs and sm screen size only */}
+              <Row className='d-md-none'>
+                {/* {formatPostMedia(postMedia)} */}
+
+                <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown>
+              </Row>
+
 
               <Row className='align-items-end'>
 

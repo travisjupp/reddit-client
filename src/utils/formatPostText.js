@@ -6,13 +6,6 @@ import he from 'he';
 // Else, render plain post text, truncate and render.
 const formatPostText = (postTextHtml, postText, charLength) => {
     try {
-        // return postTextHtml !== null || undefined ?
-        //     he.decode(postTextHtml)
-        //         .substring(0, charLength) :
-        //     postText !== "" || null || undefined ?
-        //         postText.substring(0, charLength) :
-        //         "";
-
         if (postTextHtml) {
             return he.decode(postTextHtml)
                 .substring(0, charLength);

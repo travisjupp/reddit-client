@@ -40,6 +40,7 @@ function Main() {
                         postAuthor={post.data.author}
                         postDate={post.data.created}
                         postImgSrc={validatePostImgURL(post.data.url)}
+                        postMedia={post.data.media_embed}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}
                         score={post.data.score}
