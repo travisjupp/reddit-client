@@ -108,7 +108,7 @@ function Post(props) {
               <Row className='d-md-none'>
                 {/* {formatPostMedia(postMedia)} */}
 
-                <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown>
+                <Markdown className="d-md-none row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown>
               </Row>
 
 
