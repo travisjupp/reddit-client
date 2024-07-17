@@ -31,7 +31,7 @@ function Post(props) {
 
   // get user avatar
   useEffect(() => {
-    console.log('dispatching', postAuthor);
+    // console.log('dispatching', postAuthor);
     const promise = dispatch(getUserAvatar(postAuthor));
     return () => {
       promise.abort('Aborted from Post');
@@ -106,21 +106,17 @@ function Post(props) {
 
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */}
               <Row className='d-md-none'>
-                {/* <Markdown className="d-md-none row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown> */}
+                {formatPostMedia(postMedia)}
               </Row>
 
-
               {/* DESKTOP POSTMEDIA show on md and lg screen size only */}
-              <Row className='d-none d-md-block d-xl-none d-xxl-none row-cols-1'>
+              <Row className='d-none d-md-block d-xl-none d-xxl-none'>
                 {formatPostMedia(postMedia)}
-                {/* {console.log("]]>",postMedia.content,new DOMParser().parseFromString(formatPostMedia(postMedia), 'text/html').getElementsByTagName('iframe')[0])} */}
-
-                {/* {new DOMParser().parseFromString(formatPostMedia(postMedia), 'text/html').getElementsByTagName('iframe')[0]} */}
               </Row>
 
               {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */}
               <Row className='d-none d-xl-block'>
-                {/* <Markdown className="d-none d-xl-block row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown> */}
+                {formatPostMedia(postMedia)}
               </Row>
 
               <Row className='align-items-end'>
@@ -134,6 +130,7 @@ function Post(props) {
                 <Col className="d-none d-md-block">
                   <Votes stackGap={2} iconSize={'3em'} score={score} badgeStyle={'position-absolute translate-middle-x'} />
                 </Col>
+
                 <Col xs sm={5} xl={7}>
 
                   {/* MOBILE DATE show on xs and sm screen size only */}
@@ -155,30 +152,6 @@ function Post(props) {
 
                 {/* MOBILE ACTION BAR (right side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
-                  {/* <Stack direction="horizontal" gap={1} style={{}} className='justify-content-end'> */}
-                  {/*   <div style={{border: 'solid 1px red', zIndex: '3'}}> */}
-                  {/*     <BsShare size='1.5em' color='#000000' /> */}
-                  {/*   </div> */}
-                  {/*   <div className='vr' height='5px'></div> */}
-                  {/*   <div */}
-                  {/*     role="button" */}
-                  {/*     // data-bs-toggle="collapse" */}
-                  {/*     // data-bs-target={`#comments-wrapper-${postId}`} */}
-                  {/*     aria-controls={`comments-wrapper-${postId}`} */}
-                  {/*     // aria-controls={commentsRef} */}
-                  {/*     aria-expanded={collapseStates[postId]} */}
-                  {/*     onClick={toggleComments} */}
-                  {/*     style={{border: 'solid 1px red', zIndex: '3'}} */}
-                  {/*     id={`button-${postId}`} */}
-                  {/*   > */}
-                  {/*     <BsChatQuote size='1.5em' color='#000000' /> */}
-                  {/*   </div> */}
-                  {/*   <Badge pill> */}
-                  {/*     {/1* Overlay actual number of comments when comments clicked/loaded. */}
-                  {/*           numberOfComments not accurate, but good enough on initial load.  *1/} */}
-                  {/*     {comments.length !== 0 && comments[0].data.parent_id === `t3_${postId}` ? comments.length : numberOfComments} */}
-                  {/*   </Badge> */}
-                  {/* </Stack> */}
                   <Social
                     stackGap={1}
                     comments={comments}
@@ -191,32 +164,6 @@ function Post(props) {
 
                 {/* DESKTOP ACTION BAR (right side) show on md and larger */}
                 <Col className='d-none d-md-block'>
-                  {/* <Stack direction="horizontal" gap={2} style={{}} className='justify-content-end'> */}
-                  {/*   <div */}
-                  {/*     role="button" */}
-                  {/*     // data-bs-toggle="collapse" */}
-                  {/*     // data-bs-target={`#comments-wrapper-${postId}`} */}
-                  {/*     aria-controls={`comments-wrapper-${postId}`} */}
-                  {/*     aria-expanded={collapseStates[postId]} */}
-                  {/*     onClick={toggleComments} */}
-                  {/*     style={{border: 'solid 1px red', zIndex: '3'}} */}
-                  {/*   > */}
-                  {/*     <BsChatQuote size='3em' color='#000000' /> */}
-                  {/*     <Badge pill className='position-absolute translate-middle-x'> */}
-                  {/*       {/1* Overlay actual number of comments when comments clicked/loaded. */}
-                  {/*         numberOfComments not accurate, but good enough on initial load.  *1/} */}
-                  {/*       {numberOfComments} */}
-                  {/*     </Badge> */}
-                  {/*     <Badge pill className='position-absolute translate-middle-x'> */}
-                  {/*       {/1* Overlay actual number of comments when comments clicked/loaded. */}
-                  {/*         numberOfComments not accurate, but good enough on initial load.  *1/} */}
-                  {/*       {comments.length !== 0 ? comments[0].data.parent_id === `t3_${postId}` ? comments.length : null : numberOfComments} */}
-                  {/*     </Badge> */}
-                  {/*   </div> */}
-                  {/*   <div style={{border: 'solid 1px red', zIndex: '3'}}> */}
-                  {/*     <BsShare size='3em' color='#000000' /> */}
-                  {/*   </div> */}
-                  {/* </Stack> */}
                   <Social
                     iconSize="3em"
                     badgeStyle="position-absolute translate-middle-x"

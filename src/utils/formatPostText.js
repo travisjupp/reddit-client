@@ -17,8 +17,6 @@ const formatPostText = (postTextHtml, postText, charLength) => {
             }
         }
     } catch (e) {
-        console.log('postTextHtml', postTextHtml)
-        console.log('postText', typeof postText)
         console.error('Error:', e.message);
     }
 }
