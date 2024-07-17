@@ -106,18 +106,21 @@ function Post(props) {
 
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */}
               <Row className='d-md-none'>
-                <Markdown className="d-md-none row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown>
+                {/* <Markdown className="d-md-none row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown> */}
               </Row>
 
 
               {/* DESKTOP POSTMEDIA show on md and lg screen size only */}
-              <Row className='d-none d-md-block d-xl-none d-xxl-none'>
-                <Markdown className="d-none d-md-block d-xl-none d-xxl-none row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown>
+              <Row className='d-none d-md-block d-xl-none d-xxl-none row-cols-1'>
+                {formatPostMedia(postMedia)}
+                {/* {console.log("]]>",postMedia.content,new DOMParser().parseFromString(formatPostMedia(postMedia), 'text/html').getElementsByTagName('iframe')[0])} */}
+
+                {/* {new DOMParser().parseFromString(formatPostMedia(postMedia), 'text/html').getElementsByTagName('iframe')[0]} */}
               </Row>
 
               {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */}
               <Row className='d-none d-xl-block'>
-                <Markdown className="d-none d-xl-block row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown>
+                {/* <Markdown className="d-none d-xl-block row-cols-1" rehypePlugins={[rehypeRaw]} >{formatPostMedia(postMedia)}</Markdown> */}
               </Row>
 
               <Row className='align-items-end'>
