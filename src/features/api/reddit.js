@@ -8,7 +8,7 @@ sessionStorage.clear();
 console.log('session storage cleared');
 
 async function fetchThrottle(url, caller, signal) {
-  // We mainly throttle requests for user avatars since this hits the endpoint the most frequently. Since user avatars aren't integral (any avatars not loaded with be shimmed with an identicon), a _pseudo_ fetch-queue delays each request. Each call to `fetchThrottle` from `getUserAvatar` adds its delay to the `delayTime` which is ultimately cleared out with `rateLimitReset` and any other session storage items. 
+  // We mainly throttle requests for user avatars since this hits the endpoint the most frequently. Since user avatars aren't integral (any avatars not loaded with be shimmed with an identicon), a _pseudo_ fetch-queue delays each request. Each call to `fetchThrottle` from `getUserAvatar` adds its delay to the `delayTime` which is ultimately cleared out with `rateLimitReset` and any other session storage items.
 
   let delayTime = Number(sessionStorage.getItem('delayTime'));
   let delay = (ms) => new Promise(res => setTimeout(res, ms));
@@ -16,7 +16,7 @@ async function fetchThrottle(url, caller, signal) {
   // set rate limit reset time for one minute from now on first request
   if (numRequests === 1) {
     sessionStorage.setItem('rateLimitReset', new Date().getTime() + 60000);
-    // one minute from now clear session storage 
+    // one minute from now clear session storage
     setTimeout(() => {
       console.log('clearing session storage');
       sessionStorage.clear();
@@ -67,7 +67,7 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       const {subredditPosts: {posts}} = getState();
       if (typeof posts[postTitle] === 'object') {
         console.info('Posts cached, not fetching=> r/', postTitle);
-        return posts[postTitle]; // replace original posts on early return 
+        return posts[postTitle]; // replace original posts on early return
       }
       const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
       // const response = await fetchThrottle(`${apiRootTesting}r/${postTitle}`, 'posts');

@@ -104,20 +104,26 @@ function Post(props) {
                 <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
               </Row>
 
-              {/* MOBILE POSTMEDIA show on xs and sm screen size only */}
-              <Row className='d-md-none'>
-                {formatPostMedia(postMedia)}
-              </Row>
+              {/* MOBILE POSTMEDIA show on xs and sm screen size only */
+                postMedia.content &&
+                <Row className='d-md-none'>
+                  {formatPostMedia(postMedia)}
+                </Row>
+              }
 
-              {/* DESKTOP POSTMEDIA show on md and lg screen size only */}
-              <Row className='d-none d-md-block d-xl-none d-xxl-none'>
-                {formatPostMedia(postMedia)}
-              </Row>
+              {/* DESKTOP POSTMEDIA show on md and lg screen size only */
+                postMedia.content &&
+                <Row className='d-none d-md-block d-xl-none d-xxl-none'>
+                  {formatPostMedia(postMedia)}
+                </Row>
+              }
 
-              {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */}
-              <Row className='d-none d-xl-block'>
-                {formatPostMedia(postMedia)}
-              </Row>
+              {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */
+                postMedia.content &&
+                <Row className='d-none d-xl-block'>
+                  {formatPostMedia(postMedia)}
+                </Row>
+              }
 
               <Row className='align-items-end'>
 
