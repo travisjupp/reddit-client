@@ -18,7 +18,7 @@ import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 
 function Post(props) {
-  const {postId, postAuthor, postDate, postMedia, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
+  const {postId, postAuthor, postDate, postMedia, postMediaPreview, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   useEffect(() => {
     Holder.run({
@@ -107,21 +107,21 @@ function Post(props) {
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */
                 postMedia.content &&
                 <Row className='d-md-none'>
-                  {formatPostMedia(postMedia)}
+                  {formatPostMedia(postMedia, postMediaPreview)}
                 </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on md and lg screen size only */
                 postMedia.content &&
                 <Row className='d-none d-md-block d-xl-none d-xxl-none'>
-                  {formatPostMedia(postMedia)}
+                  {formatPostMedia(postMedia, postMediaPreview)}
                 </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */
                 postMedia.content &&
                 <Row className='d-none d-xl-block'>
-                  {formatPostMedia(postMedia)}
+                  {formatPostMedia(postMedia, postMediaPreview)}
                 </Row>
               }
 

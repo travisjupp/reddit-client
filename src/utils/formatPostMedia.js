@@ -3,12 +3,15 @@
 import he from 'he';
 import parse from 'html-react-parser';
 
-// If post media exists, decode html-entites and render. 
-const formatPostMedia = (postMedia) => {
+// If post media exists, decode html-entites and render.
+const formatPostMedia = (postMedia, postMediaPreview) => {
     try {
         if (typeof postMedia.content === 'string') {
-            const domElement = he.decode(postMedia.content);
-return parse(domElement);
+            const postMediaDomElement = he.decode(postMedia.content);
+            // => thumbnail media image component that opens a modal on click
+            console.log('-->',postMediaPreview.images[0].source)
+            return <img src={postMediaPreview.images[0].source.url} />
+            // return parse(postMediaDomElement);
         } else {
             return;
         }
