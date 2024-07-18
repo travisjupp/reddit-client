@@ -29,7 +29,7 @@ function Sidebar(props) {
     }
 
     if (status === 'failed') {
-        console.log('ERROR', popSubredditsListErrorState)
+        console.error('ERROR', popSubredditsListErrorState)
         let errorStr = JSON.stringify(Object.entries(popSubredditsListErrorState));
 
         return (
