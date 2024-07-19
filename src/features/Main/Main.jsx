@@ -44,6 +44,7 @@ function Main() {
                         postMediaPreview={post.data.preview}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}
+                        postUrl={post.data.url}
                         score={post.data.score}
                         altText={`r/${post.data.subreddit} - ${post.data.title}`}
                         postPermalink={post.data.permalink.slice(0, -1)}

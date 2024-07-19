@@ -16,9 +16,9 @@ import validateAvatarImgURL from '../../utils/validateImgURL.js';
 import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
-
+import Media from '../../components/Media/Media.jsx';
 function Post(props) {
-  const {postId, postAuthor, postDate, postMedia, postMediaPreview, postImgSrc, postTitle, postText, postTextHtml, altText, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
+  const {postId, postAuthor, postDate, postMedia, postMediaPreview, postImgSrc, postTitle, postText, postTextHtml, altText, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   useEffect(() => {
     Holder.run({
@@ -92,7 +92,10 @@ function Post(props) {
   return (
     <>
       <Card id={postId}>
-        {postImgSrc ? <Card.Img variant="top" src={postImgSrc} alt={altText} /> : null}
+        {/* POSTIMAGE */
+          postImgSrc &&
+          <Card.Img variant="top" src={postImgSrc} alt={altText} />
+        }
         <Card.Body>
           <Card.Title>{postTitle} <div style={{float: 'right'}}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
@@ -102,12 +105,14 @@ function Post(props) {
               {/* MOBILE POSTTEXT show on xs and sm screen size only */}
               <Row className='d-md-none'>
                 <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
+                {postUrl.search(/(www\.reddit\.com)|(redd\.it)/g) === -1 && <a href={postUrl}>{postUrl}</a>}
               </Row>
 
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */
                 postMedia.content &&
                 <Row className='d-md-none'>
-                  {formatPostMedia(postMedia, postMediaPreview)}
+                  {/* {formatPostMedia(postMedia, postMediaPreview)} */}
+                  <Media postMedia={postMedia} postMediaPreview={postMediaPreview} />
                 </Row>
               }
 
