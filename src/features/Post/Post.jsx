@@ -111,7 +111,6 @@ function Post(props) {
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */
                 postMedia.content &&
                 <Row className='d-md-none'>
-                  {/* {formatPostMedia(postMedia, postMediaPreview)} */}
                   <Media postMedia={postMedia} postMediaPreview={postMediaPreview} />
                 </Row>
               }
@@ -119,14 +118,14 @@ function Post(props) {
               {/* DESKTOP POSTMEDIA show on md and lg screen size only */
                 postMedia.content &&
                 <Row className='d-none d-md-block d-xl-none d-xxl-none'>
-                  {formatPostMedia(postMedia, postMediaPreview)}
+                  <Media postMedia={postMedia} postMediaPreview={postMediaPreview} />
                 </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */
                 postMedia.content &&
                 <Row className='d-none d-xl-block'>
-                  {formatPostMedia(postMedia, postMediaPreview)}
+                  <Media postMedia={postMedia} postMediaPreview={postMediaPreview} />
                 </Row>
               }
 
