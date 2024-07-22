@@ -11,14 +11,13 @@ import Toaster from '../../components/Toast/Toast.jsx';
 import {selectSubredditComments, selectSubredditCommentsError, selectSubredditCommentsPostId, selectSubredditCommentsStatus} from '../../store/subredditCommentsSlice.js';
 import {selectUserAvatars} from '../../store/subredditPostsSlice';
 import formatPostText from '../../utils/formatPostText.js';
-import formatPostMedia from '../../utils/formatPostMedia.js';
 import validateAvatarImgURL from '../../utils/validateImgURL.js';
 import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
 function Post(props) {
-  const {postId, postAuthor, postDate, postMedia, postMediaPreview, postImgSrc, postTitle, postText, postTextHtml, altText, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
+  const {postId, postAuthor, postDate, postMedia, postMediaPreview, postGallery, postImgSrc, postTitle, postText, postTextHtml, altText, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   useEffect(() => {
     Holder.run({
@@ -109,23 +108,23 @@ function Post(props) {
               </Row>
 
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */
-                postMedia.content &&
+                postMedia &&
                 <Row className='d-md-none'>
-                  <Media postMedia={postMedia} postMediaPreview={postMediaPreview} />
+                  <Media postMedia={postMedia} />
                 </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on md and lg screen size only */
-                postMedia.content &&
+                postMedia &&
                 <Row className='d-none d-md-block d-xl-none d-xxl-none'>
-                  <Media postMedia={postMedia} postMediaPreview={postMediaPreview} />
+                  <Media postMedia={postMedia} />
                 </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */
-                postMedia.content &&
+                postMedia &&
                 <Row className='d-none d-xl-block'>
-                  <Media postMedia={postMedia} postMediaPreview={postMediaPreview} />
+                  <Media postMedia={postMedia} />
                 </Row>
               }
 

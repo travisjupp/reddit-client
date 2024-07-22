@@ -40,8 +40,11 @@ function Main() {
                         postAuthor={post.data.author}
                         postDate={post.data.created}
                         postImgSrc={validatePostImgURL(post.data.url)}
-                        postMedia={post.data.media_embed}
-                        postMediaPreview={post.data.preview}
+                        postMedia={{
+                            mediaEmbed: post.data.media_embed,
+                            preview: post.data.preview
+                        }}
+                        postGallery={{isGallery: post.data.is_gallery, metadata: post.data.media_metadata, data: post.data.gallery_data}}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}
                         postUrl={post.data.url}

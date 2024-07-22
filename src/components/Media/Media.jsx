@@ -7,29 +7,25 @@ import he from 'he';
 import parse from 'html-react-parser';
 
 // If post media exists, decode html-entites and render.
-const Media = ({postMedia, postMediaPreview}) => {
+const Media = ({postMedia}) => {
+    const {mediaEmbed,preview} = postMedia;
+    console.log('~>postMedia',postMedia);
+    console.log('~>mediaEmbed, preview',mediaEmbed, preview);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     try {
-        if (typeof postMedia.content === 'string') {
-            const postMediaDomElement = he.decode(postMedia.content);
+        // check for embedded media
+        if (typeof mediaEmbed.content === 'string') {
+            const postMediaDomElement = he.decode(mediaEmbed.content);
             // => thumbnail media image component that opens a modal on click
-            console.log('he.decode', he.decode(postMediaPreview.images[0].source.url))
-            return (<> <img onClick={handleShow} src={he.decode(postMediaPreview.images[0].source.url)} alt="Media Preview" />
+            // console.log('he.decode', he.decode(postMediaPreview.images[0].source.url))
+            return (<> <img onClick={handleShow} src={he.decode(preview.images[0].source.url)} alt="Media Preview" />
                 <Modal show={show} onHide={handleClose} centered>
                     <Modal.Header closeButton>
                         {/* <Modal.Title>Modal heading</Modal.Title> */}
                     </Modal.Header>
                     <Modal.Body className="row-cols-1">{parse(postMediaDomElement)}</Modal.Body>
-                    {/* <Modal.Footer> */}
-                    {/*     <Button variant="secondary" onClick={handleClose}> */}
-                    {/*         Close */}
-                    {/*     </Button> */}
-                    {/*     <Button variant="primary" onClick={handleClose}> */}
-                    {/*         Save Changes */}
-                    {/*     </Button> */}
-                    {/* </Modal.Footer> */}
                 </Modal>
             </>)
             // return parse(postMediaDomElement); // return parsed DOM node
