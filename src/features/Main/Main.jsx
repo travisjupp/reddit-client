@@ -42,9 +42,11 @@ function Main() {
                         postImgSrc={validatePostImgURL(post.data.url)}
                         postMedia={{
                             mediaEmbed: post.data.media_embed,
-                            preview: post.data.preview
+                            preview: post.data.preview,
+                            isGallery: post.data.is_gallery, 
+                            metadata: post.data.media_metadata, 
+                            data: post.data.gallery_data
                         }}
-                        postGallery={{isGallery: post.data.is_gallery, metadata: post.data.media_metadata, data: post.data.gallery_data}}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}
                         postUrl={post.data.url}
