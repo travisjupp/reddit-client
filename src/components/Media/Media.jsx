@@ -25,25 +25,52 @@ const Media = ({postMedia}) => {
             const sortedResolutions = [...resolutions].sort((a, b) => b.width - a.width);
             const previewId = preview.images[0].id; // get preview id
             const previewSource = preview.images[0].source; // get preview source
+            const postMediaDomElement = he.decode(mediaEmbed.content);
             console.log('~>preview', preview, '\n~>isGallery', isGallery,
                 '\n~>resolutions', resolutions, '\n~>sortedResolutions', sortedResolutions);
+            // return picture with source elements
+            return (
+                <picture key={previewId} id={previewId} style={{padding: 0}}>
+                    {sortedResolutions.map(image => {
+                        return (
+                            <source
+                                srcset={he.decode(image.url)}
+                                media={`(min-width: ${image.width}px)`}
+                                //width={image.width}
+                                //height={image.height}
+                            />
+                        )
+                    })
+                    }
+                    {
+                        // if post media is DOM element render a modal spawning image
+                        typeof mediaEmbed.content === 'string' ?
+                            <>
+                                <img onClick={handleShow} src={he.decode(previewSource.url)}
+                                    // width={previewSource.width} 
+                                    // height={previewSource.height} 
+                                    alt="Media Preview"
+                                    style={{width: "inherit"}}
+                                />
+                                <Modal show={show} onHide={handleClose} centered>
+                                    <Modal.Header closeButton>
+                                        {/* <Modal.Title>Modal heading</Modal.Title> */}
+                                    </Modal.Header>
+                                    <Modal.Body className="row-cols-1">{parse(postMediaDomElement)}</Modal.Body>
+                                </Modal>
+                            </> :
+                            // if post media is not DOM element render image
+                            <img src={he.decode(previewSource.url)}
+                                // width={previewSource.width} 
+                                // height={previewSource.height} 
+                                alt="Post Media"
 
-            return <picture key={previewId} id={previewId}>
-                {sortedResolutions.map(image => {
-                    return (
-                        <source
-                            srcset={he.decode(image.url)}
-                            media={`(min-width: ${image.width}px)`}
-                            width={image.width}
-                            height={image.height}
-                        />
-                    )
-                })
-                }
-                <img src={he.decode(previewSource.url)}
-                    width={previewSource.width}
-                    height={previewSource.height} alt="Post Media" />
-            </picture>
+                                style={{width: "inherit"}}
+                            />
+                    }
+
+                </picture>
+            )
         }
         // check for embedded media
         console.log('mediaEmbed.content', mediaEmbed.content);
