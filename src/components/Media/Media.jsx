@@ -7,6 +7,7 @@ import he from 'he';
 import parse from 'html-react-parser';
 
 // If post media exists, decode html-entites and render.
+// Searches for available media types: image galleries, images, and embedded media from 3rd party sites eg. twitch/youtube videos
 const Media = ({postMedia}) => {
     const {mediaEmbed, preview, isGallery, metadata, data} = postMedia;
     console.log('~>postMedia', postMedia);
@@ -24,7 +25,7 @@ const Media = ({postMedia}) => {
             const sortedResolutions = [...resolutions].sort((a, b) => b.width - a.width);
             const previewId = preview.images[0].id; // get preview id
             const previewSource = preview.images[0].source; // get preview source
-            console.log('~>preview', preview, '\n~>isGallery', isGallery == true,
+            console.log('~>preview', preview, '\n~>isGallery', isGallery,
                 '\n~>resolutions', resolutions, '\n~>sortedResolutions', sortedResolutions);
 
             return <picture key={previewId} id={previewId}>
@@ -41,7 +42,7 @@ const Media = ({postMedia}) => {
                 }
                 <img src={he.decode(previewSource.url)}
                     width={previewSource.width}
-                    height={previewSource.height} alt="Post Image" />
+                    height={previewSource.height} alt="Post Media" />
             </picture>
         }
         // check for embedded media
@@ -71,7 +72,7 @@ const Media = ({postMedia}) => {
                 console.log('~>isGallery', isGallery, '\nmetadata', metadata, '\ndata', data);
                 for (const key in metadata) {
                     console.log('~>image', metadata[key]);
-                    let image = metadata[key];
+                    // let image = metadata[key];
 
                     console.log('~>metadata[key][]',)
 
