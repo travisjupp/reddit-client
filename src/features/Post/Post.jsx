@@ -17,7 +17,7 @@ import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
 function Post(props) {
-  const {postId, postAuthor, postDate, postMedia, postMediaPreview, postGallery, postImgSrc, postTitle, postText, postTextHtml, altText, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
+  const {postId, postAuthor, postDate, postMedia, postImgSrc, postTitle, postText, postTextHtml, altText, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   useEffect(() => {
     Holder.run({
@@ -43,6 +43,8 @@ function Post(props) {
   const commentsRequestedPostId = useSelector(selectSubredditCommentsPostId);
   const commentsDispatchedPost = postId === commentsRequestedPostId; // isolate the post that comments were requested for
   const commentsFailedPost = postId === commentsErrorState?.meta.arg.postId; // isolate the post that a comments request errored
+
+  const nonRedditPostUrlLink = postUrl.search(/(www\.reddit\.com)|(redd\.it)/g) === -1 && <a href={postUrl}>{postUrl}</a>;
 
   const handleCollapse = (postId) => {
     const updatedStates = {...collapseStates};
@@ -104,25 +106,25 @@ function Post(props) {
               {/* MOBILE POSTTEXT show on xs and sm screen size only */}
               <Row className='d-md-none'>
                 <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
-                {postUrl.search(/(www\.reddit\.com)|(redd\.it)/g) === -1 && <a href={postUrl}>{postUrl}</a>}
+                {nonRedditPostUrlLink}
               </Row>
 
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */
-                postMedia &&
+                postMedia.mediaEmbed?.content &&
                 <Row className='d-md-none'>
                   <Media postMedia={postMedia} />
                 </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on md and lg screen size only */
-                postMedia &&
+                //postMedia.mediaEmbed?.content &&
                 <Row className='d-none d-md-block d-xl-none d-xxl-none'>
                   <Media postMedia={postMedia} />
                 </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */
-                postMedia &&
+                postMedia.mediaEmbed?.content &&
                 <Row className='d-none d-xl-block'>
                   <Media postMedia={postMedia} />
                 </Row>
@@ -152,11 +154,16 @@ function Post(props) {
                   <div className="d-none d-xl-block date small" style={{border: 'solid 1px blue'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
 
                   {/* DESKTOP POSTTEXT show on md and lg screen size only */}
-                  <Markdown className="d-none d-md-block d-xl-none d-xxl-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>
+                  <div className="d-none d-md-block d-xl-none d-xxl-none">
+                    <Markdown rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>
+                    {nonRedditPostUrlLink}
+                  </div>
 
                   {/* DESKTOP POSTTEXT show on xl and xxl screen size only */}
-                  <Markdown className="d-none d-xl-block" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 1200) + '...show on xl and xxl only'}</Markdown>
-
+                  <div className="d-none d-xl-block">
+                    <Markdown rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 1200) + '...show on xl and xxl only'}</Markdown>
+                    {nonRedditPostUrlLink}
+                  </div>
                 </Col>
 
                 {/* MOBILE ACTION BAR (right side) show on xs and sm screen size only */}
