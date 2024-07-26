@@ -17,7 +17,7 @@ import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
 function Post(props) {
-  const {postId, postAuthor, postDate, postMedia, postImgSrc, postTitle, postText, postTextHtml, altText, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
+  const {postId, postAuthor, postDate, postMedia, postTitle, postText, postTextHtml, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   useEffect(() => {
     Holder.run({
@@ -94,8 +94,12 @@ function Post(props) {
     <>
       <Card id={postId}>
         {/* POSTIMAGE */
-          postImgSrc &&
-          <Card.Img variant="top" src={postImgSrc} alt={altText} />
+//          postImgSrc &&
+//          <Card.Img variant="top" src={postImgSrc} alt={altText} />
+          (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery) &&
+          <Media 
+            postMedia={postMedia}
+            />
         }
         <Card.Body>
           <Card.Title>{postTitle} <div style={{float: 'right'}}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
@@ -110,24 +114,24 @@ function Post(props) {
               </Row>
 
               {/* MOBILE POSTMEDIA show on xs and sm screen size only */
-                postMedia.mediaEmbed?.content &&
-                <Row className='d-md-none'>
-                  <Media postMedia={postMedia} />
-                </Row>
+//                postMedia.mediaEmbed?.content &&
+//                <Row className='d-md-none'>
+//                  <Media postMedia={postMedia} />
+//                </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on md and lg screen size only */
-                //postMedia.mediaEmbed?.content &&
-                <Row className='d-none d-md-block d-xl-none d-xxl-none'>
-                  <Media postMedia={postMedia} />
-                </Row>
+//                //postMedia.mediaEmbed?.content &&
+//                <Row className='d-none d-md-block d-xl-none d-xxl-none'>
+//                  <Media postMedia={postMedia} />
+//                </Row>
               }
 
               {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */
-                postMedia.mediaEmbed?.content &&
-                <Row className='d-none d-xl-block'>
-                  <Media postMedia={postMedia} />
-                </Row>
+//                postMedia.mediaEmbed?.content &&
+//                <Row className='d-none d-xl-block'>
+//                  <Media postMedia={postMedia} />
+//                </Row>
               }
 
               <Row className='align-items-end'>
