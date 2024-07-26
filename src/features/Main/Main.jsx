@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import Toaster from '../../components/Toast/Toast.jsx';
 import {selectSubredditPostsError, selectSubredditPosts, selectSubredditPostsStatus} from '../../store/subredditPostsSlice.js';
-import validatePostImgURL from '../../utils/validateImgURL.js';
+// import validatePostImgURL from '../../utils/validateImgURL.js';
 import Post from '../Post/Post';
 import {getSubredditComments, getSubredditPosts} from '../api/reddit';
 
@@ -39,19 +39,20 @@ function Main() {
                         postTitle={post.data.title}
                         postAuthor={post.data.author}
                         postDate={post.data.created}
-                        postImgSrc={validatePostImgURL(post.data.url)}
+                        // postImgSrc={validatePostImgURL(post.data.url)}
                         postMedia={{
                             mediaEmbed: post.data.media_embed,
                             preview: post.data.preview,
-                            isGallery: post.data.is_gallery, 
-                            metadata: post.data.media_metadata, 
-                            data: post.data.gallery_data
+                            isGallery: post.data.is_gallery,
+                            metadata: post.data.media_metadata,
+                            data: post.data.gallery_data,
+                            altText: `r/${post.data.subreddit} - ${post.data.title}`
                         }}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}
                         postUrl={post.data.url}
                         score={post.data.score}
-                        altText={`r/${post.data.subreddit} - ${post.data.title}`}
+                        // altText={`r/${post.data.subreddit} - ${post.data.title}`}
                         postPermalink={post.data.permalink.slice(0, -1)}
                         numberOfComments={post.data.num_comments}
                         handleComments={handleComments}
