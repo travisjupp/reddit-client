@@ -23,6 +23,7 @@ function Post(props) {
     Holder.run({
       images: ".card-img-top"
     });
+    window.scrollTo(0,0);
   }, []);
 
   const dispatch = useDispatch();
