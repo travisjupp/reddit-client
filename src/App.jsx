@@ -13,7 +13,7 @@ function App() {
     <>
       <BSScreenSize />
       <Container fluid className='justify-content-start'>
-        <Row as='header'>
+        <Row as='header' style={{position: "sticky", top: 0, zIndex: 4}}>
           <Header />
         </Row>
         <Row>
