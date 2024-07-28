@@ -65,7 +65,7 @@ function Header() {
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                            <Form className="d-flex flex-grow-1" aria-label='Search' id='searchForm' onSubmit={handleSubmit}>
+                            <Form className="d-flex flex-grow-1 d-none d-md-block" aria-label='Search' id='searchForm' onSubmit={handleSubmit}>
                                 <InputGroup>
                                     {/* <Form.Label htmlFor='searchValue'>{data.searchValue}</Form.Label> */}
                                     <Form.Control
