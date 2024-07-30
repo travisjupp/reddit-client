@@ -41,18 +41,18 @@ function Main() {
                         postDate={post.data.created}
                         // postImgSrc={validatePostImgURL(post.data.url)}
                         postMedia={{
-                            mediaEmbed: post.data.media_embed,
-                            preview: post.data.preview,
-                            isGallery: post.data.is_gallery,
-                            metadata: post.data.media_metadata,
-                            data: post.data.gallery_data,
-                            altText: `r/${post.data.subreddit} - ${post.data.title}`
+                            preview: post.data.preview, // preview images, and image only posts
+                            mediaEmbed: post.data.media_embed, // embedded videos (iframe)
+                            redditVideo: post.data.media?.reddit_video, // reddit hosted video
+                            isGallery: post.data.is_gallery, // image galleries flag
+                            metadata: post.data.media_metadata, // image gallery images
+                            data: post.data.gallery_data, // image gallery ids
+                            altText: `r/${post.data.subreddit} - ${post.data.title}`, // img alt text
                         }}
                         postText={post.data.selftext}
                         postTextHtml={post.data.selftext_html}
                         postUrl={post.data.url}
                         score={post.data.score}
-                        // altText={`r/${post.data.subreddit} - ${post.data.title}`}
                         postPermalink={post.data.permalink.slice(0, -1)}
                         numberOfComments={post.data.num_comments}
                         handleComments={handleComments}
