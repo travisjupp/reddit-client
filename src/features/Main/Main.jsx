@@ -43,6 +43,7 @@ function Main() {
                         postMedia={{
                             preview: post.data.preview, // preview images, and image only posts
                             mediaEmbed: post.data.media_embed, // embedded videos (iframe)
+                            isRedditVideo: post.data.is_video, // reddit hosted video flag
                             redditVideo: post.data.media?.reddit_video, // reddit hosted video
                             isGallery: post.data.is_gallery, // image galleries flag
                             metadata: post.data.media_metadata, // image gallery images
