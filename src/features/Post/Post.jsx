@@ -97,7 +97,7 @@ function Post(props) {
         {/* POSTIMAGE */
 //          postImgSrc &&
 //          <Card.Img variant="top" src={postImgSrc} alt={altText} />
-          (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery) &&
+          (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo) &&
           <Media 
             postMedia={postMedia}
             />
