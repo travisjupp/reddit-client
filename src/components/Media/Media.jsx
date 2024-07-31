@@ -9,7 +9,7 @@ import parse from 'html-react-parser';
 // If post media exists, decode html-entites and render.
 // Searches for available media types: image galleries, images, and embedded media from 3rd party sites eg. twitch/youtube videos
 const Media = ({postMedia}) => {
-    const {mediaEmbed, preview, isGallery, metadata, data, altText} = postMedia;
+    const {mediaEmbed, preview, isGallery, metadata, data, altText, redditVideo} = postMedia;
     console.log('~>postMedia', postMedia);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -19,8 +19,21 @@ const Media = ({postMedia}) => {
     const previewId = preview?.images[0].id; // get preview id
     const previewSource = preview?.images[0].source; // get preview source
     const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
-    console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data);
+    const redditVideoURL = he.decode(redditVideo?.fallback_url || '');
+    console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
     try {
+        // REDDIT VIDEO CHECKER
+        if (redditVideoURL) {
+            return (
+                <>
+                    <div>redditVideoURL</div>
+                    <video controls className="card-img-top">
+                        <source src={redditVideoURL} />
+
+                    </video>
+                </>
+            )
+        }
         // PREVIEW CHECKER check for previews, or image only posts
         if (preview) {
             // return picture with source elements
