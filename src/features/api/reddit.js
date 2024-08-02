@@ -41,7 +41,7 @@ async function fetchThrottle(url, caller, signal) {
 // Fetch list of popular subreddits
 // Populates the sidebar on first load with https://www.reddit.com/subreddits
 export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubredditsList',
-  async (_, {rejectWithValue}) => {
+  async (_, {rejectWithValue, getState}) => {
     try {
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
       const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
@@ -55,6 +55,15 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
     } catch (e) {
       console.error('Error:', e.message);
       return rejectWithValue(e.message);
+    }
+  },
+  {
+    condition(_, {getState}) {
+      const {subreddits: {subreddits}} = getState();
+      if (subreddits.length) { // if avatar is cached cancel thunk
+        console.log('Popular Subreddits list cached, cancelling thunk =>');
+        return false;
+      }
     }
   }
 );

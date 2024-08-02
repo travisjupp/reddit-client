@@ -14,11 +14,8 @@ function Sidebar(props) {
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
 
     useEffect(() => {
-        if (!popSubredditsList.length) { // check if popular subreddits are cached before dispatching fetch (avoid hitting rate-limits)
-            console.log('dispatching getPopSubredditsList');
-            dispatch(getPopSubredditsList());
-        }
-    }, [dispatch, popSubredditsList]);
+        dispatch(getPopSubredditsList());
+    }, [dispatch]);
 
     const handlePosts = (postTitle) => {
         dispatch(getSubredditPosts(postTitle));
