@@ -28,7 +28,7 @@ const subredditSlice = createSlice({
             })
             .addCase(getPopSubredditsList.rejected, (state, action) => {
                 state.status = 'failed';
-                state.subreddits = [];
+                // state.subreddits = [];
                 // unpack error props
                 const {error, meta, payload, type} = action;
                 state.error = {error, meta, payload, type};
