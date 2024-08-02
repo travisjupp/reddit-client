@@ -8,7 +8,8 @@ const StatusLoader = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 // border: 'solid 1px red',
-                height: '100vh'
+                // height: '100vh'
+                height: 'calc(100vh - 58px)'
             }}>
                 <Spinner animation="border" />
             </div>
