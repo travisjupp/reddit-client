@@ -33,7 +33,7 @@ npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react rea
 
 https://github.com/imsky/holder
 
-```js
+```jsx
 <Card.Img variant="top" data-src="holder.js/100x50?auto=yes&textmode=exact&theme=industrial" />
 ```
 
@@ -152,8 +152,66 @@ curl $(curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img' 
 
 ```
 
+#### Response Headers
 
+Viewing / working with reddit ratelimits using Fetch API
 
+Basic example:
+```javascript
+
+// define object to hold headers
+const ob = {};
+
+// build object of header values
+fetch('https://www.reddit.com/r/Unexpected.json').then(res=>res.headers.forEach((v,k)=>ob[k]=v))
+
+// work with header values
+ob['x-ratelimit-remaining'] // => '95.0'
+ob['x-ratelimit-used'] // => '5'
+ob['x-ratelimit-reset'] // => '225'
+```
+
+Building headers object example:
+```javascript
+
+const fetchBodyWithHeaders = async (url) => {
+    const response = await fetch(url);
+    const json = await response.json();
+
+    const headerReportTo = response.headers.get('report-to');
+    
+    const hob = {};
+
+    response.headers.forEach((v,k)=>{
+        // console.log({[k]:v})
+        hob[k] = v;
+    });
+
+    // Parsing report-to header (multiple objects won't parse nicely, needs love)
+
+    // create array of objects
+    const headerReportToArr = headerReportTo.split('}, ');
+
+    // trim '}' from end of last element (now all els are missing a closing '}')
+    headerReportToArr[headerReportToArr.length-1] = 
+        headerReportToArr[headerReportToArr.length-1].slice(0, -1);
+
+    const reportToVals = [];
+    
+    // add closing '}' to end of each element and build reportToVals
+    for (const hgroup of headerReportToArr) {
+        // console.log('report-to hgroup', JSON.parse(hgroup + '}').group, JSON.parse(hgroup + '}'))
+        reportToVals.push(JSON.parse(hgroup + '}'));
+    }
+
+    hob['report-to'] = reportToVals; // update headers object
+    hob['nel'] = JSON.parse(hob['nel']); // parse this fugly one too
+    console.log('hob =>', hob); // headers object
+    console.log('json =>', json) // body object
+}
+
+fetchBodyWithHeaders('https://www.reddit.com/r/react.json');
+```
 
 #### URLs & Hyperlinks
 
