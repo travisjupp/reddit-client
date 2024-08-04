@@ -1,5 +1,5 @@
 // Display Bootstrap breakpoints and current screen width
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 
 function BSScreenSize() {
@@ -19,12 +19,12 @@ function BSScreenSize() {
     })
 
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
     useEffect(() => {
         function handleResize() {
             setScreenWidth(window.innerWidth)
         }
         window.addEventListener('resize', handleResize)
-
         return () => {
             window.removeEventListener('resize', handleResize)
         }
@@ -43,15 +43,11 @@ function BSScreenSize() {
     const panelOverlay = {
         height: 'inherit',
         width: '100%',
-        // fontSize: '10px',
         font: 'inherit',
-        // border: 'dashed 1px green',
         dialMover: {
             width: `${screenWidth / 20}%`,
             height: 'inherit',
             font: 'inherit',
-            // borderRight: 'solid 1px red',
-            // border: 'solid 1px red',
         },
         dialPointer: {
             width: '1px',
@@ -62,7 +58,6 @@ function BSScreenSize() {
         dialValue: {
             height: 'auto',
             fontSize: '10px',
-            // font: 'small-caps 900 10px sans-serif',
             color: 'red',
             backgroundColor: 'rgba(0,0,0,0.9)',
         },
@@ -73,7 +68,6 @@ function BSScreenSize() {
         height: 'inherit',
         width: '100%',
         font: 'inherit',
-        // border: 'dotted 1px red',
         textAlign: 'center',
         alignItems: 'center',
         xs: {
@@ -85,7 +79,6 @@ function BSScreenSize() {
             height: 'inherit',
             font: 'inherit',
             borderRight: 'solid 1px black',
-
         },
         sm: {
             display: 'flex',
@@ -96,7 +89,6 @@ function BSScreenSize() {
             height: 'inherit',
             font: 'inherit',
             borderRight: 'solid 1px black',
-
         },
         md: {
             display: 'flex',
@@ -107,7 +99,6 @@ function BSScreenSize() {
             height: 'inherit',
             font: 'inherit',
             borderRight: 'solid 1px black',
-
         },
         lg: {
             display: 'flex',
@@ -118,7 +109,6 @@ function BSScreenSize() {
             height: 'inherit',
             font: 'inherit',
             borderRight: 'solid 1px black',
-
         },
         xl: {
             display: 'flex',
@@ -129,7 +119,6 @@ function BSScreenSize() {
             height: 'inherit',
             font: 'inherit',
             borderRight: 'solid 1px black',
-
         },
         xxl: {
             display: 'flex',
@@ -139,23 +128,18 @@ function BSScreenSize() {
             width: `${600 / 20}%`,
             height: 'inherit',
             font: 'inherit',
-
         }
 
     }
 
     return (
         <>
-
-
-            <div id="container" className={container.canHide()} style={container}>
-
+            <div id="BSScreenSize" className={container.canHide()} style={container}>
                 <div id="panelOverlay" className="position-absolute z-1" style={panelOverlay}>
                     <div id="dialMover" className="d-inline-block" style={panelOverlay.dialMover}></div>
                     <div id="dialPointer" className="d-inline-block" style={panelOverlay.dialPointer}></div>
                     <div id="dialValue" className="d-inline-block position-absolute top-100 translate-middle-x" style={panelOverlay.dialValue}>{screenWidth}</div>
                 </div>
-
                 <div id="panel" className="position-absolute z-0" style={panel}>
                     <div id="xs" style={panel.xs}>xs</div>
                     <div id="sm" style={panel.sm}>sm</div>
@@ -164,7 +148,7 @@ function BSScreenSize() {
                     <div id="xl" style={panel.xl}>xl</div>
                     <div id="xxl" style={panel.xxl}>xxl</div>
                 </div>
-</div>
+            </div>
         </>
     )
 }
