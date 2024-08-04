@@ -47,7 +47,7 @@ function Sidebar(props) {
             <>
                 <Accordion flush>
                     <Accordion.Item>
-                        <Accordion.Header>Popular</Accordion.Header>
+                        <Accordion.Header>Popular Subreddits</Accordion.Header>
                         <Accordion.Body>
                             {
                                 popSubredditsList.map(
@@ -61,8 +61,8 @@ function Sidebar(props) {
                                                 handlePosts(subreddit.data.display_name);
                                                 return toggleOffcanvas ? toggleOffcanvas() : null;
                                             }}>
-                                            <Avatar name={subreddit.data.title} src={subreddit.data.icon_img} />
-                                            {subreddit.data.title}
+                                            <Avatar name={subreddit.data.title} src={subreddit.data.icon_img} size="30" />
+                                            <span id="prefix">r/</span><span id="srlink">{subreddit.data.url.slice(3,-1)}</span>
                                         </Nav.Link>
                                 )}
                         </Accordion.Body>

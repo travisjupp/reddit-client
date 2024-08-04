@@ -10,7 +10,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-    border: solid 2px green;
    word-break: break-all;
 }
 
@@ -19,12 +18,10 @@ code {
 }
 
 p.card-text > * {
-  border: solid 1px red;
   word-break: break-all;
 }
 
 /* non-wrapping preformatted text breaks the layout when sidebar is present */
-
 
 pre {
   /* display: none; */
@@ -35,6 +32,7 @@ pre {
 pre code {
   word-break: break-all;
 }
+
 /* div.card-text > pre > code {
   border: solid 2px green;
   font-size: 80%;
@@ -44,7 +42,7 @@ pre code {
 /* overflowing Nav.Link items word-break */
 .accordion-body .nav-link {
   word-break: break-all;
-  font-size: 80%;
+  font-size: 1.7em;
   margin-bottom: .2rem;
 }
 

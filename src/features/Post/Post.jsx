@@ -18,7 +18,7 @@ import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
 function Post(props) {
   const {postId, postAuthor, postDate, postMedia, postTitle, postText, postTextHtml, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
-
+  
   useEffect(() => {
     Holder.run({
       images: ".card-img-top"
@@ -150,13 +150,13 @@ function Post(props) {
                 <Col xs sm={5} xl={7}>
 
                   {/* MOBILE DATE show on xs and sm screen size only */}
-                  <div className="d-md-none date small" style={{border: 'solid 1px red'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
+                  <div className="d-md-none date small">{DateTime.fromSeconds(postDate).toRelative()}</div>
 
                   {/* DESKTOP DATE show on md and lg screen size only */}
-                  <div className="d-none d-md-block d-xl-none d-xxl-none date small" style={{border: 'solid 1px red'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
+                  <div className="d-none d-md-block d-xl-none d-xxl-none date small">{DateTime.fromSeconds(postDate).toRelative()}</div>
 
                   {/* DESKTOP DATE show on xl and xxl screen size only */}
-                  <div className="d-none d-xl-block date small" style={{border: 'solid 1px blue'}}>{DateTime.fromSeconds(postDate).toRelative()}</div>
+                  <div className="d-none d-xl-block date small">{DateTime.fromSeconds(postDate).toRelative()}</div>
 
                   {/* DESKTOP POSTTEXT show on md and lg screen size only */}
                   <div className="d-none d-md-block d-xl-none d-xxl-none">
