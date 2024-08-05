@@ -1,4 +1,67 @@
+/* global nav-link styles */
+/* handle overflowing nav-link text */
+div.accordion-body {
+  overflow: hidden;
+}
 
+a.nav-link {
+  width: max-content;
+}
+
+/* desktop LG, XL */
+@media only screen and (min-width: 768px) and (max-width: 1400px) {
+  /* sidebar */
+  a.nav-link > span#prefix {
+     font-size: .7em;
+   }
+  
+  a.nav-link > span#srlink {
+    font-size: .7em;
+    font-weight: 700;
+    clip-path: padding-box;
+  }
+  
+  a.nav-link > img {
+    margin-right: .4rem;
+  }
+  
+  .accordion-body {
+    padding: 0;
+    padding-left: .5rem;
+    
+  }
+  
+}
+
+/* desktop MD */
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+  /* sidebar */
+  a.nav-link > span#prefix {
+     font-size: .5em;
+   }
+  
+  a.nav-link > span#srlink {
+    font-size: .5em;
+    font-weight: 700;
+  }
+
+  a.nav-link > img {
+    margin-right: .2rem;
+    width: 20px;
+    height: 20px;
+  }
+
+  .accordion-body > a.nav-link {
+    margin-bottom: 0;
+  }
+  
+  .accordion-body {
+    padding-left: .5rem;
+    /* padding: .2rem; */
+    padding-right: 0;
+  }
+  
+}
 
 .App {
   text-align: center;
