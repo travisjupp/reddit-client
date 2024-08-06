@@ -112,7 +112,7 @@ const Media = ({postMedia}) => {
                             <img src={he.decode(previewSource.u)} className="card-img-top" alt={altText} />
                         </picture></Carousel.Item>);
             }
-            return <Carousel>{reactElements}</Carousel>;
+            return <Carousel interval={null} touch>{reactElements}</Carousel>;
         }
     } catch (e) {
         console.error('Error:', e.message);
