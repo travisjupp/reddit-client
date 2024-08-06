@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 // import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Carousel from "react-bootstrap/Carousel";
 // https://github.com/mathiasbynens/he
 // he (for “HTML entities”) is a robust HTML entity encoder/decoder written in JavaScript.
 import he from 'he';
@@ -10,7 +11,7 @@ import parse from 'html-react-parser';
 // Searches for available media types: image galleries, images, and embedded media from 3rd party sites eg. twitch/youtube videos
 const Media = ({postMedia}) => {
     const {mediaEmbed, preview, isGallery, metadata, data, altText, redditVideo} = postMedia;
-    console.log('~>postMedia', postMedia);
+    // console.log('~>postMedia', postMedia);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -20,7 +21,7 @@ const Media = ({postMedia}) => {
     const previewSource = preview?.images[0].source; // get preview source
     const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
     const redditVideoURL = he.decode(redditVideo?.fallback_url || '');
-    console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
+    // console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
     try {
         // REDDIT VIDEO CHECKER
         if (redditVideoURL) {
@@ -87,35 +88,31 @@ const Media = ({postMedia}) => {
             // unpack preview images
             for (const key in metadata) {
                 let image = metadata[key];
-                console.log('~>image', image);
                 const previewResolutions = image.p;
                 const sortedPreviewResolutions = [...previewResolutions].sort((a, b) => b.x - a.x); // sort for DOM
                 const previewSource = image.s;
                 const previewId = image.id;
-                console.log('Gallery data: ', '\npreviewSource', previewSource, '\npreviewId', previewId);
+                // console.log('Gallery data: ', '\npreviewSource', previewSource, '\npreviewId', previewId);
                 // save as picture with source elements
                 reactElements.unshift(
-                    <picture id={previewId} style={{padding: 0}}>
-                        { // build srcset from `image.p`
-                            sortedPreviewResolutions.map(image => {
-                            return (
-                                <source
-                                    key={previewId + '@' + image.x}
-                                    srcSet={he.decode(image.u)}
-                                    media={`(min-width: ${image.x}px)`}
-                                //width={image.width}
-                                //height={image.height}
-                                />
-                            )
-                        })}
-                        <img src={he.decode(previewSource.u)} className="card-img-top" alt={altText} />
-                    </picture>);
-                console.log('reactElements', reactElements);
+                    <Carousel.Item>
+                        <picture id={previewId} style={{padding: 0}}>
+                            { // build srcset from `image.p`
+                                sortedPreviewResolutions.map(image => {
+                                    return (
+                                        <source
+                                            key={previewId + '@' + image.x}
+                                            srcSet={he.decode(image.u)}
+                                            media={`(min-width: ${image.x}px)`}
+                                        //width={image.width}
+                                        //height={image.height}
+                                        />
+                                    )
+                                })}
+                            <img src={he.decode(previewSource.u)} className="card-img-top" alt={altText} />
+                        </picture></Carousel.Item>);
             }
-            return (<>gallery
-                {reactElements}
-            </>
-            );
+            return <Carousel>{reactElements}</Carousel>;
         }
     } catch (e) {
         console.error('Error:', e.message);
