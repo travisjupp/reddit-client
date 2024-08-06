@@ -15,7 +15,7 @@ const Media = ({postMedia}) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const previewResolutions = preview?.images[0].resolutions || [];
-    const sortedPreviewResolutions = [...previewResolutions].sort((a, b) => b.width - a.width); // sort for DOM
+    const sortedPreviewResolutions = [...previewResolutions].sort((a, b) => b.width - a.width); // sort for DOM (largest image first)
     const previewId = preview?.images[0].id; // get preview id
     const previewSource = preview?.images[0].source; // get preview source
     const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
@@ -25,11 +25,9 @@ const Media = ({postMedia}) => {
         // REDDIT VIDEO CHECKER
         if (redditVideoURL) {
             return (
-                <>
-                    <div>redditVideoURL</div>
+                <>redditVideo
                     <video controls className="card-img-top">
                         <source src={redditVideoURL} />
-
                     </video>
                 </>
             )
@@ -62,7 +60,7 @@ const Media = ({postMedia}) => {
                                     // height={previewSource.height}
                                     className="card-img-top"
                                     alt={altText}
-                                    // style={{width: "inherit"}}
+                                // style={{width: "inherit"}}
                                 />
                                 <Modal show={show} onHide={handleClose} centered>
                                     <Modal.Header closeButton>
@@ -77,7 +75,7 @@ const Media = ({postMedia}) => {
                                 // height={previewSource.height}
                                 className="card-img-top"
                                 alt={altText}
-                                // style={{width: "inherit"}}
+                            // style={{width: "inherit"}}
                             />
                     }
                 </picture>
@@ -85,16 +83,39 @@ const Media = ({postMedia}) => {
         }
         // GALLERY CHECKER check for image galleries
         if (isGallery) {
+            const reactElements = [];
+            // unpack preview images
             for (const key in metadata) {
-                console.log('~>image', metadata[key]);
-                // let image = metadata[key];
-
-                console.log('~>metadata[key][]',)
-
-                for (const imgKey in metadata[key]) {
-                    console.log('~>imgKey', imgKey, '=>', metadata[key][imgKey])
-                }
+                let image = metadata[key];
+                console.log('~>image', image);
+                const previewResolutions = image.p;
+                const sortedPreviewResolutions = [...previewResolutions].sort((a, b) => b.x - a.x); // sort for DOM
+                const previewSource = image.s;
+                const previewId = image.id;
+                console.log('Gallery data: ', '\npreviewSource', previewSource, '\npreviewId', previewId);
+                // save as picture with source elements
+                reactElements.unshift(
+                    <picture id={previewId} style={{padding: 0}}>
+                        { // build srcset from `image.p`
+                            sortedPreviewResolutions.map(image => {
+                            return (
+                                <source
+                                    key={previewId + '@' + image.x}
+                                    srcSet={he.decode(image.u)}
+                                    media={`(min-width: ${image.x}px)`}
+                                //width={image.width}
+                                //height={image.height}
+                                />
+                            )
+                        })}
+                        <img src={he.decode(previewSource.u)} className="card-img-top" alt={altText} />
+                    </picture>);
+                console.log('reactElements', reactElements);
             }
+            return (<>gallery
+                {reactElements}
+            </>
+            );
         }
     } catch (e) {
         console.error('Error:', e.message);
