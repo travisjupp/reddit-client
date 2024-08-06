@@ -21,7 +21,7 @@ const Media = ({postMedia}) => {
     const previewSource = preview?.images[0].source; // get preview source
     const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
     const redditVideoURL = he.decode(redditVideo?.fallback_url || '');
-    // console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
+    console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
     try {
         // REDDIT VIDEO CHECKER
         if (redditVideoURL) {
