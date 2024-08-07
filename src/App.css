@@ -8,6 +8,15 @@ a.nav-link {
   width: max-content;
 }
 
+/* desktop XXL */
+@media only screen and (min-width: 1400px) {
+  h2.accordion-header > button.accordion-button {
+    background-color: var(--bs-gray-300);
+    box-shadow: none;
+    color: var(--bs-dark);
+  }  
+}
+
 /* desktop LG, XL */
 @media only screen and (min-width: 768px) and (max-width: 1400px) {
   /* sidebar */
@@ -24,6 +33,12 @@ a.nav-link {
   a.nav-link > img {
     margin-right: .4rem;
   }
+  
+  h2.accordion-header > button.accordion-button {
+    background-color: var(--bs-gray-300);
+    box-shadow: none;
+    color: var(--bs-dark);
+  }  
   
   .accordion-body {
     padding: 0;
@@ -50,7 +65,13 @@ a.nav-link {
     width: 20px;
     height: 20px;
   }
-
+  
+  h2.accordion-header > button.accordion-button {
+    background-color: var(--bs-gray-300);
+    box-shadow: none;
+    color: var(--bs-dark);
+  }
+  
   .accordion-body > a.nav-link {
     margin-bottom: 0;
   }
@@ -203,9 +224,7 @@ a.nav-link {
   font-size: .75em;
   opacity: 30%;
   margin-right: 0.2rem;
-  /* color: var(--bs-gray-dark); */
   color: var(--bs-light);
-  /* border: 1px solid red; */
 }
 
 /* desktop nav link-text prefix "/r" */
@@ -215,7 +234,6 @@ a.nav-link {
   opacity: 30%;
   margin-right: 0.1rem;
   color: var(--bs-gray-dark);
-  /* border: 1px solid red; */
 }
 
 
@@ -223,23 +241,33 @@ a.nav-link {
 #offcanvasNavbar-expand-sm[role="dialog"] .nav-link > span#srlink {
   font-weight: 700;
   font-size: .75em;
-  /* opacity: 30%; */
   margin-right: 0.2rem;
   color: var(--bs-light);
-  /* border: 1px solid red; */
 }
 
 /* desktop nav link-text */
 .nav-link > span#srlink {
-  /* font-weight: 700; */
-  /* font-size: .75em; */
-  /* opacity: 30%; */
   margin-right: 0.2rem;
-  /* color: var(--bs-light); */
-  /* border: 1px solid red; */
+  font-weight: 700;
 }
 
+/* subreddits heading  */
+#srTitle {
+  position: sticky;
+  top: 58px;
+  background-color: #ffffff80;
+  z-index: 6;
+}
 
+/* subreddits heading prefix "r/" */
+#srTitle > span:nth-child(1) {
+  font-weight: 200;  
+}
+
+/* subreddits heading title */
+#srTitle > span:nth-child(2) {
+  font-weight: 700;
+}
 /* Search form */
 
 /* Search button .nav-link overrides */
@@ -247,6 +275,7 @@ form#searchForm a[role="button"] {
   padding: 0.375rem 0.75rem;
   background-color: rgb(108, 117, 125);
 }
+
 
 /* Input group padding */
 /* form#searchForm > div {
