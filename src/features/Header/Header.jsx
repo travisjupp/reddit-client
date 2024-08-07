@@ -43,12 +43,9 @@ function Header() {
                 // }}
                 // onToggle={expanded => console.log('expanded=', expanded)}
             >
-                <Col md={3} className='d-flex' style={{ border: "1px solid red" }}>
+                <Col md={3} className='d-flex'>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} onClick={toggleOffcanvas} />
-                    <Navbar.Brand>Navbar.Brand</Navbar.Brand>
-                    <Nav className="justify-content-start pe-3">
-                        <Nav.Link href="#action1">Home</Nav.Link>
-                    </Nav>
+                    <Navbar.Brand>Reddit Lite</Navbar.Brand>
                 </Col>
                 <Col id='headerRightCol'>
                     <Navbar.Offcanvas
