@@ -46,6 +46,3 @@ pre code {
   margin-bottom: .2rem;
 }
 
-.nav-link:active {
-  background-color: var(--bs-gray-dark);
-}
