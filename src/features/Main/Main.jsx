@@ -30,7 +30,7 @@ function Main() {
 
         return (
             <>
-                <h1>r/{posts.current}</h1>
+                <h1 id="srTitle"><span>r/</span><span>{posts.current}</span></h1>
 
                 {posts[posts.current].map(post => {
                     return <Post
