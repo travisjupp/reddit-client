@@ -34,8 +34,8 @@ function Main() {
 
                 {posts[posts.current].map(post => {
                     return <Post
-                        key={post.data.id}
-                        postId={post.data.id}
+                        key={'post-' + post.data.id}
+                        postId={'post-' + post.data.id}
                         postTitle={post.data.title}
                         postAuthor={post.data.author}
                         postDate={post.data.created}
