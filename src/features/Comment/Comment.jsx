@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Stack, Placeholder} from "react-bootstrap";
 import Avatar from "../Avatar/Avatar";
+import {DateTime} from 'luxon';
 import { selectUserAvatars } from "../../store/subredditPostsSlice";
 import { getUserAvatar } from "../api/reddit";
 import validateAvatarImgURL from '../../utils/validateImgURL.js';
@@ -63,15 +64,16 @@ function Comment(props) {
             style={{backgroundColor: "gainsboro"}}
             >
                 <Card.Body>
-                    <Card.Title>
-                        <Stack direction="horizontal" gap={3}>
+                    <Card.Title className="h6">
+                        <Stack direction="horizontal" gap={2}>
                             <div>
                                 <Avatar
                                     name={commentAuthor}
                                     src={validateAvatarImgURL(avatars[commentAuthor])}
-                                /> {commentAuthor}
+                                />
                             </div>
-                            <div className="p-2 ms-auto">{new Date(commentDate * 1000).toString()}</div>
+                            <div>{commentAuthor}</div>
+                            <div className="fw-light ms-auto">{DateTime.fromSeconds(commentDate || 0).toRelative()}</div>
                         </Stack>
                     </Card.Title>
                     <Card.Text as='div'>{/* Render as 'div' to avoid <p> nesting; <p> cannot appear as a descendant of <p>. */}

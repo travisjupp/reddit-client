@@ -75,12 +75,12 @@ function Post(props) {
               // setShow(false);
             }}
           >
-            <div id={`comments-wrapper-${postId}`} style={{border: '4px double green'}}>
+            <div id={`comments-wrapper-${postId}`}>
               {comments.map(comment => {
                 return <Comment
                   key={comment.data.id}
                   commentAuthor={comment.data.author}
-                  commentDate={comment.data.created_utc}
+                  commentDate={comment.data.created}
                   commentText={comment.data.body}
                   commentTextHtml={comment.data.body_html}
                 />
