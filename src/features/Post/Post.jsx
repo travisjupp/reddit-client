@@ -1,6 +1,6 @@
 import Holder from 'holderjs';
 import {DateTime} from 'luxon';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Collapse, Container, Row} from 'react-bootstrap';
 import Markdown from 'react-markdown';
 import {useDispatch, useSelector} from 'react-redux';
@@ -90,18 +90,24 @@ function Post(props) {
         }
       </>)
   }
-
+const [cardStyle, setCardStyle] = useState('auto');
+  // console.log('cardStyle', cardStyle);
   return (
     <>
-      <Card id={postId}>
+      <Card id={postId} 
+        // style={{height: document.getElementById(postId)?.offsetHeight || 'auto', transitionDuration: '1s'}}
+        style={{height: cardStyle, transitionDuration: '1s'}}
+        // style={{height: document.getElementById(postId)?.querySelector('.active.carousel-item img')?.height || 'auto', transitionDuration: '1s'}}
+      >
         {/* POSTIMAGE */
-//          postImgSrc &&
-//          <Card.Img variant="top" src={postImgSrc} alt={altText} />
           (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo) &&
-          <Media 
-            postMedia={postMedia}
-            />
-        }
+         <Media
+           postMedia={postMedia}
+           postId={postId}
+           cardStyle={cardStyle}
+           setCardStyle={setCardStyle}
+         />
+                     }
         <Card.Body>
           <Card.Title>{postTitle} <div style={{float: 'right'}}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
@@ -110,30 +116,9 @@ function Post(props) {
 
               {/* MOBILE POSTTEXT show on xs and sm screen size only */}
               <Row className='d-md-none'>
-                <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 60) + '...show on xs sm only'}</Markdown>
+                <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 80) + '...show on xs sm only'}</Markdown>
                 {nonRedditPostUrlLink}
               </Row>
-
-              {/* MOBILE POSTMEDIA show on xs and sm screen size only */
-//                postMedia.mediaEmbed?.content &&
-//                <Row className='d-md-none'>
-//                  <Media postMedia={postMedia} />
-//                </Row>
-              }
-
-              {/* DESKTOP POSTMEDIA show on md and lg screen size only */
-//                //postMedia.mediaEmbed?.content &&
-//                <Row className='d-none d-md-block d-xl-none d-xxl-none'>
-//                  <Media postMedia={postMedia} />
-//                </Row>
-              }
-
-              {/* DESKTOP POSTMEDIA show on xl and xxl screen size only */
-//                postMedia.mediaEmbed?.content &&
-//                <Row className='d-none d-xl-block'>
-//                  <Media postMedia={postMedia} />
-//                </Row>
-              }
 
               <Row className='align-items-end'>
 
