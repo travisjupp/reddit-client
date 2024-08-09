@@ -84,3 +84,5 @@ export const selectSubredditAvatarsError = state => state.subredditPosts.avatars
 export const selectUserAvatars = state => state.subredditPosts.avatars;
 
 export const selectIsPostsFiltered = state => state.subredditPosts.isFiltered;
+
+export const selectSubredditPostsCurrent = state => state.subredditPosts.posts.current;

@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import Toaster from '../../components/Toast/Toast.jsx';
-import {selectSubredditPostsError, selectSubredditPosts, selectSubredditPostsStatus} from '../../store/subredditPostsSlice.js';
+import {selectSubredditPostsError, selectSubredditPosts, selectSubredditPostsStatus, selectSubredditPostsCurrent} from '../../store/subredditPostsSlice.js';
 // import validatePostImgURL from '../../utils/validateImgURL.js';
 import Post from '../Post/Post';
 import {getSubredditComments, getSubredditPosts} from '../api/reddit';
@@ -12,6 +12,7 @@ function Main() {
     const [collapseStates, setCollapseStates] = useState({});
     const dispatch = useDispatch();
     const posts = useSelector(selectSubredditPosts);
+    const postsCurrent = useSelector(selectSubredditPostsCurrent);
     const postsStatus = useSelector(selectSubredditPostsStatus);
     const postsErrorState = useSelector(selectSubredditPostsError);
     const handleComments = (permalink) => {
@@ -19,7 +20,7 @@ function Main() {
     }
 
     useEffect(() => {
-        dispatch(getSubredditPosts('react'));
+        dispatch(getSubredditPosts('popular'));
     }, [dispatch]);
 
     if (postsStatus === 'loading') {
@@ -30,9 +31,9 @@ function Main() {
 
         return (
             <>
-                <h1 id="srTitle"><span>r/</span><span>{posts.current}</span></h1>
+                <h1 id="srTitle"><span>r/</span><span>{postsCurrent}</span></h1>
 
-                {posts[posts.current].map(post => {
+                {posts[postsCurrent].map(post => {
                     return <Post
                         key={'post-' + post.data.id}
                         postId={'post-' + post.data.id}
@@ -80,7 +81,7 @@ function Main() {
                         <strong>{`${postsErrorState.type}`}</strong>
                         {/* <code>{errorStr}</code> */}
                     </pre>
-                    <Button className='' onClick={() => dispatch(getSubredditPosts('react'))}>Retry</Button>
+                    <Button className='' onClick={() => dispatch(getSubredditPosts(postsCurrent))}>Retry</Button>
                 </Toaster>
 
             </>
