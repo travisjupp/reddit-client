@@ -9,9 +9,13 @@ import parse from 'html-react-parser';
 
 // If post media exists, decode html-entites and render.
 // Searches for available media types: image galleries, images, and embedded media from 3rd party sites eg. twitch/youtube videos
-const Media = ({postMedia}) => {
+const Media = ({postMedia, postId,
+    // cardStyle,
+    // setCardStyle
+}) => {
     const {mediaEmbed, preview, isGallery, metadata, data, altText, redditVideo} = postMedia;
     // console.log('~>postMedia', postMedia);
+    console.log('postId', postId);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -28,7 +32,7 @@ const Media = ({postMedia}) => {
             return (
                 <>redditVideo
                     <video controls className="card-img-top">
-                        <source src={redditVideoURL} />
+                        <source src={redditVideoURL + '#t=0.1' /* #t=0.1 -> render first frame as preview (iOS) */} />
                     </video>
                 </>
             )
@@ -95,7 +99,7 @@ const Media = ({postMedia}) => {
                 // console.log('Gallery data: ', '\npreviewSource', previewSource, '\npreviewId', previewId);
                 // save as picture with source elements
                 reactElements.unshift(
-                    <Carousel.Item>
+                    <Carousel.Item key={previewId + 'carouselItem'}>
                         <picture id={previewId} style={{padding: 0}}>
                             { // build srcset from `image.p`
                                 sortedPreviewResolutions.map(image => {
@@ -112,7 +116,17 @@ const Media = ({postMedia}) => {
                             <img src={he.decode(previewSource.u)} className="card-img-top" alt={altText} />
                         </picture></Carousel.Item>);
             }
-            return <Carousel interval={null} touch>{reactElements}</Carousel>;
+            return (<Carousel
+                interval={null}
+                touch
+                // needed for css transition of card element when (cannot animate computed values)
+                onSelect={() => {
+                }}
+                onSlide={() => {
+                }}
+                onSlid={() => {
+                }}
+            >{reactElements}</Carousel>);
         }
     } catch (e) {
         console.error('Error:', e.message);
