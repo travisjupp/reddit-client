@@ -99,7 +99,7 @@ const [cardStyle, setCardStyle] = useState('auto');
         style={{height: cardStyle, transitionDuration: '1s'}}
         // style={{height: document.getElementById(postId)?.querySelector('.active.carousel-item img')?.height || 'auto', transitionDuration: '1s'}}
       >
-        {/* POSTIMAGE */
+        {/* POST MEDIA */
           (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo) &&
          <Media
            postMedia={postMedia}
@@ -109,7 +109,7 @@ const [cardStyle, setCardStyle] = useState('auto');
          />
                      }
         <Card.Body>
-          <Card.Title>{postTitle} <div style={{float: 'right'}}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</div></Card.Title>
+          <Card.Title>{postTitle}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
           <Card.Text as='div'>{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
             <Container fluid className="p-0">
@@ -183,6 +183,7 @@ const [cardStyle, setCardStyle] = useState('auto');
                 </Col>
               </Row>
             </Container>
+            <pre style={{float: 'right', fontSize: '60%', margin: 0}}>id: {postId} show: {collapseStates[postId] ? 'true' : 'false'}</pre>
           </Card.Text>
         </Card.Body>
         {/* Make Card a hyperlink, all other links contained in card need a higher z-index */}
