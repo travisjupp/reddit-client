@@ -1,6 +1,6 @@
 import Holder from 'holderjs';
 import {DateTime} from 'luxon';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Button, Card, Col, Collapse, Container, Row} from 'react-bootstrap';
 import Markdown from 'react-markdown';
 import {useDispatch, useSelector} from 'react-redux';
@@ -18,12 +18,20 @@ import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
 function Post(props) {
   const {postId, postAuthor, postDate, postMedia, postTitle, postText, postTextHtml, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
-  
+
+  const mediaRef = useRef(null);
+
+  function playVideo(videoId) {
+    if (mediaRef.current?.id === 'video-post-' + videoId) {
+         mediaRef.current.play()
+    }
+  }
+
   useEffect(() => {
     Holder.run({
       images: ".card-img-top"
     });
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }, []);
 
   const dispatch = useDispatch();
@@ -90,24 +98,27 @@ function Post(props) {
         }
       </>)
   }
-const [cardStyle, setCardStyle] = useState('auto');
+  const [cardStyle, setCardStyle] = useState('auto');
   // console.log('cardStyle', cardStyle);
   return (
     <>
-      <Card id={postId} 
+      <Card id={postId}
         // style={{height: document.getElementById(postId)?.offsetHeight || 'auto', transitionDuration: '1s'}}
         style={{height: cardStyle, transitionDuration: '1s'}}
-        // style={{height: document.getElementById(postId)?.querySelector('.active.carousel-item img')?.height || 'auto', transitionDuration: '1s'}}
+      // style={{height: document.getElementById(postId)?.querySelector('.active.carousel-item img')?.height || 'auto', transitionDuration: '1s'}}
       >
         {/* POST MEDIA */
           (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo) &&
-         <Media
-           postMedia={postMedia}
-           postId={postId}
-           cardStyle={cardStyle}
-           setCardStyle={setCardStyle}
-         />
-                     }
+          <Media
+            ref={mediaRef}
+            postMedia={postMedia}
+            postId={postId}
+            cardStyle={cardStyle}
+            setCardStyle={setCardStyle}
+          />
+        }
+        {console.log('mediaRef.current', mediaRef.current)}
+        {playVideo('1epxpzq')}
         <Card.Body>
           <Card.Title>{postTitle}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
@@ -217,5 +228,4 @@ const [cardStyle, setCardStyle] = useState('auto');
     </>
   )
 }
-
 export default Post;

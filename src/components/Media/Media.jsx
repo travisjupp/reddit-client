@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, forwardRef} from "react";
 // import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Carousel from "react-bootstrap/Carousel";
@@ -9,10 +9,10 @@ import parse from 'html-react-parser';
 
 // If post media exists, decode html-entites and render.
 // Searches for available media types: image galleries, images, and embedded media from 3rd party sites eg. twitch/youtube videos
-const Media = ({postMedia, postId,
+const Media = forwardRef(({postMedia, postId,
     // cardStyle,
     // setCardStyle
-}) => {
+}, ref) => {
     const {mediaEmbed, preview, isGallery, metadata, data, altText, redditVideo} = postMedia;
     // console.log('~>postMedia', postMedia);
     console.log('postId', postId);
@@ -24,14 +24,14 @@ const Media = ({postMedia, postId,
     const previewId = preview?.images[0].id; // get preview id
     const previewSource = preview?.images[0].source; // get preview source
     const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
-    const redditVideoURL = he.decode(redditVideo?.fallback_url || '');
+    const redditVideoURL = he.decode(redditVideo?.dash_url || '');
     console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
     try {
         // REDDIT VIDEO CHECKER
         if (redditVideoURL) {
             return (
                 <>redditVideo
-                    <video controls className="card-img-top">
+                    <video ref={ref} id={'video-' + postId} controls className="card-img-top">
                         <source src={redditVideoURL + '#t=0.1' /* #t=0.1 -> render first frame as preview (iOS) */} />
                     </video>
                 </>
@@ -131,6 +131,6 @@ const Media = ({postMedia, postId,
     } catch (e) {
         console.error('Error:', e.message);
     }
-}
+})
 
 export default Media;
