@@ -9,6 +9,7 @@
     "@testing-library/react": "^13.4.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "dashjs": "^4.7.4",
     "he": "^1.2.0",
     "html-react-parser": "^5.1.10",
     "luxon": "^3.4.4",
