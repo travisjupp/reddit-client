@@ -1,21 +1,22 @@
-import React, {useState, forwardRef} from "react";
-// import Button from 'react-bootstrap/Button';
+import React, {useState} from "react";
 import Modal from 'react-bootstrap/Modal';
 import Carousel from "react-bootstrap/Carousel";
+import VideoPlayer from "../../features/VideoPlayer/VideoPlayer";
 // https://github.com/mathiasbynens/he
 // he (for “HTML entities”) is a robust HTML entity encoder/decoder written in JavaScript.
 import he from 'he';
 import parse from 'html-react-parser';
-
 // If post media exists, decode html-entites and render.
-// Searches for available media types: image galleries, images, and embedded media from 3rd party sites eg. twitch/youtube videos
-const Media = forwardRef(({postMedia, postId,
+// Searches for available media types: image galleries, images, reddit-hosted video, and embedded media from 3rd party sites eg. twitch/youtube videos
+const Media = ({postMedia, postId 
     // cardStyle,
     // setCardStyle
-}, ref) => {
-    const {mediaEmbed, preview, isGallery, metadata, data, altText, redditVideo} = postMedia;
+}) => {
+    const {mediaEmbed, preview, isGallery, metadata, 
+        // data, 
+        altText, redditVideo} = postMedia;
     // console.log('~>postMedia', postMedia);
-    console.log('postId', postId);
+    // console.log('postId', postId);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -25,16 +26,13 @@ const Media = forwardRef(({postMedia, postId,
     const previewSource = preview?.images[0].source; // get preview source
     const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
     const redditVideoURL = he.decode(redditVideo?.dash_url || '');
-    console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
+    // console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
+
     try {
-        // REDDIT VIDEO CHECKER
+        // REDDIT VIDEO CHECKER check for reddit hosted video (MPEG-DASH)
         if (redditVideoURL) {
             return (
-                <>redditVideo
-                    <video ref={ref} id={'video-' + postId} controls className="card-img-top">
-                        <source src={redditVideoURL + '#t=0.1' /* #t=0.1 -> render first frame as preview (iOS) */} />
-                    </video>
-                </>
+                <VideoPlayer redditVideoURL={redditVideoURL} postId={postId} />
             )
         }
         // PREVIEW CHECKER check for previews, or image only posts
@@ -131,6 +129,6 @@ const Media = forwardRef(({postMedia, postId,
     } catch (e) {
         console.error('Error:', e.message);
     }
-})
+}
 
 export default Media;

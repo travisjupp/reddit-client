@@ -19,6 +19,7 @@ function Sidebar(props) {
 
     const handlePosts = (postTitle) => {
         dispatch(getSubredditPosts(postTitle));
+        window.scrollTo(0, 0);
     }
 
     while (status === 'loading') {

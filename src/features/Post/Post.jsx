@@ -1,6 +1,5 @@
-import Holder from 'holderjs';
 import {DateTime} from 'luxon';
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Collapse, Container, Row} from 'react-bootstrap';
 import Markdown from 'react-markdown';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,33 +15,19 @@ import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
+
 function Post(props) {
   const {postId, postAuthor, postDate, postMedia, postTitle, postText, postTextHtml, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
-
-  const mediaRef = useRef(null);
-
-  function playVideo(videoId) {
-    if (mediaRef.current?.id === 'video-post-' + videoId) {
-         mediaRef.current.play()
-    }
-  }
-
-  useEffect(() => {
-    Holder.run({
-      images: ".card-img-top"
-    });
-    window.scrollTo(0, 0);
-  }, []);
 
   const dispatch = useDispatch();
   const avatars = useSelector(selectUserAvatars);
 
   // get user avatar
   useEffect(() => {
-    // console.log('dispatching', postAuthor);
+    // console.log('effect ran: avatar. dispatching', postAuthor);
     const promise = dispatch(getUserAvatar(postAuthor));
     return () => {
-      promise.abort('Aborted from Post');
+      promise.abort();
     }
   }, [dispatch, postAuthor]);
 
@@ -110,15 +95,12 @@ function Post(props) {
         {/* POST MEDIA */
           (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo) &&
           <Media
-            ref={mediaRef}
             postMedia={postMedia}
             postId={postId}
             cardStyle={cardStyle}
             setCardStyle={setCardStyle}
           />
         }
-        {console.log('mediaRef.current', mediaRef.current)}
-        {playVideo('1epxpzq')}
         <Card.Body>
           <Card.Title>{postTitle}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
@@ -228,4 +210,5 @@ function Post(props) {
     </>
   )
 }
+
 export default Post;
