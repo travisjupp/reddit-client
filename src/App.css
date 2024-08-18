@@ -317,6 +317,8 @@ a.nav-link {
   position: sticky;
   top: 56px;
   background-color: #ffffff80;
+  border-bottom: 1px solid white;
+  backdrop-filter: blur(1.6px);
   z-index: 6;
 }
 
