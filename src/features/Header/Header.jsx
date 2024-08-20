@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Badge, Button, Col, Form, InputGroup, Nav, Navbar, Offcanvas} from 'react-bootstrap';
 import {BsFillFilterCircleFill} from 'react-icons/bs';
-import {PiRedditLogoThin} from 'react-icons/pi';
-import {AiFillRedditSquare} from 'react-icons/ai';
+// import {PiRedditLogoThin} from 'react-icons/pi';
+// import {AiFillRedditSquare} from 'react-icons/ai';
 import {FaRedditAlien} from 'react-icons/fa6';
 import {useDispatch, useSelector} from 'react-redux';
 import {filterPosts, selectIsPostsFiltered, unfilterPosts} from '../../store/subredditPostsSlice';
