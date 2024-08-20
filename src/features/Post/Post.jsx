@@ -117,12 +117,12 @@ function Post(props) {
 
                 {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
                 <Col className="d-md-none">
-                  <Votes stackGap={1} iconSize={'1.5em'} score={score} />
+                  <Votes stackGap={1} iconSize='1.5em' score={score} />
                 </Col>
 
                 {/* DESKTOP ACTION BAR (left side) show on md and larger */}
                 <Col className="d-none d-md-block">
-                  <Votes stackGap={2} iconSize={'3em'} score={score} badgeStyle={'position-absolute translate-middle-x'} />
+                  <Votes stackGap={2} iconSize='2.5em' score={score} badgeStyle={'position-absolute translate-middle-x'} />
                 </Col>
 
                 <Col xs sm={5} xl={7}>
@@ -164,7 +164,7 @@ function Post(props) {
                 {/* DESKTOP ACTION BAR (right side) show on md and larger */}
                 <Col className='d-none d-md-block'>
                   <Social
-                    iconSize="3em"
+                    iconSize="2.5em"
                     badgeStyle="position-absolute translate-middle-x"
                     stackGap={1}
                     comments={comments}

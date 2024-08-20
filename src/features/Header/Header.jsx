@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import {Badge, Button, Col, Form, InputGroup, Nav, Navbar, Offcanvas} from 'react-bootstrap';
-import {BsFillFilterCircleFill} from "react-icons/bs";
+import {BsFillFilterCircleFill} from 'react-icons/bs';
+import {PiRedditLogoThin} from 'react-icons/pi';
+import {AiFillRedditSquare} from 'react-icons/ai';
+import {FaRedditAlien} from 'react-icons/fa6';
 import {useDispatch, useSelector} from 'react-redux';
 import {filterPosts, selectIsPostsFiltered, unfilterPosts} from '../../store/subredditPostsSlice';
 import Sidebar from '../Sidebar/Sidebar';
@@ -43,11 +46,19 @@ function Header() {
                 // }}
                 // onToggle={expanded => console.log('expanded=', expanded)}
             >
-                <Col md={3} className='d-flex'>
+                <Col className='d-flex col-12 col-md-3 justify-content-between justify-content-md-start'>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} onClick={toggleOffcanvas} />
-                    <Navbar.Brand>Reddit Lite</Navbar.Brand>
+                    <Navbar.Brand as='div' className='d-flex align-items-center'>
+                        {/* <AiFillRedditSquare id="redditLogo" /> */}
+                        {/* <PiRedditLogoThin id="redditLogo" /> */}
+                        <FaRedditAlien id="redditLogo" />
+                        <div>
+                            <span>Reddit </span>
+                            <span>Lite </span>
+                        </div>
+                    </Navbar.Brand>
                 </Col>
-                <Col id='headerRightCol'>
+                <Col id='headerRightCol' className='d-none d-md-block'>
                     <Navbar.Offcanvas
                         id={`offcanvasNavbar-expand-sm`}
                         aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
@@ -58,7 +69,7 @@ function Header() {
                     >
                         <Offcanvas.Header closeButton>
                             <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
-                                Offcanvas
+                                {/* Offcanvas */}
                             </Offcanvas.Title>
                         </Offcanvas.Header>
                         <Offcanvas.Body>

@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {selectPopSubredditsList, selectPopSubredditsListError, selectPopSubredditsListStatus} from '../../store/subredditSlice';
 import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import Avatar from '../Avatar/Avatar';
+import {selectSubredditPostsCurrent} from '../../store/subredditPostsSlice';
 
 function Sidebar(props) {
     const {toggleOffcanvas} = props;
@@ -12,6 +13,7 @@ function Sidebar(props) {
     const popSubredditsList = useSelector(selectPopSubredditsList);
     const status = useSelector(selectPopSubredditsListStatus);
     const popSubredditsListErrorState = useSelector(selectPopSubredditsListError);
+    const postsCurrent = useSelector(selectSubredditPostsCurrent);
 
     useEffect(() => {
         dispatch(getPopSubredditsList());
@@ -48,15 +50,16 @@ function Sidebar(props) {
             <>
                 <Accordion flush>
                     <Accordion.Item>
-                        <Accordion.Header>Popular Subreddits</Accordion.Header>
+                        <Accordion.Header>Popular</Accordion.Header>
                         <Accordion.Body>
                             {
                                 popSubredditsList.map(
                                     subreddit =>
                                         <Nav.Link
-                                            key={subreddit.data.title}
+                                            key={'navlink-' + subreddit.data.display_name}
                                             // href={`${apiRoot}${subredditListItem.url}`}
                                             href={`#`}
+                                            className={postsCurrent === subreddit.data.display_name ? 'current' : null}
                                             onClick={() => {
                                                 // setPostTitle(subreddit.data.display_name);
                                                 handlePosts(subreddit.data.display_name);
