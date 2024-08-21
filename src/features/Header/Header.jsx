@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Badge, Button, Col, Form, InputGroup, Nav, Navbar, Offcanvas} from 'react-bootstrap';
 import {BsFillFilterCircleFill} from 'react-icons/bs';
-// import {PiRedditLogoThin} from 'react-icons/pi';
-// import {AiFillRedditSquare} from 'react-icons/ai';
-import {FaRedditAlien} from 'react-icons/fa6';
+import { FaReddit } from "react-icons/fa6";
 import {useDispatch, useSelector} from 'react-redux';
 import {filterPosts, selectIsPostsFiltered, unfilterPosts} from '../../store/subredditPostsSlice';
 import Sidebar from '../Sidebar/Sidebar';
@@ -32,7 +30,6 @@ function Header() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // dispatch(filterPosts(data.searchValue));
         return show ? toggleOffcanvas() : null;
     };
 
@@ -41,17 +38,11 @@ function Header() {
             <Navbar key='md' expand='md' variant='dark' bg='dark'
                 sticky='top'
                 collapseOnSelect
-                // onSelect={(key, event) => {
-                //     console.log('key', key, '\nevent', event)
-                // }}
-                // onToggle={expanded => console.log('expanded=', expanded)}
             >
                 <Col className='d-flex col-12 col-md-3 justify-content-between justify-content-md-start'>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} style={nbToggle} onClick={toggleOffcanvas} />
                     <Navbar.Brand as='div' className='d-flex align-items-center'>
-                        {/* <AiFillRedditSquare id="redditLogo" /> */}
-                        {/* <PiRedditLogoThin id="redditLogo" /> */}
-                        <FaRedditAlien id="redditLogo" />
+                        <FaReddit id="redditLogo" />
                         <div>
                             <span>Reddit </span>
                             <span>Lite </span>
