@@ -15,7 +15,6 @@ import Avatar from "../Avatar/Avatar";
 import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
-
 function Post(props) {
   const {postId, postAuthor, postDate, postMedia, postTitle, postText, postTextHtml, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
@@ -24,7 +23,6 @@ function Post(props) {
 
   // get user avatar
   useEffect(() => {
-    // console.log('effect ran: avatar. dispatching', postAuthor);
     const promise = dispatch(getUserAvatar(postAuthor));
     return () => {
       promise.abort();
@@ -50,12 +48,14 @@ function Post(props) {
     updatedStates[postId] = !updatedStates[postId];
     setCollapseStates(updatedStates);
   }
+
   const toggleComments = () => {
     !collapseStates[postId] && // only fetch comments if comments not already expanded
       handleComments({permalink: postPermalink, postId})
     // !collapseStates[postId] && handleComments({ permalink: 'INTENTIONALLY ERROR THIS OUT FOR TESTING', postId })
     handleCollapse(postId);
   }
+
   const renderComments = () => {
     // render comments (only for the post that dispatched)
     return (
@@ -83,8 +83,33 @@ function Post(props) {
         }
       </>)
   }
+  const [charLength, setCharLength] = useState(0);
+
+  const updateCharLength = (l) => {
+    setCharLength(charLength === postTextHtml?.length || charLength === postText?.length ?
+      l : postTextHtml?.length || postText?.length)
+  }
+
+  const renderPostText = (initialCharLength) => {
+    console.log('renderPostText', postId, '\n', 'initialCharLength', initialCharLength, 'charLength: ', charLength, 'postTextHtml?.length', postTextHtml?.length, 'postText?.length', postText?.length);
+
+    function renderExpandIcon() {
+      if (initialCharLength >= postTextHtml?.length || initialCharLength >= postText?.length) {
+        return '';
+      } else if (charLength < postTextHtml?.length || charLength < postText?.length) {
+        return '<span className="text-primary">...more</span>';
+      } else if (postTextHtml?.length === 0 || postText?.length === 0) {
+        return '';
+      } else {
+        return '<span className="text-primary">...less</span>';
+      }
+    }
+
+    return formatPostText(postTextHtml, postText, charLength, initialCharLength) + renderExpandIcon();
+  }
+
   const [cardStyle, setCardStyle] = useState('auto');
-  // console.log('cardStyle', cardStyle);
+
   return (
     <>
       <Card id={postId}
@@ -105,11 +130,11 @@ function Post(props) {
           <Card.Title>{postTitle}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
           <Card.Text as='div'>{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
-            <Container fluid className="p-0">
+            <Container fluid className="p-3">
 
               {/* MOBILE POSTTEXT show on xs and sm screen size only */}
-              <Row className='d-md-none'>
-                <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 80) + '...show on xs sm only'}</Markdown>
+              <Row className='d-md-none' onClick={() => updateCharLength(80)}>
+                <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]}>{renderPostText(80)}</Markdown>
                 {nonRedditPostUrlLink}
               </Row>
 
@@ -137,14 +162,14 @@ function Post(props) {
                   <div className="d-none d-xl-block date small">{DateTime.fromSeconds(postDate).toRelative()}</div>
 
                   {/* DESKTOP POSTTEXT show on md and lg screen size only */}
-                  <div className="d-none d-md-block d-xl-none d-xxl-none">
-                    <Markdown rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 200) + '...show on md and lg only'}</Markdown>
+                  <div className="d-none d-md-block d-xl-none d-xxl-none" onClick={() => updateCharLength(200)}>
+                    <Markdown rehypePlugins={[rehypeRaw]}>{renderPostText(200)}</Markdown>
                     {nonRedditPostUrlLink}
                   </div>
 
                   {/* DESKTOP POSTTEXT show on xl and xxl screen size only */}
-                  <div className="d-none d-xl-block">
-                    <Markdown rehypePlugins={[rehypeRaw]} >{formatPostText(postTextHtml, postText, 1200) + '...show on xl and xxl only'}</Markdown>
+                  <div className="d-none d-xl-block" onClick={() => updateCharLength(300)}>
+                    <Markdown rehypePlugins={[rehypeRaw]}>{renderPostText(300)}</Markdown>
                     {nonRedditPostUrlLink}
                   </div>
                 </Col>
@@ -187,7 +212,7 @@ function Post(props) {
 
       {/* If fetching comments failed pop toast only for the post for which it was originally requested */}
       {commentsStatus === 'failed' && commentsFailedPost ?
-        <Toaster header={`Get Comments ${commentsErrorState.message}`} variant='dark'>
+        <Toaster header={`Get Comments ${commentsErrorState.message}`} variant='light'>
           <pre>
             {commentsErrorState.payload}<br />
             {postTitle}
