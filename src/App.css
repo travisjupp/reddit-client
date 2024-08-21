@@ -2,7 +2,7 @@
 
 .card-body {
   /* no layout-breaking words in cards */
-  word-break: break-all;
+  word-break: break-word;
 }
 
 /* global brand */
@@ -11,9 +11,13 @@
   margin-inline-end: calc(var(--bs-gutter-x)* .4); 
   width: 1.3em;
   height: 1.3em;
-  color: mediumspringgreen;
+  color: 
+    /* var(--bs-teal) */
+    mediumspringgreen
+    /* springgreen */
+  ;
   position: relative;
-  bottom: .12rem;
+  bottom: .02rem;
 }
 
 .navbar-brand {
@@ -63,6 +67,22 @@ h1#srTitle {
 /* Desktop XXL */
 @media only screen and (min-width: 1400px) {
 
+  main.col {
+    /* background-color: red;   */
+    background-image: url(reddit.svg);
+    background-size: 150%;
+    background-repeat: no-repeat;
+    /* background-position: bottom 50% right -80%; */
+    background-position: 25% 60%;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+  }
+  
+  .card {
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+  
   h1#srTitle {
     font-size: 2.5em;
     height: 58px;
@@ -107,12 +127,19 @@ h1#srTitle {
   /* sidebar */
   .nav-link {
     padding-left: .5rem;
+    padding-bottom: .5rem;
   }
   
   .nav-link:active, .nav-link.current {
     background-color: var(--bs-gray-300);
     padding-right: 100%;
-    border-left: solid .25rem red;
+    border-left: solid .25rem 
+      /* var(--bs-red) */
+      /* var(--bs-green) */
+      /* indianred */
+      /* orangered */
+      #df1111
+    ;
     padding-bottom: .5rem;
   }
 
@@ -137,7 +164,7 @@ h1#srTitle {
 
   .accordion-body {
     padding: 0;
-    padding-top: 5px;
+    padding-top: .4rem;
   }
   
   h2.accordion-header > button.accordion-button {
@@ -186,7 +213,9 @@ h1#srTitle {
   }
   
   .accordion-body > a.nav-link {
-    margin-bottom: 0;
+    /* margin-bottom: 0; */
+    margin-bottom: .2rem;
+    padding-bottom: .5rem;
   }
   
   .accordion-body {
