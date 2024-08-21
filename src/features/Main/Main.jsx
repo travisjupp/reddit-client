@@ -71,7 +71,7 @@ function Main() {
         return (
             <>
                 {/* Toaster */}
-                <Toaster header={`Get Posts ${postsErrorState.message}`} variant='dark'>
+                <Toaster header={`Get Posts ${postsErrorState.message}`} variant='light'>
                     {/* {console.error('postsErrorState', postsErrorState)} */}
                     <pre>
                         {postsErrorState.payload}<br />
