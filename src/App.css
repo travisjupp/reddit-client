@@ -31,7 +31,11 @@
   word-break: break-word;
   background-color: var(--bs-light);
   border-color: transparent;
-  border-radius: inherit;
+  border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+}
+
+.comments-wrapper>.comment>.card-body{
+  background-color: #0000001a;
 }
 
 /* global main styles */

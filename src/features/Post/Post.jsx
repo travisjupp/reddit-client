@@ -68,7 +68,7 @@ function Post(props) {
               // setShow(false);
             }}
           >
-            <div id={`comments-wrapper-${postId}`}>
+            <div id={`comments-wrapper-${postId}`} className="comments-wrapper">
               {comments.map(comment => {
                 return <Comment
                   key={comment.data.id}
@@ -91,7 +91,7 @@ function Post(props) {
   }
 
   const renderPostText = (initialCharLength) => {
-    console.log('renderPostText', postId, '\n', 'initialCharLength', initialCharLength, 'charLength: ', charLength, 'postTextHtml?.length', postTextHtml?.length, 'postText?.length', postText?.length);
+    // console.log('renderPostText', postId, '\n', 'initialCharLength', initialCharLength, 'charLength: ', charLength, 'postTextHtml?.length', postTextHtml?.length, 'postText?.length', postText?.length);
 
     function renderExpandIcon() {
       if (initialCharLength >= postTextHtml?.length || initialCharLength >= postText?.length) {
@@ -126,7 +126,9 @@ function Post(props) {
             setCardStyle={setCardStyle}
           />
         }
-        <Card.Body>
+        <Card.Body 
+          /* remove top border radius if Media component is used (card-img-top) */
+          style={postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo ? {borderTopLeftRadius: 0, borderTopRightRadius: 0} : null}>
           <Card.Title>{postTitle}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
           <Card.Text as='div' className="pt-3">{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}

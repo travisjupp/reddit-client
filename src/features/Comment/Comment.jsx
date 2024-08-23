@@ -38,7 +38,7 @@ function Comment(props) {
     if (commentsStatus === 'loading') {
     // if (commentsStatus === 'succeeded') {
         return (
-            <Card
+            <Card className="comment"
             //  className={show ? 'comment' : 'd-none comment'}
             >
                 <Card.Body>
@@ -59,10 +59,7 @@ function Comment(props) {
 
     if (commentsStatus === 'succeeded') {
         return (
-            <Card
-            //  className={show ? 'comment' : 'd-none comment'}
-            style={{backgroundColor: "gainsboro"}}
-            >
+            <Card className="comment" >
                 <Card.Body>
                     <Card.Title className="h6">
                         <Stack direction="horizontal" gap={2}>
