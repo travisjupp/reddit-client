@@ -1,21 +1,57 @@
 /* Global styles */
 
+/* fixed bg image iOS (hack) */
+.bg {
+  background-color: whitesmoke;
+  background-image: url(reddit.svg);
+  background-size: 200%;
+  filter: opacity(90%);
+  background-blend-mode: overlay;
+  background-position: top center;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  position: fixed;
+}
+
+.card {
+  background-color: transparent;
+  /* border: var(--bs-card-border-width) solid var(--bs-gray-500); */
+}
+
+.card-img-top {
+  max-height: 70vh;
+  object-fit: contain;
+  /* background-color: var(--bs-dark); */
+  background-color: #0000001a;
+}
+
 .card-body {
   /* no layout-breaking words in cards */
   word-break: break-word;
+  background-color: var(--bs-light);
+  border-color: transparent;
+  border-radius: inherit;
+}
+
+/* global main styles */
+main.col {
+  /* background-color: red;   */
+  /* background-image: url(reddit.svg); */
+  background-size: 150%;
+  background-repeat: no-repeat;
+  /* background-position: bottom 50% right -80%; */
+  background-position: 25% 60%;
+  background-attachment: fixed;
+  background-blend-mode: overlay;
 }
 
 /* global brand */
-
 #redditLogo {
-  margin-inline-end: calc(var(--bs-gutter-x)* .4); 
+  margin-inline-end: calc(var(--bs-gutter-x)* .4);
   width: 1.3em;
   height: 1.3em;
-  color: 
-    /* var(--bs-teal) */
-    mediumspringgreen
-    /* springgreen */
-  ;
+  color: mediumspringgreen;
   position: relative;
   bottom: .02rem;
 }
@@ -25,17 +61,15 @@
   margin: 0;
 }
 
-div.navbar-brand > div > span:nth-child(2) {
+div.navbar-brand>div>span:nth-child(2) {
   font-weight: 200;
   font-style: italic;
-  /* color: mediumpurple; */
 }
 
 /* global nav-link styles */
 /* handle overflowing nav-link text */
 div.accordion-body {
   overflow: hidden;
-  /* padding-block-start: calc(var(--bs-gutter-x)* .1); */
 }
 
 a.nav-link {
@@ -67,50 +101,45 @@ h1#srTitle {
 /* Desktop XXL */
 @media only screen and (min-width: 1400px) {
 
-  main.col {
-    /* background-color: red;   */
-    background-image: url(reddit.svg);
-    background-size: 150%;
-    background-repeat: no-repeat;
-    /* background-position: bottom 50% right -80%; */
-    background-position: 25% 60%;
-    background-attachment: fixed;
-    background-blend-mode: overlay;
+  /* fixed bg */
+  .bg {
+    background-position: 62.5% 64%;
   }
-  
+
   .card {
     margin-left: 15%;
     margin-right: 15%;
   }
-  
+
   h1#srTitle {
     font-size: 2.5em;
     height: 58px;
   }
-  
+
   /* sidebar */
   .nav-link {
     padding-left: 1rem;
     padding-top: .5rem;
     padding-bottom: .5rem;
   }
-  
-  .nav-link:active, .nav-link.current {
+
+  .nav-link:active,
+  .nav-link.current {
     background-color: var(--bs-gray-300);
     padding-right: 100%;
     border-left: solid .25rem red;
   }
 
-  .nav-link.current > img {
+  .nav-link.current>img {
     /* compensate for red border width */
     margin-left: -.25rem;
   }
-  
+
   .accordion-body {
     padding: 0;
   }
-  
-  h2.accordion-header > button.accordion-button {
+
+  h2.accordion-header>button.accordion-button {
     background-color: var(--bs-gray-300);
     box-shadow: none;
     color: var(--bs-dark);
@@ -118,47 +147,47 @@ h1#srTitle {
     font-size: .7em;
     border-bottom: 1px solid var(--bs-light);
   }
-  
+
 }
 
 /* Desktop MD, LG, XL */
 @media only screen and (min-width: 768px) and (max-width: 1400px) {
-  
+
+  /* fixed bg */
+  .bg {
+    background-position: 62% 70%;
+  }
+
   /* sidebar */
   .nav-link {
     padding-left: .5rem;
     padding-bottom: .5rem;
   }
-  
-  .nav-link:active, .nav-link.current {
+
+  .nav-link:active,
+  .nav-link.current {
     background-color: var(--bs-gray-300);
     padding-right: 100%;
-    border-left: solid .25rem 
-      /* var(--bs-red) */
-      /* var(--bs-green) */
-      /* indianred */
-      /* orangered */
-      #df1111
-    ;
+    border-left: solid .25rem #df1111;
     padding-bottom: .5rem;
   }
 
-  .nav-link.current > img {
+  .nav-link.current>img {
     /* compensate for red border width */
     margin-left: -.25rem;
   }
-  
-  a.nav-link > span#prefix {
-     font-size: .7em;
+
+  a.nav-link>span#prefix {
+    font-size: .7em;
   }
-  
-  a.nav-link > span#srlink {
+
+  a.nav-link>span#srlink {
     font-size: .7em;
     font-weight: 700;
     clip-path: padding-box;
   }
-  
-  a.nav-link > img {
+
+  a.nav-link>img {
     margin-right: .4rem;
   }
 
@@ -166,73 +195,95 @@ h1#srTitle {
     padding: 0;
     padding-top: .4rem;
   }
-  
-  h2.accordion-header > button.accordion-button {
+
+  h2.accordion-header>button.accordion-button {
     background-color: var(--bs-gray-300);
     box-shadow: none;
     color: var(--bs-dark);
-    /* border-bottom: 1px solid var(--bs-light); */
   }
-    
+
 }
 
 /* Desktop MD */
 @media only screen and (min-width: 768px) and (max-width: 992px) {
-  
+
+  /* fixed bg image */
+  main.col {
+    background-attachment: fixed;
+    background-position: 8% 60%;
+    background-size: 130%;
+  }
+
+  /* fixed bg image for iOS (hack) */
+  .bg {
+    background-position: -45%;
+    background-size: 50%;
+  }
+
   /* sidebar */
   .nav-link {
     padding-left: .5rem;
   }
+
   .nav-link:active {
-  background-color: var(--bs-gray-300);
-  padding-right: 100%;
-  border-left: solid 2px red;
-  padding-left: .5rem;
-  padding-bottom: .5rem;
+    background-color: var(--bs-gray-300);
+    padding-right: 100%;
+    border-left: solid 2px red;
+    padding-left: .5rem;
+    padding-bottom: .5rem;
   }
-  
-  a.nav-link > span#prefix {
-     font-size: .5em;
+
+  a.nav-link>span#prefix {
+    font-size: .5em;
   }
-  
-  a.nav-link > span#srlink {
+
+  a.nav-link>span#srlink {
     font-size: .5em;
     font-weight: 700;
   }
 
-  a.nav-link > img {
+  a.nav-link>img {
     margin-right: .2rem;
     width: 20px;
     height: 20px;
   }
-  
-  h2.accordion-header > button.accordion-button {
+
+  h2.accordion-header>button.accordion-button {
     background-color: var(--bs-gray-300);
     box-shadow: none;
     color: var(--bs-dark);
   }
-  
-  .accordion-body > a.nav-link {
-    /* margin-bottom: 0; */
+
+  .accordion-body>a.nav-link {
     margin-bottom: .2rem;
     padding-bottom: .5rem;
   }
-  
+
   .accordion-body {
-    /* padding-left: .5rem; */
-    /* padding: .2rem; */
     padding-right: 0;
   }
-  
+
 }
 
 /* Mobile XS, SM */
 @media only screen and (max-width:768px) {
-  
-  .navbar-brand {
-  padding-left: 0;
+
+  /* fixed bg image */
+  main.col {
+    background-position: 50% 70%;
+    background-attachment: fixed;
+    background-size: 250%;
   }
-  
+
+  /* fixed bg image iOS (hack)  */
+  .bg {
+    background-position: center top 60%;
+  }
+
+  .navbar-brand {
+    padding-left: 0;
+  }
+
 }
 
 .App {
@@ -315,7 +366,7 @@ h1#srTitle {
   background-color: var(--bs-gray-dark);
 }
 
-#offcanvasNavbar-expand-sm[role="dialog"] .accordion-body, 
+#offcanvasNavbar-expand-sm[role="dialog"] .accordion-body,
 #offcanvasNavbar-expand-sm[role="dialog"] .accordion-button,
 #offcanvasNavbar-expand-sm[role="dialog"] .accordion-item {
   padding: .3rem;
@@ -332,50 +383,30 @@ h1#srTitle {
 }
 
 #offcanvasNavbar-expand-sm[role="dialog"] .accordion-button.collapsed {
-  /* box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color); */
-  /* box-shadow: none; */
   border-bottom: 1px solid transparent;
 }
 
 #offcanvasNavbar-expand-sm[role="dialog"] .accordion-button:not(.collapsed) {
-  /* color: white; */
-  /* background-color: transparent; */
-  
   border-bottom: 1px solid var(--bs-gray-dark);
-  /* box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color); */
-  /* box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-gray-dark); */
-  /* filter: var(--bs-btn-close-white-filter); */
-  
 }
 
 #offcanvasNavbar-expand-sm[role="dialog"] .accordion-button::after {
-  /* color: green; */
-  /* border: 1px solid red; */
   filter: invert(1) grayscale(100%) brightness(70%);
-  /* box-shadow: none;  */
-  /* filter: var(--bs-btn-close-white-filter); */
-}
-
-#offcanvasNavbar-expand-sm[role="dialog"] .accordion-button:focus {
-  /* box-shadow: none; */
-  /* border-bottom: none; */
 }
 
 /* off-canvas nav avatar spacing */
-#offcanvasNavbar-expand-sm[role="dialog"] 
-.nav-link > img {
-  margin-right: 0.4rem; 
+#offcanvasNavbar-expand-sm[role="dialog"] .nav-link>img {
+  margin-right: 0.4rem;
 }
 
 /* desktop nav avatar spacing */
-/* #offcanvasNavbar-expand-sm[role="dialog"]  */
-.nav-link > img {
-  margin-right: .75rem; 
+.nav-link>img {
+  margin-right: .75rem;
 }
 
 
 /* off-canvas nav link-text prefix "/r" */
-#offcanvasNavbar-expand-sm[role="dialog"] .nav-link > span#prefix {
+#offcanvasNavbar-expand-sm[role="dialog"] .nav-link>span#prefix {
   font-weight: 200;
   font-size: .75em;
   opacity: 30%;
@@ -384,9 +415,8 @@ h1#srTitle {
 }
 
 /* desktop nav link-text prefix "/r" */
-.nav-link > span#prefix {
+.nav-link>span#prefix {
   font-weight: 200;
-  /* font-size: .75em; */
   opacity: 30%;
   margin-right: 0.1rem;
   color: var(--bs-gray-dark);
@@ -394,7 +424,7 @@ h1#srTitle {
 
 
 /* off-canvas nav link-text */
-#offcanvasNavbar-expand-sm[role="dialog"] .nav-link > span#srlink {
+#offcanvasNavbar-expand-sm[role="dialog"] .nav-link>span#srlink {
   font-weight: 700;
   font-size: .75em;
   margin-right: 0.2rem;
@@ -402,20 +432,21 @@ h1#srTitle {
 }
 
 /* desktop nav link-text */
-.nav-link > span#srlink {
+.nav-link>span#srlink {
   margin-right: 0.2rem;
   font-weight: 700;
 }
 
 /* subreddits heading prefix "r/" */
-#srTitle > span:nth-child(1) {
-  font-weight: 200;  
+#srTitle>span:nth-child(1) {
+  font-weight: 200;
 }
 
 /* subreddits heading title */
-#srTitle > span:nth-child(2) {
+#srTitle>span:nth-child(2) {
   font-weight: 700;
 }
+
 /* Search form */
 
 /* Search button .nav-link overrides */
@@ -424,45 +455,23 @@ form#searchForm a[role="button"] {
   background-color: rgb(108, 117, 125);
 }
 
-
-/* Input group padding */
-/* form#searchForm > div {
- 
-} */
-
 #headerRightCol {
   padding-right: calc(var(--bs-gutter-x) * .5);
   padding-left: calc(var(--bs-gutter-x) * .5);
 }
-/* #offcanvasNavbar-expand-sm[role="dialog"] .nav-link { 
-                     background-color: lightgrey;
-                  } */
-
-
-/* @media only screen and (max-width: 480px) {
-
-  div.col-3 {
-    display: none;
-  }
-
-  div.d-flex.col-3 {
-    display: none !important;
-
-  }
-} */
 
 /* Post date */
 .date {
-    /* font-size: 1rem; */
-    color: #495057;
-    width: auto;
-    word-break: normal;
-    position: absolute;
-    /* top: 0; */
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-align: center;
+  /* font-size: 1rem; */
+  color: #495057;
+  width: auto;
+  word-break: normal;
+  position: absolute;
+  /* top: 0; */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
 }
 
 /* Main section */
@@ -476,7 +485,6 @@ main {
 }
 
 /* Button */
-
 button {
   border: none;
   background-color: transparent;

@@ -25,6 +25,7 @@ function App() {
           </Col>
           {/* MAIN */}
           <Col as='main'>
+            <div className='bg'></div>
             <Main />
           </Col>
         </Row>
