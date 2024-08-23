@@ -36,7 +36,7 @@ function Post(props) {
   const commentsDispatchedPost = postId === commentsRequestedPostId; // isolate the post that comments were requested for
   const commentsFailedPost = postId === commentsErrorState?.meta.arg.postId; // isolate the post that a comments request errored
 
-  const nonRedditPostUrlLink = postUrl.search(/(www\.reddit\.com)|(redd\.it)/g) === -1 && <a href={postUrl}>{postUrl}</a>;
+  const nonRedditPostUrlLink = postUrl.search(/(www\.reddit\.com)|(redd\.it)/g) === -1 && <a href={postUrl} className='ps-0 pe-0 pb-3'>{postUrl}</a>;
 
   const handleCollapse = (postId) => {
     const updatedStates = {...collapseStates};
@@ -129,28 +129,18 @@ function Post(props) {
         <Card.Body>
           <Card.Title>{postTitle}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
-          <Card.Text as='div'>{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
-            <Container fluid className="p-3">
+          <Card.Text as='div' className="pt-3">{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
+            <Container fluid>
 
-              {/* MOBILE POSTTEXT show on xs and sm screen size only */}
-              <Row className='d-md-none' onClick={() => updateCharLength(80)}>
-                <Markdown className="d-md-none" rehypePlugins={[rehypeRaw]}>{renderPostText(80)}</Markdown>
-                {nonRedditPostUrlLink}
-              </Row>
-
+              {/* MOBILE POSTTEXT show on xs and sm screen size only */
+                (postTextHtml || postText) &&
+                <Row className='d-md-none' onClick={() => updateCharLength(80)}>
+                  <Markdown className="d-md-none ps-0 pe-0 pt-0 pb-3" rehypePlugins={[rehypeRaw]}>{renderPostText(80)}</Markdown>
+                  {nonRedditPostUrlLink}
+                </Row>
+              }
               <Row className='align-items-end'>
-
-                {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
-                <Col className="d-md-none">
-                  <Votes stackGap={1} iconSize='1.5em' score={score} />
-                </Col>
-
-                {/* DESKTOP ACTION BAR (left side) show on md and larger */}
-                <Col className="d-none d-md-block">
-                  <Votes stackGap={2} iconSize='2.5em' score={score} badgeStyle={'position-absolute translate-middle-x'} />
-                </Col>
-
-                <Col xs sm={5} xl={7}>
+                <Col xs={12} className="ps-0 pe-0">
 
                   {/* MOBILE DATE show on xs and sm screen size only */}
                   <div className="d-md-none date small">{DateTime.fromSeconds(postDate).toRelative()}</div>
@@ -161,21 +151,35 @@ function Post(props) {
                   {/* DESKTOP DATE show on xl and xxl screen size only */}
                   <div className="d-none d-xl-block date small">{DateTime.fromSeconds(postDate).toRelative()}</div>
 
-                  {/* DESKTOP POSTTEXT show on md and lg screen size only */}
-                  <div className="d-none d-md-block d-xl-none d-xxl-none" onClick={() => updateCharLength(200)}>
-                    <Markdown rehypePlugins={[rehypeRaw]}>{renderPostText(200)}</Markdown>
-                    {nonRedditPostUrlLink}
-                  </div>
+                  {/* DESKTOP POSTTEXT show on md and lg screen size only */
+                    (postTextHtml || postText) &&
+                    <div className="d-none d-md-block d-xl-none d-xxl-none pb-3" onClick={() => updateCharLength(200)}>
+                      <Markdown className="ps-0 pe-0 pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{renderPostText(200)}</Markdown>
+                      {nonRedditPostUrlLink}
+                    </div>
+                  }
 
-                  {/* DESKTOP POSTTEXT show on xl and xxl screen size only */}
-                  <div className="d-none d-xl-block" onClick={() => updateCharLength(300)}>
-                    <Markdown rehypePlugins={[rehypeRaw]}>{renderPostText(300)}</Markdown>
-                    {nonRedditPostUrlLink}
-                  </div>
+                  {/* DESKTOP POSTTEXT show on xl and xxl screen size only */
+                    (postTextHtml || postText) &&
+                    <div className="d-none d-xl-block pb-3" onClick={() => updateCharLength(300)}>
+                      <Markdown className="ps-0 pe-0 pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{renderPostText(300)}</Markdown>
+                      {nonRedditPostUrlLink}
+                    </div>
+                  }
+                </Col>
+
+                {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
+                <Col className="d-md-none ps-0">
+                  <Votes stackGap={1} iconSize='1.5em' score={score} />
+                </Col>
+
+                {/* DESKTOP ACTION BAR (left side) show on md and larger */}
+                <Col className="d-none d-md-block ps-0">
+                  <Votes stackGap={2} iconSize='2.5em' score={score} badgeStyle={'position-absolute translate-middle-x'} />
                 </Col>
 
                 {/* MOBILE ACTION BAR (right side) show on xs and sm screen size only */}
-                <Col className="d-md-none">
+                <Col className="d-md-none pe-0">
                   <Social
                     stackGap={1}
                     comments={comments}
@@ -187,7 +191,7 @@ function Post(props) {
                 </Col>
 
                 {/* DESKTOP ACTION BAR (right side) show on md and larger */}
-                <Col className='d-none d-md-block'>
+                <Col className='d-none d-md-block pe-0'>
                   <Social
                     iconSize="2.5em"
                     badgeStyle="position-absolute translate-middle-x"
