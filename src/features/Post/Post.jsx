@@ -1,4 +1,5 @@
 import {DateTime} from 'luxon';
+import he from 'he';
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Collapse, Container, Row} from 'react-bootstrap';
 import Markdown from 'react-markdown';
@@ -129,7 +130,7 @@ function Post(props) {
         <Card.Body 
           /* remove top border radius if Media component is used (card-img-top) */
           style={postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo ? {borderTopLeftRadius: 0, borderTopRightRadius: 0} : null}>
-          <Card.Title>{postTitle}</Card.Title>
+          <Card.Title>{he.decode(postTitle)}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
           <Card.Text as='div' className="pt-3">{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
             <Container fluid>
