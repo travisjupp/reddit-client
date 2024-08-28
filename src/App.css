@@ -16,6 +16,8 @@
 
 .card {
   background-color: transparent;
+  margin-right: calc(var(--bs-gutter-x)* .5);
+  margin-left: calc(var(--bs-gutter-x)* .5);
   /* border: var(--bs-card-border-width) solid var(--bs-gray-500); */
 }
 
@@ -78,6 +80,14 @@ div.accordion-body {
 
 a.nav-link {
   width: max-content;
+  padding-right: 100%;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+  /* font-size: 1.5em; */
+}
+
+a.nav-link:hover {
+  background-color: var(--bs-gray-300);
 }
 
 /* main col margins */
@@ -97,10 +107,31 @@ h1#srTitle {
   z-index: 6;
 }
 
-.card {
-  margin-right: calc(var(--bs-gutter-x)* .5);
-  margin-left: calc(var(--bs-gutter-x)* .5);
+/* global post styles */
+/* code / preformatted text styles */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+   word-break: break-all;
 }
+
+.card-text {
+  word-break: break-word;
+}
+
+/* non-wrapping preformatted text breaks the layout when sidebar is present */
+
+pre {
+  /* display: none; */
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+pre code {
+  word-break: break-all;
+}
+
+
 
 /* Desktop XXL */
 @media only screen and (min-width: 1400px) {
@@ -145,6 +176,7 @@ h1#srTitle {
 
   .accordion-body {
     padding: 0;
+    padding-top: .6rem;
   }
 
   h2.accordion-header>button.accordion-button {
@@ -169,6 +201,7 @@ h1#srTitle {
   /* sidebar */
   .nav-link {
     padding-left: .5rem;
+    padding-top: .5rem;
     padding-bottom: .5rem;
   }
 
@@ -186,12 +219,12 @@ h1#srTitle {
   }
 
   a.nav-link>span#prefix {
-    font-size: .7em;
+    /* font-size: .7em; */
   }
 
   a.nav-link>span#srlink {
-    font-size: .7em;
-    font-weight: 700;
+    /* font-size: .7em; */
+    /* font-weight: 700; */
     clip-path: padding-box;
   }
 
@@ -201,7 +234,7 @@ h1#srTitle {
 
   .accordion-body {
     padding: 0;
-    padding-top: .4rem;
+    padding-top: .6rem;
   }
 
   h2.accordion-header>button.accordion-button {
@@ -242,12 +275,12 @@ h1#srTitle {
   }
 
   a.nav-link>span#prefix {
-    font-size: .5em;
+    /* font-size: .5em; */
   }
 
   a.nav-link>span#srlink {
-    font-size: .5em;
-    font-weight: 700;
+    /* font-size: .5em; */
+    /* font-weight: 700; */
   }
 
   a.nav-link>img {
@@ -263,7 +296,7 @@ h1#srTitle {
   }
 
   .accordion-body>a.nav-link {
-    /* margin-bottom: .2rem; */
+    margin-bottom: .2rem;
     padding-bottom: .5rem;
   }
 
@@ -370,7 +403,8 @@ h1#srTitle {
   align-items: center;
 }
 
-#offcanvasNavbar-expand-sm[role="dialog"] .nav-link:active {
+#offcanvasNavbar-expand-sm[role="dialog"] .nav-link:active,
+#offcanvasNavbar-expand-sm[role="dialog"] .nav-link:hover {
   background-color: var(--bs-gray-dark);
 }
 
@@ -416,7 +450,7 @@ h1#srTitle {
 /* off-canvas nav link-text prefix "/r" */
 #offcanvasNavbar-expand-sm[role="dialog"] .nav-link>span#prefix {
   font-weight: 200;
-  font-size: .75em;
+  /* font-size: .75em; */
   opacity: 30%;
   margin-right: 0.2rem;
   color: var(--bs-light);
@@ -434,7 +468,7 @@ h1#srTitle {
 /* off-canvas nav link-text */
 #offcanvasNavbar-expand-sm[role="dialog"] .nav-link>span#srlink {
   font-weight: 700;
-  font-size: .75em;
+  /* font-size: .75em; */
   margin-right: 0.2rem;
   color: var(--bs-light);
 }
@@ -442,6 +476,7 @@ h1#srTitle {
 /* desktop nav link-text */
 .nav-link>span#srlink {
   margin-right: 0.2rem;
+  font-weight: 700;
 }
 
 /* subreddits heading prefix "r/" */
