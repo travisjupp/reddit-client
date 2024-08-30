@@ -117,7 +117,7 @@ function Post(props) {
                 <div onClick={() => setOpen(!open)}
                   className="post-text-wrapper d-md-none"
                   aria-controls={"post-text" + postId} aria-expanded={open} role="button">
-                  <div className="post-text-overlay" style={open ? {backgroundImage: 'none'} : null}></div>
+                  <div className="post-text-overlay" style={open ? {display: 'none'} : null}></div>
                   <Collapse in={open}>
                     <div className='row post-text' id={"post-text" + postId}>
                       <Markdown className="d-md-none pt-0 pb-3" rehypePlugins={[rehypeRaw]}>{formatPostText(postTextHtml) || postText}</Markdown>
@@ -143,7 +143,7 @@ function Post(props) {
                     <div onClick={() => setOpen(!open)}
                       className="post-text-wrapper d-none d-md-block d-xl-none d-xxl-none"
                       aria-controls={"post-text" + postId} aria-expanded={open} role="button">
-                      <div className="post-text-overlay" style={open ? {backgroundImage: 'none'} : null}></div>
+                      <div className="post-text-overlay" style={open ? {display: 'none'} : null}></div>
                       <Collapse in={open}>
                         <div className="pb-3 post-text" id={"post-text" + postId}>
                           <Markdown className="pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{formatPostText(postTextHtml) || postText}</Markdown>
@@ -158,7 +158,7 @@ function Post(props) {
                     <div onClick={() => setOpen(!open)}
                       className="post-text-wrapper d-none d-xl-block"
                       aria-controls={"post-text" + postId} aria-expanded={open} role="button">
-                      <div className="post-text-overlay" style={open ? {backgroundImage: 'none'} : null}></div>
+                      <div className="post-text-overlay" style={open ? {display: 'none'} : null}></div>
                       <Collapse in={open}>
                         <div className="pb-3 post-text" id={"post-text" + postId}>
                           <Markdown className="ps-0 pe-0 pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{formatPostText(postTextHtml) || postText}</Markdown>
