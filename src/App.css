@@ -1,5 +1,68 @@
 /* Global styles */
 
+header {
+  position: sticky;
+  top: 0;
+  z-index: 11;
+}
+
+/* show/hide post-text */
+
+.post-text-wrapper {
+  position: relative;
+}
+
+.post-text-overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background-image: linear-gradient(to bottom, transparent, var(--bs-light));
+}
+
+.post-text.collapse:not(.show) {
+  display: block;
+  height: 3.7em;
+  overflow: hidden;
+}
+.post-text.collapsing {
+  height: 3.7em;
+}
+
+.post-text-wrapper[aria-expanded="true"]::after {
+  content: '+ Show Less';
+  border-top: solid 1px rgba(var(--bs-light-rgb));
+}
+
+.post-text-wrapper[aria-expanded="false"]::after {
+  content: '+ Show More';
+  border-top: solid 1px rgba(var(--bs-primary-rgb));
+}
+
+.post-text-wrapper[aria-expanded="true"]:hover::after {
+  font-weight: 500;
+}
+
+.post-text-wrapper[aria-expanded="false"]:hover::after {
+  font-weight: 500;
+  border-top: solid 1px rgba(var(--bs-primary-rgb));
+}
+
+div.post-text-wrapper::after {
+  display: block;
+  text-align: end;
+  font-size: .875em;
+  padding-block-end: 1rem;
+  position: relative;
+  z-index: 10;
+  color: rgba(var(--bs-primary-rgb));
+  transition: all .5s;
+  /* border-top: solid 1px rgba(var(--bs-primary-rgb)); */
+
+}
+
 /* fixed bg image iOS (hack) */
 .bg {
   background-color: whitesmoke;
@@ -104,7 +167,7 @@ h1#srTitle {
   background-color: #ffffff80;
   border-bottom: 1px solid white;
   backdrop-filter: blur(1.6px);
-  z-index: 6;
+  z-index: 12;
 }
 
 /* global post styles */
@@ -318,7 +381,7 @@ pre code {
 
   /* fixed bg image iOS (hack)  */
   .bg {
-    background-position: center top 60%;
+    background-position: center top 25%;
   }
 
   .navbar-brand {

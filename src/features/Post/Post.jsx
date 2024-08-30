@@ -84,38 +84,15 @@ function Post(props) {
         }
       </>)
   }
-  const [charLength, setCharLength] = useState(0);
-
-  const updateCharLength = (l) => {
-    setCharLength(charLength === postTextHtml?.length || charLength === postText?.length ?
-      l : postTextHtml?.length || postText?.length)
-  }
-
-  const renderPostText = (initialCharLength) => {
-    // console.log('renderPostText', postId, '\n', 'initialCharLength', initialCharLength, 'charLength: ', charLength, 'postTextHtml?.length', postTextHtml?.length, 'postText?.length', postText?.length);
-
-    function renderExpandIcon() {
-      if (initialCharLength >= postTextHtml?.length || initialCharLength >= postText?.length) {
-        return '';
-      } else if (charLength < postTextHtml?.length || charLength < postText?.length) {
-        return '<span className="text-primary">...more</span>';
-      } else if (postTextHtml?.length === 0 || postText?.length === 0) {
-        return '';
-      } else {
-        return '<span className="text-primary">...less</span>';
-      }
-    }
-
-    return formatPostText(postTextHtml, postText, charLength, initialCharLength) + renderExpandIcon();
-  }
 
   const [cardStyle, setCardStyle] = useState('auto');
 
+  const [open, setOpen] = useState(false);
   return (
     <>
       <Card id={postId}
         // style={{height: document.getElementById(postId)?.offsetHeight || 'auto', transitionDuration: '1s'}}
-        style={{height: cardStyle, transitionDuration: '1s'}}
+        style={{cardStyle, transitionDuration: '1s'}}
       // style={{height: document.getElementById(postId)?.querySelector('.active.carousel-item img')?.height || 'auto', transitionDuration: '1s'}}
       >
         {/* POST MEDIA */
@@ -127,23 +104,30 @@ function Post(props) {
             setCardStyle={setCardStyle}
           />
         }
-        <Card.Body 
+        <Card.Body
           /* remove top border radius if Media component is used (card-img-top) */
           style={postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo ? {borderTopLeftRadius: 0, borderTopRightRadius: 0} : null}>
           <Card.Title>{he.decode(postTitle)}</Card.Title>
           <Avatar name={postAuthor} src={validateAvatarImgURL(avatars[postAuthor])} /> {postAuthor}
           <Card.Text as='div' className="pt-3">{/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
-            <Container fluid>
+            <Container fluid className="p-0">
 
               {/* MOBILE POSTTEXT show on xs and sm screen size only */
                 (postTextHtml || postText) &&
-                <Row className='d-md-none' onClick={() => updateCharLength(80)}>
-                  <Markdown className="d-md-none ps-0 pe-0 pt-0 pb-3" rehypePlugins={[rehypeRaw]}>{renderPostText(80)}</Markdown>
-                  {nonRedditPostUrlLink}
-                </Row>
+                <div onClick={() => setOpen(!open)}
+                  className="post-text-wrapper d-md-none"
+                  aria-controls={"post-text" + postId} aria-expanded={open} role="button">
+                  <div className="post-text-overlay" style={open ? {backgroundImage: 'none'} : null}></div>
+                  <Collapse in={open}>
+                    <div className='row post-text' id={"post-text" + postId}>
+                      <Markdown className="d-md-none pt-0 pb-3" rehypePlugins={[rehypeRaw]}>{formatPostText(postTextHtml) || postText}</Markdown>
+                      {nonRedditPostUrlLink}
+                    </div >
+                  </Collapse>
+                </div>
               }
               <Row className='align-items-end'>
-                <Col xs={12} className="ps-0 pe-0">
+                <Col xs={12}>
 
                   {/* MOBILE DATE show on xs and sm screen size only */}
                   <div className="d-md-none date small">{DateTime.fromSeconds(postDate).toRelative()}</div>
@@ -156,33 +140,47 @@ function Post(props) {
 
                   {/* DESKTOP POSTTEXT show on md and lg screen size only */
                     (postTextHtml || postText) &&
-                    <div className="d-none d-md-block d-xl-none d-xxl-none pb-3" onClick={() => updateCharLength(200)}>
-                      <Markdown className="ps-0 pe-0 pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{renderPostText(200)}</Markdown>
-                      {nonRedditPostUrlLink}
+                    <div onClick={() => setOpen(!open)}
+                      className="post-text-wrapper d-none d-md-block d-xl-none d-xxl-none"
+                      aria-controls={"post-text" + postId} aria-expanded={open} role="button">
+                      <div className="post-text-overlay" style={open ? {backgroundImage: 'none'} : null}></div>
+                      <Collapse in={open}>
+                        <div className="pb-3 post-text" id={"post-text" + postId}>
+                          <Markdown className="pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{formatPostText(postTextHtml) || postText}</Markdown>
+                          {nonRedditPostUrlLink}
+                        </div>
+                      </Collapse>
                     </div>
                   }
 
                   {/* DESKTOP POSTTEXT show on xl and xxl screen size only */
                     (postTextHtml || postText) &&
-                    <div className="d-none d-xl-block pb-3" onClick={() => updateCharLength(300)}>
-                      <Markdown className="ps-0 pe-0 pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{renderPostText(300)}</Markdown>
-                      {nonRedditPostUrlLink}
+                    <div onClick={() => setOpen(!open)}
+                      className="post-text-wrapper d-none d-xl-block"
+                      aria-controls={"post-text" + postId} aria-expanded={open} role="button">
+                      <div className="post-text-overlay" style={open ? {backgroundImage: 'none'} : null}></div>
+                      <Collapse in={open}>
+                        <div className="pb-3 post-text" id={"post-text" + postId}>
+                          <Markdown className="ps-0 pe-0 pt-0 pb-0" rehypePlugins={[rehypeRaw]}>{formatPostText(postTextHtml) || postText}</Markdown>
+                          {nonRedditPostUrlLink}
+                        </div>
+                      </Collapse>
                     </div>
                   }
                 </Col>
 
                 {/* MOBILE ACTION BAR (left side) show on xs and sm screen size only */}
-                <Col className="d-md-none ps-0">
+                <Col className="d-md-none">
                   <Votes stackGap={1} iconSize='1.5em' score={score} />
                 </Col>
 
                 {/* DESKTOP ACTION BAR (left side) show on md and larger */}
-                <Col className="d-none d-md-block ps-0">
+                <Col className="d-none d-md-block">
                   <Votes stackGap={2} iconSize='2.5em' score={score} badgeStyle={'position-absolute translate-middle-x'} />
                 </Col>
 
                 {/* MOBILE ACTION BAR (right side) show on xs and sm screen size only */}
-                <Col className="d-md-none pe-0">
+                <Col className="d-md-none">
                   <Social
                     stackGap={1}
                     comments={comments}
@@ -194,7 +192,7 @@ function Post(props) {
                 </Col>
 
                 {/* DESKTOP ACTION BAR (right side) show on md and larger */}
-                <Col className='d-none d-md-block pe-0'>
+                <Col className="d-none d-md-block">
                   <Social
                     iconSize="2.5em"
                     badgeStyle="position-absolute translate-middle-x"

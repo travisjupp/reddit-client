@@ -19,7 +19,7 @@ function Main() {
     }
 
     useEffect(() => {
-        dispatch(getSubredditPosts('popular'));
+        dispatch(getSubredditPosts('react'));
     }, [dispatch]);
 
     if (postsStatus === 'loading') {
@@ -81,7 +81,6 @@ function Main() {
                     </pre>
                     <Button className='' onClick={() => dispatch(getSubredditPosts(postsCurrent))}>Retry</Button>
                 </Toaster>
-
             </>
         )
     }
