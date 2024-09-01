@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 
 
 function BSScreenSize() {
-    const [hidden, setHidden] = useState(false);
+    const [hidden, setHidden] = useState(true);
 
     useEffect(() => {
         function handleKeyPress(event) {
