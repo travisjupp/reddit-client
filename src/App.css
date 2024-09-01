@@ -68,11 +68,6 @@ div.post-text-wrapper[data-show-expand="false"]::after {
   display: none;
 }
 
-/* hide post-text-overlay using data-attribute (js) */
-div.post-text-wrapper[data-show-expand="false"] .post-text-overlay {
-  display: none;
-}
-
 /* fixed bg image iOS (hack) */
 .bg {
   background-color: whitesmoke;
