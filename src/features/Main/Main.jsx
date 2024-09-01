@@ -19,7 +19,7 @@ function Main() {
     }
 
     useEffect(() => {
-        dispatch(getSubredditPosts('react'));
+        dispatch(getSubredditPosts('popular'));
     }, [dispatch]);
 
     if (postsStatus === 'loading') {
