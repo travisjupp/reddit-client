@@ -85,23 +85,18 @@ function Post(props) {
       </>)
   }
 
-  const [cardStyle, setCardStyle] = useState('auto');
-
   const [open, setOpen] = useState(false);
+
   return (
     <>
       <Card id={postId}
-        // style={{height: document.getElementById(postId)?.offsetHeight || 'auto', transitionDuration: '1s'}}
-        style={{cardStyle, transitionDuration: '1s'}}
-      // style={{height: document.getElementById(postId)?.querySelector('.active.carousel-item img')?.height || 'auto', transitionDuration: '1s'}}
+        style={{transitionDuration: '1s'}}
       >
         {/* POST MEDIA */
           (postMedia.mediaEmbed?.content || typeof postMedia.preview === 'object' || postMedia.isGallery || postMedia.isRedditVideo) &&
           <Media
             postMedia={postMedia}
             postId={postId}
-            cardStyle={cardStyle}
-            setCardStyle={setCardStyle}
           />
         }
         <Card.Body
@@ -114,8 +109,8 @@ function Post(props) {
 
               {/* MOBILE POSTTEXT show on xs and sm screen size only */
                 (postTextHtml || postText) &&
-                <div onClick={() => setOpen(!open)}
-                  className="post-text-wrapper d-md-none"
+                <div onClick={() => setOpen(!open)} 
+                  className="post-text-wrapper d-md-none" 
                   aria-controls={"post-text" + postId} aria-expanded={open} role="button">
                   <div className="post-text-overlay" style={open ? {display: 'none'} : null}></div>
                   <Collapse in={open}>
