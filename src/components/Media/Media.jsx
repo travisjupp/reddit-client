@@ -8,15 +8,8 @@ import he from 'he';
 import parse from 'html-react-parser';
 // If post media exists, decode html-entites and render.
 // Searches for available media types: image galleries, images, reddit-hosted video, and embedded media from 3rd party sites eg. twitch/youtube videos
-const Media = ({postMedia, postId 
-    // cardStyle,
-    // setCardStyle
-}) => {
-    const {mediaEmbed, preview, isGallery, metadata, 
-        // data, 
-        altText, redditVideo} = postMedia;
-    // console.log('~>postMedia', postMedia);
-    // console.log('postId', postId);
+const Media = ({postMedia, postId}) => {
+    const {mediaEmbed, preview, isGallery, metadata, altText, redditVideo} = postMedia;
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -26,7 +19,6 @@ const Media = ({postMedia, postId
     const previewSource = preview?.images[0].source; // get preview source
     const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
     const redditVideoURL = he.decode(redditVideo?.dash_url || '');
-    // console.log('~>preview', preview, '\n~~>previewResolutions', previewResolutions, '\n~~>sortedPreviewResolutions', sortedPreviewResolutions, '\n~~>mediaEmbed', mediaEmbed, '\n~>isGallery', isGallery, '\n~~>metadata', metadata, '\n~~>data', data, '\n~>redditVideo', redditVideo);
 
     try {
         // REDDIT VIDEO CHECKER check for reddit hosted video (MPEG-DASH)
@@ -94,7 +86,6 @@ const Media = ({postMedia, postId
                 const sortedPreviewResolutions = [...previewResolutions].sort((a, b) => b.x - a.x); // sort for DOM
                 const previewSource = image.s;
                 const previewId = image.id;
-                // console.log('Gallery data: ', '\npreviewSource', previewSource, '\npreviewId', previewId);
                 // save as picture with source elements
                 reactElements.unshift(
                     <Carousel.Item key={previewId + 'carouselItem'}>
