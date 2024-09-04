@@ -40,8 +40,8 @@ const Media = ({postMedia, postId}) => {
                                     key={previewId + '@' + image.width}
                                     srcSet={he.decode(image.url)}
                                     media={`(min-width: ${image.width}px)`}
-                                //width={image.width}
-                                //height={image.height}
+                                width={image.width}
+                                height={image.height}
                                 />
                             )
                         })
@@ -51,8 +51,8 @@ const Media = ({postMedia, postId}) => {
                         typeof mediaEmbed.content === 'string' ?
                             <>
                                 <img onClick={handleShow} src={he.decode(previewSource.url)}
-                                    // width={previewSource.width}
-                                    // height={previewSource.height}
+                                    width={previewSource.width}
+                                    height={previewSource.height}
                                     className="card-img-top"
                                     alt={altText}
                                 // style={{width: "inherit"}}
