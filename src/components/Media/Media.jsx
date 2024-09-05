@@ -66,8 +66,8 @@ const Media = ({postMedia, postId}) => {
                             </> :
                             // if post media is not DOM element render image
                             <img src={he.decode(previewSource.url)}
-                                // width={previewSource.width}
-                                // height={previewSource.height}
+                                width={previewSource.width}
+                                height={previewSource.height}
                                 className="card-img-top"
                                 alt={altText}
                             // style={{width: "inherit"}}
@@ -97,12 +97,12 @@ const Media = ({postMedia, postId}) => {
                                             key={previewId + '@' + image.x}
                                             srcSet={he.decode(image.u)}
                                             media={`(min-width: ${image.x}px)`}
-                                        //width={image.width}
-                                        //height={image.height}
+                                        width={image.x}
+                                        height={image.y}
                                         />
                                     )
                                 })}
-                            <img src={he.decode(previewSource.u)} className="card-img-top" alt={altText} />
+                            <img src={he.decode(previewSource.u)} width={previewSource.x} height={previewSource.y} className="card-img-top" alt={altText} />
                         </picture></Carousel.Item>);
             }
             return (<Carousel
