@@ -14,8 +14,8 @@ function Avatar(props) {
         }).toDataUriSync();
     }, [name, size]);
     // render avatar or identicon if src not provided
-    return !src ? <img src={avatar} alt="Avatar" style={{borderRadius: "50%"}} /> :
-        <img src={src} alt="Avatar" width={size} height={size} style={{borderRadius: "50%"}} />;
+    return !src ? <img src={avatar} alt="Avatar" width={size + 'px'} height={size + 'px'} style={{borderRadius: "50%"}} /> :
+        <img src={src} alt="Avatar" width={size + 'px'} height={size + 'px'} style={{borderRadius: "50%"}} />;
 }
 
 export default Avatar;
