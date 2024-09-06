@@ -40,8 +40,8 @@ const Media = ({postMedia, postId}) => {
                                     key={previewId + '@' + image.width}
                                     srcSet={he.decode(image.url)}
                                     media={`(min-width: ${image.width}px)`}
-                                width={image.width}
-                                height={image.height}
+                                    width={image.width}
+                                    height={image.height}
                                 />
                             )
                         })
@@ -55,12 +55,9 @@ const Media = ({postMedia, postId}) => {
                                     height={previewSource.height}
                                     className="card-img-top"
                                     alt={altText}
-                                // style={{width: "inherit"}}
                                 />
                                 <Modal show={show} onHide={handleClose} centered>
-                                    <Modal.Header closeButton>
-                                        {/* <Modal.Title>Modal heading</Modal.Title> */}
-                                    </Modal.Header>
+                                    <Modal.Header closeButton />
                                     <Modal.Body className="row-cols-1">{parse(postMediaDomElement)}</Modal.Body>
                                 </Modal>
                             </> :
@@ -70,7 +67,6 @@ const Media = ({postMedia, postId}) => {
                                 height={previewSource.height}
                                 className="card-img-top"
                                 alt={altText}
-                            // style={{width: "inherit"}}
                             />
                     }
                 </picture>
@@ -97,25 +93,16 @@ const Media = ({postMedia, postId}) => {
                                             key={previewId + '@' + image.x}
                                             srcSet={he.decode(image.u)}
                                             media={`(min-width: ${image.x}px)`}
-                                        width={image.x}
-                                        height={image.y}
+                                            width={image.x}
+                                            height={image.y}
                                         />
                                     )
                                 })}
                             <img src={he.decode(previewSource.u)} width={previewSource.x} height={previewSource.y} className="card-img-top" alt={altText} />
-                        </picture></Carousel.Item>);
+                        </picture>
+                    </Carousel.Item>);
             }
-            return (<Carousel
-                interval={null}
-                touch
-                // needed for css transition of card element when (cannot animate computed values)
-                onSelect={() => {
-                }}
-                onSlide={() => {
-                }}
-                onSlid={() => {
-                }}
-            >{reactElements}</Carousel>);
+            return <Carousel interval={null} touch >{reactElements}</Carousel>;
         }
     } catch (e) {
         console.error('Error:', e.message);
