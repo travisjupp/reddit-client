@@ -62,12 +62,20 @@ const Media = ({postMedia, postId}) => {
                                 </Modal>
                             </> :
                             // if post media is not DOM element render image
-                            <img src={he.decode(previewSource.url)}
-                                width={previewSource.width}
-                                height={previewSource.height}
-                                className="card-img-top"
-                                alt={altText}
-                            />
+                            <>
+                                <img onClick={handleShow} src={he.decode(previewSource.url)}
+                                    width={previewSource.width}
+                                    height={previewSource.height}
+                                    className="card-img-top"
+                                    alt={altText}
+                                />
+                                <Modal show={show} onHide={handleClose} centered>
+                                    <Modal.Header closeButton />
+                                    <Modal.Body className="row-cols-1">
+                                        <img src={he.decode(previewSource.url)} alt={altText} />
+                                    </Modal.Body>
+                                </Modal>
+                            </>
                     }
                 </picture>
             )
@@ -75,7 +83,7 @@ const Media = ({postMedia, postId}) => {
         // GALLERY CHECKER check for image galleries
         if (isGallery) {
             const reactElements = [];
-            // unpack preview images
+           // unpack preview images
             for (const key in metadata) {
                 let image = metadata[key];
                 const previewResolutions = image.p;
