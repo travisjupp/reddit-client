@@ -164,7 +164,8 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
   {
     condition(postAuthor, {getState}) {
       const {subredditPosts: {avatars}} = getState();
-      if (avatars[postAuthor]) { // if avatar is cached cancel thunk
+      const {subredditPosts: {avatarsDisabled}} = getState();
+      if (avatars[postAuthor] || avatarsDisabled) { // if avatar is cached or avatars disabled cancel thunk
         console.log('Avatar cached, cancelling thunk =>', postAuthor);
         return false;
       }

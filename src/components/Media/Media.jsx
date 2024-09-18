@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import Modal from 'react-bootstrap/Modal';
 import Carousel from "react-bootstrap/Carousel";
 import VideoPlayer from "../../features/VideoPlayer/VideoPlayer";
-// https://github.com/mathiasbynens/he
-// he (for “HTML entities”) is a robust HTML entity encoder/decoder written in JavaScript.
 import he from 'he';
 import parse from 'html-react-parser';
 // If post media exists, decode html-entites and render.
@@ -23,9 +21,7 @@ const Media = ({postMedia, postId}) => {
     try {
         // REDDIT VIDEO CHECKER check for reddit hosted video (MPEG-DASH)
         if (redditVideoURL) {
-            return (
-                <VideoPlayer redditVideoURL={redditVideoURL} postId={postId} />
-            )
+            return <VideoPlayer redditVideoURL={redditVideoURL} postId={postId} />
         }
         // PREVIEW CHECKER check for previews, or image only posts
         if (preview) {
@@ -83,7 +79,7 @@ const Media = ({postMedia, postId}) => {
         // GALLERY CHECKER check for image galleries
         if (isGallery) {
             const reactElements = [];
-           // unpack preview images
+            // unpack preview images
             for (const key in metadata) {
                 let image = metadata[key];
                 const previewResolutions = image.p;
@@ -106,7 +102,12 @@ const Media = ({postMedia, postId}) => {
                                         />
                                     )
                                 })}
-                            <img src={he.decode(previewSource.u)} width={previewSource.x} height={previewSource.y} className="card-img-top" alt={altText} />
+                            <img src={he.decode(previewSource.u)}
+                                width={previewSource.x}
+                                height={previewSource.y}
+                                className="card-img-top"
+                                alt={altText}
+                            />
                         </picture>
                     </Carousel.Item>);
             }
