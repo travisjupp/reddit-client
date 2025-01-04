@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import StatusLoader from '../../components/StatusLoader/StatusLoader';
 import Modal from 'react-bootstrap/Modal';
 import Carousel from "react-bootstrap/Carousel";
 import VideoPlayer from "../../features/VideoPlayer/VideoPlayer";
