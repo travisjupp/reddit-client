@@ -28,3 +28,6 @@ yarn-error.log*
 *.swp
 .*.swp
 
+
+# Local Netlify folder
+.netlify
