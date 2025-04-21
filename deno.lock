@@ -1,0 +1,50 @@
+{
+  "version": "4",
+  "remote": {
+    "https://edge.netlify.com/": "fd941d61d88673d5f28aab283fb86fcc50f08a3bc80ee5470498fcfa88c65cfb",
+    "https://edge.netlify.com/bootstrap/config.ts": "0aa0a225d978b89e0e62cbd853701605199e7a84095e55eeb70147faf1a24803",
+    "https://edge.netlify.com/bootstrap/context.ts": "b9b4e7cbb67a9d83cb28e45145ba3dfa6f05ad965587ef7e2fb0896da62dd16e",
+    "https://edge.netlify.com/bootstrap/cookie.ts": "8b0baae708989ca183c6f3b4ab3d029e6abcbc2e43f93edeb0ff447b3bbc3a05",
+    "https://edge.netlify.com/bootstrap/edge_function.ts": "b8253e86aa83c67341f5cfedeba5049d77fbf84dcab7eceff7566b7728ae9b39",
+    "https://edge.netlify.com/bootstrap/globals/types.ts": "eaa6148ded3121d8dee62dd91c86e7fe76601df0f3ca8d7962243a30f4c8935f"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@babel/core@^7.24.4",
+        "npm:@babel/plugin-proposal-private-property-in-object@^7.21.11",
+        "npm:@babel/plugin-syntax-jsx@^7.24.1",
+        "npm:@babel/preset-env@^7.24.4",
+        "npm:@babel/preset-react@^7.24.1",
+        "npm:@dicebear/collection@^7.1.2",
+        "npm:@dicebear/core@^7.1.2",
+        "npm:@reduxjs/toolkit@^2.2.3",
+        "npm:@testing-library/jest-dom@^6.6.3",
+        "npm:@testing-library/react@^13.4.0",
+        "npm:@testing-library/user-event@^14.5.2",
+        "npm:axios@^1.6.8",
+        "npm:babel-jest@^29.7.0",
+        "npm:bootstrap@^5.3.3",
+        "npm:dashjs@^4.7.4",
+        "npm:he@^1.2.0",
+        "npm:holderjs@^2.9.9",
+        "npm:html-react-parser@^5.1.10",
+        "npm:jest-environment-jsdom@^29.7.0",
+        "npm:jest-localstorage-mock@^2.4.26",
+        "npm:jest@^29.7.0",
+        "npm:jsdom@26",
+        "npm:luxon@^3.4.4",
+        "npm:react-bootstrap@^2.10.2",
+        "npm:react-dom@^18.3.1",
+        "npm:react-icons@^5.1.0",
+        "npm:react-markdown@^9.0.1",
+        "npm:react-redux@^9.1.1",
+        "npm:react-scripts@5.0.1",
+        "npm:react-test-renderer@^18.3.1",
+        "npm:react@^18.3.1",
+        "npm:rehype-raw@7",
+        "npm:web-vitals@^2.1.4"
+      ]
+    }
+  }
+}
