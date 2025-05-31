@@ -57,10 +57,10 @@ JQ filters for wrangling JSON data, and curl URLs revealing where local files or
 
 ```sh
 # view subreddit posts
-curl https://www.reddit.com/r/popular.json | jq '.data.children' | bat -l json
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/popular.json | jq '.data.children' | bat -l json
 
 # view all titles
-curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.title' | bat -l json
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/popular.json | jq '.data.children[].data.title' | bat -l json
 ```
 
 
@@ -68,10 +68,10 @@ curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.title' | 
 
 ```sh
 # view images from popular
-curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url' # images don't load in browser (CORS)
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/popular.json | jq '.data.children[].data.preview.images[0].source.url' # images don't load in browser (CORS)
 
 # load images from subreddit url prop, if it has img img will load if not nothing loads
-curl https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/popular.json | jq '.data.children[].data.url'
 # returns `https://i.redd.it/ssu9nfjyfzcc1.jpeg` if image exists, or somthing like: 
 `https://www.reddit.com/r/AskReddit/comments/198mp35/how_will_you_react_if_joe_biden_becomes_president/` or 
 `https://youtube.com/watch?v=386iVwP-bAA&amp;si=SAg9z216056Ov6nf` or
@@ -93,7 +93,7 @@ https://preview.redd.it/ih9drrcwtkec1.png?width=108&amp;crop=smart&amp;auto=webp
 # On reddit, when you click on a subreddit post from the initial listing from eg. `/r/MapPorn/` you will be taken to something like: `/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day`
 
 # link to comments for individual posts from a subreddit can be found in the `permalink` property of a subreddits' JSON file
-curl https://www.reddit.com/r/MapPorn.json | jq '.data.children[].data.permalink'
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/MapPorn.json | jq '.data.children[].data.permalink'
 # returns 25 url paths: 
 "/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024/"
 "/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day/"
@@ -102,23 +102,23 @@ curl https://www.reddit.com/r/MapPorn.json | jq '.data.children[].data.permalink
 
 # so in order to render posts w/ comments we need to grab the JSON from `permalink` then render that data.
 
-curl $(printf "https://www.reddit.com"$(curl https://www.reddit.com/r/MapPorn.json | jq -r '.data.children[0].data.permalink | rtrimstr("/")').json) | jq -r '.[].data.children[].data.body' | bat -l json
+curl -H 'User-Agent: myscript/0.1' $(printf "https://www.reddit.com"$(curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/MapPorn.json | jq -r '.data.children[0].data.permalink | rtrimstr("/")').json) | jq -r '.[].data.children[].data.body' | bat -l json
 
 # first-level comments
-curl https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json | jq '.[1].data.children[].data.body'
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/MapPorn/comments/0aio2ky/ww1_western_front_every_day.json | jq '.[1].data.children[].data.body'
 
 # second level comments
-curl https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json | jq '.[1].data.children[].data.replies.data.children[].data.body'
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/MapPorn/comments/1aio2ky/ww1_western_front_every_day.json | jq '.[1].data.children[].data.replies.data.children[].data.body'
 
 # listing of subreddit comments
-curl https://www.reddit.com/r/MapPorn/comments.json > ./data/comments/MapPornCommentsListing.json
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/MapPorn/comments.json > ./data/comments/MapPornCommentsListing.json
 
 # single post with comments URL anatomy
-curl https://www.reddit.com/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024.json > ./data/comments/MapPornPostComments.json
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/MapPorn/comments/1ahudqq/mapporn_discussion_thread_for_february_2024.json > ./data/comments/MapPornPostComments.json
 # https://www.reddit.com/r/MapPorn/comments/<id>/<title>/
 
 # num_comments inaccuracy (compare num_comments to actual comments array)
-echo $(curl https://www.reddit.com/r/react.json | jq '.data.children[0].data.num_comments') - $(curl https://www.reddit.com/r/react/comments/ky2gf5/hello_members_of_rreact.json | jq '.[1].data.children | length') | bc
+echo $(curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/react.json | jq '.data.children[0].data.num_comments') - $(curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/r/react/comments/ky2gf5/hello_members_of_rreact.json | jq '.[1].data.children | length') | bc
 
 
 ```
@@ -128,10 +128,10 @@ echo $(curl https://www.reddit.com/r/react.json | jq '.data.children[0].data.num
 
 ```sh
 # search query
-curl https://www.reddit.com/search.json\?q=cat > ./data/search/searchQuery.json
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/search.json\?q=cat > ./data/search/searchQuery.json
 
 # search for cat and return JSON
-curl https://www.reddit.com/search.json\?q=cat | jq . | bat -l json
+curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/search.json\?q=cat | jq . | bat -l json
 ```
 
 
@@ -139,16 +139,16 @@ curl https://www.reddit.com/search.json\?q=cat | jq . | bat -l json
 
 ```sh
 # user overview
-`curl https://www.reddit.com/user/Ltroid.json > ./data/profiles/userOverview.json`
+`curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/user/Ltroid.json > ./data/profiles/userOverview.json`
 
 # user icon and other data
-`curl https://www.reddit.com/user/Ltroid/about.json > ./data/profiles/userAbout.json`
+`curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/user/Ltroid/about.json > ./data/profiles/userAbout.json`
 
-`curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img'`
+`curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img'`
 # returns `"https://styles.redditmedia.com/t5_2tu5t7/styles/profileIcon_snoobf84d9a3-2cea-42e8-972a-135e78ff10ff-headshot-f.png?width=256&amp;height=256&amp;crop=256:256,smart&amp;s=3ddc4418d0cbf20c8b6ed9b615506117ac15f7f3"`
 
 # view user icon
-curl $(curl https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img' | jq -r 'match(".*png").string') | imgcat
+curl -H 'User-Agent: myscript/0.1' $(curl -H 'User-Agent: myscript/0.1' https://www.reddit.com/user/Ltroid/about.json | jq '.data.icon_img' | jq -r 'match(".*png").string') | imgcat
 
 ```
 
