@@ -12,6 +12,7 @@ Live site: https://react-reddit-client.netlify.app/
 Run `npm install` to install dependencies.
 
 Start the server with `npm start` and visit http://localhost:3000/
+Or, if working with Proxy Server (`reddit-proxy.js`) use Netlify CLI `netlify dev`
 
 
 ## Wireframes

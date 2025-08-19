@@ -1,5 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
+// Json-Server settings
 export const apiRootTesting = 'http://192.168.0.5:8000/';
 // const subredditsPathName = 'subreddits/1';
 
@@ -43,9 +44,18 @@ async function fetchThrottle(url, caller, signal) {
 export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubredditsList',
   async (_, {rejectWithValue, getState}) => {
     try {
+
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
+
+      // Fetch from Frontend
       const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
+
+      // Fetch from Proxy Server
+      // const response = await fetchThrottle('/.netlify/functions/reddit-proxy?subreddit=popular', 'pops');
+
+      // Fetch from Json-Server
       // const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
+
       console.log('res =>', response);
       if (!response.ok) {
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -78,8 +88,16 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
         console.info('Posts cached, not fetching=> r/', postTitle);
         return posts[postTitle]; // replace original posts on early return
       }
+
+      // Fetch from Frontend
       const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
+
+      // Fetch from Proxy Server
+      // const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?postTitle=${postTitle}`, 'posts');
+
+      // Fetch from Json-Server
       // const response = await fetchThrottle(`${apiRootTesting}r/${postTitle}`, 'posts');
+
       if (!response.ok) {
         throw new Error(`getSubredditPosts HTTP Error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -97,7 +115,10 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
   async ({permalink}, {rejectWithValue}) => {
     console.log('permalink', permalink);
     try {
+
+      // Fetch from Frontend
       const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
+
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
@@ -146,6 +167,8 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       if (postAuthor === '[deleted]' || postAuthor === undefined) {
         return ['[deleted]', 'PROFILE_DELETED_NO_AVATAR_DATA'];
       }
+
+      // Fetch from Frontend
       const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor}/about.json`, 'avatar', signal);
 
       if (!response?.ok) {
