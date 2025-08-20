@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 
-export default async function handler(event, context) {
+exports.handler = async function handler(event, context) {
+
   // Read query params
   const params = event.queryStringParameters;
   console.log('params', params);
