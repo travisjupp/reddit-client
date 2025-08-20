@@ -121,10 +121,10 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
     try {
 
       // Fetch from Frontend
-      // const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
+      const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
 
       // Fetch from Proxy Server
-      const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?comments=${permalink}`, 'comments');
+      // const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?comments=${permalink}`, 'comments');
 
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -176,10 +176,10 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       }
 
       // Fetch from Frontend
-      // const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor}/about.json`, 'avatar', signal);
+      const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor}/about.json`, 'avatar', signal);
 
       // Fetch from Proxy Server
-      const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?avatar=${postAuthor}`, 'avatar', signal);
+      // const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?avatar=${postAuthor}`, 'avatar', signal);
 
       if (!response?.ok) {
         throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);

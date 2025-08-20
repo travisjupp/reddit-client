@@ -12,6 +12,7 @@ export default async function handler(request, context) {
 
   if (params.has('listing')) {
     redditUrl = `https://www.reddit.com/subreddits.json`;
+    console.log('redditUrl', redditUrl);
   }
 
   // if (params.listing === 'popularList') {
@@ -21,6 +22,7 @@ export default async function handler(request, context) {
   if (params.has('subreddit')) {
     const subreddit = params.get('subreddit');
     redditUrl = `https://www.reddit.com/r/${subreddit}.json`;
+    console.log('redditUrl', redditUrl);
   };
 
   // if (params.subreddit) {
@@ -31,6 +33,7 @@ export default async function handler(request, context) {
   if (params.has('comments')) {
     const permalink = params.get('comments');
     redditUrl = `https://www.reddit.com${permalink}.json`;
+    console.log('redditUrl', redditUrl);
   };
 
   // if (params.comments) {
@@ -41,6 +44,7 @@ export default async function handler(request, context) {
   if (params.has('avatar')) {
     const postAuthor = params.get('avatar');
     redditUrl = `https://www.reddit.com/user/${postAuthor}/about.json`;
+    console.log('redditUrl', redditUrl);
   }
 
   // if (params.avatar) {
