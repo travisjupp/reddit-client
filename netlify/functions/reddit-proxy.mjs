@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-exports.handler = async function handler(event, context) {
+export default async function handler(event, context) {
 
   // Read query params
   const params = event.queryStringParameters || {};
@@ -32,14 +32,24 @@ exports.handler = async function handler(event, context) {
     });
     if (!redditRes.ok) throw new Error(`Reddit responded with ${redditRes.status}`);
     const data = await redditRes.json();
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data),
+
+    return new Response(JSON.stringify(data), {
+      status: 200,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
-    };
+    });
+
+    // return {
+    //   statusCode: 200,
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Access-Control-Allow-Origin': '*'
+    //   }
+    // };
+
   } catch (err) {
     return {
       statusCode: 502,
