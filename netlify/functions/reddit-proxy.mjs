@@ -1,27 +1,62 @@
-import fetch from "node-fetch";
+// import fetch from "node-fetch";
 
-export default async function handler(event, context) {
+export default async function handler(request, context) {
 
-  // Read query params
-  const params = event.queryStringParameters || {};
-  const subreddit = params.subreddit || 'popular';
+  // console.log('REQUEST', request);
+  // Read search params
+  // const params = request.queryStringParameters || {};
+  const params = new URLSearchParams(request.url.split('?')[1]);
   let redditUrl;
 
-  if (params.listing === 'popularList') {
-    redditUrl = 'https://www.reddit.com/subreddits.json';
-  } else {
+  console.log('PARAMS', params.has('listing'));
+  
+  if (params.has('listing')) {
+    redditUrl = `https://www.reddit.com/subreddits.json`;
+  }
+
+  // if (params.listing === 'popularList') {
+  //   redditUrl = `https://www.reddit.com/subreddits.json`;
+  // }
+
+  if (params.has('subreddit')) {
+    const subreddit = params.get('subreddit');
     redditUrl = `https://www.reddit.com/r/${subreddit}.json`;
   };
+
+  // if (params.subreddit) {
+  //   const subreddit = params.subreddit || 'popular';
+  //   redditUrl = `https://www.reddit.com/r/${subreddit}.json`;
+  // };
   
-  if (params.comments) {
-    const permalink = params.comments || '';
+  if (params.has('comments')) {
+    const permalink = params.get('comments');
     redditUrl = `https://www.reddit.com${permalink}.json`;
   };
 
-  if (params.avatar) {
-    const postAuthor = params.avatar || '';
+  // if (params.comments) {
+  //   const permalink = params.comments || '';
+  //   redditUrl = `https://www.reddit.com${permalink}.json`;
+  // };
+
+  if (params.has('avatar')) {
+    const postAuthor = params.get('avatar');
     redditUrl = `https://www.reddit.com/user/${postAuthor}/about.json`;
   }
+
+  // if (params.avatar) {
+  //   const postAuthor = params.avatar || '';
+  //   redditUrl = `https://www.reddit.com/user/${postAuthor}/about.json`;
+  // }
+
+  // if (!redditUrl) {
+  //   return new Response(JSON.stringify({data: 'no redditUrl'}), {
+  //     status: 200,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Access-Control-Allow-Origin': '*'
+  //     }
+  //   });
+  // };
 
   try {
     const redditRes = await fetch(redditUrl, {
@@ -32,7 +67,7 @@ export default async function handler(event, context) {
     });
     if (!redditRes.ok) throw new Error(`Reddit responded with ${redditRes.status}`);
     const data = await redditRes.json();
-
+console.log('data', data);
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {

@@ -55,7 +55,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
       // const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
 
       // Fetch from Proxy Server
-      const response = await fetchThrottle('/.netlify/functions/reddit-proxy?listing=popularList');
+      const response = await fetchThrottle('/.netlify/functions/reddit-proxy?listing');
 
       // Fetch from Json-Server
       // const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
@@ -65,6 +65,7 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
+console.log('json.data.children', json.data.children);
       return json.data.children;
     } catch (e) {
       console.error('Error:', e.message);
