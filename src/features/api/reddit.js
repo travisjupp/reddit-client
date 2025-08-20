@@ -52,10 +52,10 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
 
       // Fetch from Frontend
-      // const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
+      const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
 
       // Fetch from Proxy Server
-      const response = await fetchThrottle('/.netlify/functions/reddit-proxy?listing');
+      // const response = await fetchThrottle('/.netlify/functions/reddit-proxy?listing');
 
       // Fetch from Json-Server
       // const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
