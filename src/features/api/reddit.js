@@ -34,6 +34,10 @@ async function fetchThrottle(url, caller, signal) {
     // console.log('delayTime',delayTime);
     await delay(delayTime);
     return fetch(url, {signal});
+  } else if (caller === 'pops') {
+    return fetch(url);
+  } else if (caller === 'comments') {
+    return fetch(url); 
   } else {
     return fetch(url);
   }
@@ -48,10 +52,10 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
       // const response = await fetch(`https://www.reddit.com/TEST_REDDIT_ERROR_RESPONSE.json`);
 
       // Fetch from Frontend
-      const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
+      // const response = await fetchThrottle('https://www.reddit.com/subreddits.json', 'pops');
 
       // Fetch from Proxy Server
-      // const response = await fetchThrottle('/.netlify/functions/reddit-proxy?subreddit=popular', 'pops');
+      const response = await fetchThrottle('/.netlify/functions/reddit-proxy?listing=popularList');
 
       // Fetch from Json-Server
       // const response = await fetchThrottle(`${apiRootTesting}${subredditsPathName}`, 'pops');
@@ -90,10 +94,10 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       }
 
       // Fetch from Frontend
-      const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
+      // const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
 
       // Fetch from Proxy Server
-      // const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?postTitle=${postTitle}`, 'posts');
+      const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?subreddit=${postTitle}`, 'posts');
 
       // Fetch from Json-Server
       // const response = await fetchThrottle(`${apiRootTesting}r/${postTitle}`, 'posts');
@@ -117,7 +121,10 @@ export const getSubredditComments = createAsyncThunk('subreddits/getSubredditCom
     try {
 
       // Fetch from Frontend
-      const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
+      // const response = await fetchThrottle(`https://www.reddit.com${permalink}.json`, 'comments');
+
+      // Fetch from Proxy Server
+      const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?comments=${permalink}`, 'comments');
 
       if (!response.ok) {
         throw new Error(`getSubredditComments HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
@@ -169,7 +176,10 @@ export const getUserAvatar = createAsyncThunk('users/getUserAvatar',
       }
 
       // Fetch from Frontend
-      const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor}/about.json`, 'avatar', signal);
+      // const response = await fetchThrottle(`https://www.reddit.com/user/${postAuthor}/about.json`, 'avatar', signal);
+
+      // Fetch from Proxy Server
+      const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?avatar=${postAuthor}`, 'avatar', signal);
 
       if (!response?.ok) {
         throw new Error(`getUserAvatar HTTP error!\nStatus: ${response?.status}\nCause: ${response?.statusText}\nURL: ${response?.url}`);
