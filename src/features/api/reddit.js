@@ -65,7 +65,6 @@ export const getPopSubredditsList = createAsyncThunk('subreddits/getPopSubreddit
         throw new Error(`HTTP error!\nStatus: ${response.status}\nCause: ${response.statusText}\nURL: ${response.url}`);
       }
       const json = await response.json();
-console.log('json.data.children', json.data.children);
       return json.data.children;
     } catch (e) {
       console.error('Error:', e.message);

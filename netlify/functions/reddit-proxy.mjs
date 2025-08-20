@@ -8,8 +8,8 @@ export default async function handler(request, context) {
   const params = new URLSearchParams(request.url.split('?')[1]);
   let redditUrl;
 
-  console.log('PARAMS', params.has('listing'));
-  
+  console.log('PARAMS', params);
+
   if (params.has('listing')) {
     redditUrl = `https://www.reddit.com/subreddits.json`;
   }
@@ -67,7 +67,7 @@ export default async function handler(request, context) {
     });
     if (!redditRes.ok) throw new Error(`Reddit responded with ${redditRes.status}`);
     const data = await redditRes.json();
-console.log('data', data);
+console.log('\n\n\nDATA\n---------\n', data);
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {
@@ -86,13 +86,14 @@ console.log('data', data);
     // };
 
   } catch (err) {
-    return {
+    console.error('Proxy error:', err);
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
       statusCode: 502,
       body: JSON.stringify({error: err.message}),
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
-    };
+    });
   }
 };
