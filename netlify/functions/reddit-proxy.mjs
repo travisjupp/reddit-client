@@ -65,7 +65,9 @@ export default async function handler(request, context) {
   try {
     const redditRes = await fetch(redditUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; RedditProxy/1.0)'
+        // 'User-Agent': 'Mozilla/5.0 (compatible; RedditProxy/1.0)'
+        'User-Agent': 'webapp:com.tjupp.redditlite:v1.0 (by /u/tjupp)'
+
       }, 
       context
     });
