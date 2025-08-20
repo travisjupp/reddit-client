@@ -17,7 +17,7 @@ import Comment from "../Comment/Comment";
 import {getUserAvatar} from '../api/reddit';
 import Media from '../../components/Media/Media.jsx';
 function Post(props) {
-  const {postId, postAuthor, postDate, postMedia, postTitle, postText, postTextHtml, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
+  const {postId, postIdx, postAuthor, postDate, postMedia, postTitle, postText, postTextHtml, postUrl, postPermalink, score, numberOfComments, handleComments, collapseStates, setCollapseStates} = props;
 
   const dispatch = useDispatch();
   const avatars = useSelector(selectUserAvatars);
@@ -97,6 +97,7 @@ function Post(props) {
           <Media
             postMedia={postMedia}
             postId={postId}
+            postIdx={postIdx}
           />
         }
         <Card.Body

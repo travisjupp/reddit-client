@@ -4,7 +4,7 @@ import {getSubredditPosts, getUserAvatar} from "../features/api/reddit.js";
 const initialState = {
     postsStatus: 'uninitialized',
     avatarsStatus: 'uninitialized',
-    avatarsDisabled: true,
+    avatarsDisabled: false,
     posts: {},
     isFiltered: false,
     postsTemp: [],

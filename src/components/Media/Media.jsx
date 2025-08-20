@@ -7,7 +7,7 @@ import he from 'he';
 import parse from 'html-react-parser';
 // If post media exists, decode html-entites and render.
 // Searches for available media types: image galleries, images, reddit-hosted video, and embedded media from 3rd party sites eg. twitch/youtube videos
-const Media = ({postMedia, postId}) => {
+const Media = ({postMedia, postId, postIdx}) => {
     const {mediaEmbed, preview, isGallery, metadata, altText, redditVideo} = postMedia;
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -52,6 +52,8 @@ const Media = ({postMedia, postId}) => {
                                     height={previewSource.height}
                                     className="card-img-top"
                                     alt={altText}
+                                    loading={postIdx > 3 ? "lazy" : "eager"}
+                                    data-postidx={postIdx}
                                 />
                                 <Modal show={show} onHide={handleClose} centered>
                                     <Modal.Header closeButton />
@@ -65,6 +67,8 @@ const Media = ({postMedia, postId}) => {
                                     height={previewSource.height}
                                     className="card-img-top"
                                     alt={altText}
+                                    loading={postIdx > 3 ? "lazy" : "eager"}
+                                    data-postidx={postIdx}
                                 />
                                 <Modal show={show} onHide={handleClose} centered>
                                     <Modal.Header closeButton />
@@ -108,6 +112,8 @@ const Media = ({postMedia, postId}) => {
                                 height={previewSource.y}
                                 className="card-img-top"
                                 alt={altText}
+                                loading={postIdx > 3 ? "lazy" : "eager"}
+                                data-postidx={postIdx}
                             />
                         </picture>
                     </Carousel.Item>);

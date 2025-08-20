@@ -32,9 +32,10 @@ function Main() {
             <>
                 <h1 id="srTitle"><span>r/</span><span>{postsCurrent}</span></h1>
 
-                {posts[postsCurrent].map(post => {
+                {posts[postsCurrent].map((post, idx) => {
                     return <Post
                         key={'post-' + post.data.id}
+                        postIdx={idx}
                         postId={'post-' + post.data.id}
                         postTitle={post.data.title}
                         postAuthor={post.data.author}
