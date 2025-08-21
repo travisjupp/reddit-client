@@ -61,7 +61,7 @@ function Post(props) {
     // render comments (only for the post that dispatched)
     return (
       <>
-        {commentsDispatchedPost &&
+        {commentsDispatchedPost ?
           <Collapse in={collapseStates[postId]} unmountOnExit={true}
             // onEnter={() => show && handleComments({ permalink: postPermalink, postId })} // only fetch comments if comments not already displayed}
             onExit={() => {
@@ -80,7 +80,11 @@ function Post(props) {
                 />
               })}
             </div>
-          </Collapse>
+          </Collapse> :
+          <>
+            <div id={`comments-wrapper-${postId}`} className="comments-wrapper" hidden>&nbsp;
+            </div>
+            </>
         }
       </>)
   }

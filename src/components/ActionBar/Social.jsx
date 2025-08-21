@@ -13,11 +13,12 @@ const Social= (props) => {
   return (
     <>
       <Stack direction="horizontal" gap={stackGap} style={{}} className='justify-content-end'>
-        <button onMouseOver={() => setShareIconHover(true)} onMouseLeave={() => setShareIconHover(false)} href='#'>{shareIconHover ? shareIconFill() : shareIcon()}</button>
+        <button aria-label="Share Post" onMouseOver={() => setShareIconHover(true)} onMouseLeave={() => setShareIconHover(false)} href='#'>{shareIconHover ? shareIconFill() : shareIcon()}</button>
         <div className="vr" height="5px"></div>
 
         <div style={{minWidth: "max-content"}}>
           <button
+            aria-label="Toggle Comments"
             style={{paddingRight: ".25rem"}}
             onMouseOver={() => setChatIconHover(true)}
             onMouseLeave={() => setChatIconHover(false)}
