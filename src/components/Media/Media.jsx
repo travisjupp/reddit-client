@@ -68,6 +68,7 @@ const Media = ({postMedia, postId, postIdx}) => {
                                     className="card-img-top"
                                     alt={altText}
                                     loading={postIdx > 3 ? "lazy" : "eager"}
+                                    fetchpriority={postIdx > 0 ? "low" : "high"}
                                     data-postidx={postIdx}
                                 />
                                 <Modal show={show} onHide={handleClose} centered>
