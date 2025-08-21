@@ -50,7 +50,7 @@ export default async function handler(request, context) {
   } catch (err) {
     console.error('Proxy error:', err);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
-      status: 502,
+      statusCode: 502,
       body: JSON.stringify({error: err.message}),
       headers: {
         'Content-Type': 'application/json',
