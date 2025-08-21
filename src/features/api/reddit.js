@@ -94,10 +94,10 @@ export const getSubredditPosts = createAsyncThunk('subreddits/getSubredditPosts'
       }
 
       // Fetch from Frontend
-      // const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
+      const response = await fetchThrottle(`https://www.reddit.com/r/${postTitle}.json`, 'posts');
 
       // Fetch from Proxy Server
-      const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?subreddit=${postTitle}`, 'posts');
+      // const response = await fetchThrottle(`/.netlify/functions/reddit-proxy?subreddit=${postTitle}`, 'posts');
 
       // Fetch from Json-Server
       // const response = await fetchThrottle(`${apiRootTesting}r/${postTitle}`, 'posts');
