@@ -7,6 +7,12 @@ Reddit client built with React/Redux using the [Reddit JSON API](https://github.
 
 Live site: https://react-reddit-client.netlify.app/
 
+> [!NOTE]
+> This app uses the free Reddit JSON API that is subject to aggressive rate-limiting.
+> Unfortunately, until I get around to implementing proper caching this will continue
+> to be an issue: [See Issue #33](https://github.com/users/travisjupp/projects/1?pane=issue&itemId=124951348&issue=travisjupp%7Creddit-client%7C33).  
+> If you run into "Failed to Fetch" error, the only option is to try again later.
+
 ## Setup
 
 Run `npm install` to install dependencies.
