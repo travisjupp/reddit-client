@@ -11,14 +11,32 @@ export default async function handler(request, context) {
 
   console.log('PARAMS:', Array.from(params.entries()));
 
+  let data;
   if (params.has('listing')) {
     redditUrl = `https://www.reddit.com/subreddits.json`;
+    data = await import('../../src/mockData/subreddits.json')
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
     console.log('Setting redditUrl for listing:', redditUrl);
   }
 
   if (params.has('subreddit')) {
     const subreddit = params.get('subreddit');
     redditUrl = `https://www.reddit.com/r/${subreddit}.json`;
+    console.log('subreddit', subreddit);
+    data = await import(`../../src/mockData/subreddits/${subreddit}.json`)
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
     console.log('Setting redditUrl for subreddit:', redditUrl);
   }
 
@@ -67,7 +85,7 @@ export default async function handler(request, context) {
     
     if (!redditRes.ok) {
       const errorText = await redditRes.text();
-      console.log('Error response body:', errorText);
+      // console.log('Error response body:', errorText);
       throw new Error(`Reddit responded with ${redditRes.status}: ${redditRes.statusText}`);
     }
 
