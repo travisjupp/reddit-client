@@ -334,10 +334,13 @@ function Post(props) {
           <pre>
             {commentsErrorState.payload}
             <br />
-            {postTitle}
+            <br />
+            - Post Title: {postTitle}
             <hr />
             <strong>{`${commentsErrorState.type}`}</strong>
-            <code>{JSON.stringify(commentsErrorState)}</code>
+            <br />
+            <br />
+            {JSON.stringify(commentsErrorState)}
           </pre>
           <Button
             // data-bs-toggle="collapse"

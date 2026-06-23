@@ -92,6 +92,8 @@ function Main() {
             <br />
             <hr />
             <strong>{`${postsErrorState.type}`}</strong>
+            <br />
+            <br />
             {/* <pre>{errorStr}</pre> */}
           </pre>
           <Button
