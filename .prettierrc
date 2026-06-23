@@ -1,0 +1,18 @@
+{
+  "plugins": [],
+  "overrides": [],
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "experimentalTernaries": true,
+  "semi": true,
+  "useTabs": false,
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "printWidth": 80,
+  "quoteProps": "preserve",
+  "endOfLine": "lf"
+}
+
