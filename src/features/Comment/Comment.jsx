@@ -29,11 +29,9 @@ function Comment(props) {
   const commentsStatus = useSelector(selectSubredditCommentsStatus);
 
   if (commentsStatus === 'loading') {
-    // if (commentsStatus === 'succeeded') {
     return (
       <Card
         className='comment'
-        //  className={show ? 'comment' : 'd-none comment'}
       >
         <Card.Body>
           <Placeholder as={Card.Title} animation='glow'>
@@ -72,7 +70,8 @@ function Comment(props) {
             </Stack>
           </Card.Title>
           <Card.Text as='div'>
-            {/* Render as 'div' to avoid <p> nesting; <p> cannot appear as a descendant of <p>. */}
+            {/* Render as 'div' to avoid <p> nesting; 
+            <p> cannot appear as a descendant of <p>. */}
             <Markdown rehypePlugins={[rehypeRaw]}>
               {formatPostText(commentTextHtml, commentText, 300)}
             </Markdown>
