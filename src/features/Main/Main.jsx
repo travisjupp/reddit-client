@@ -49,14 +49,14 @@ function Main() {
               postAuthor={post.data.author}
               postDate={post.data.created}
               postMedia={{
-                preview: post.data.preview, // preview images, and image only posts
-                mediaEmbed: post.data.media_embed, // embedded videos (iframe)
-                isRedditVideo: post.data.is_video, // reddit hosted video flag
-                redditVideo: post.data.media?.reddit_video, // reddit hosted video
-                isGallery: post.data.is_gallery, // image galleries flag
-                metadata: post.data.media_metadata, // image gallery images
-                data: post.data.gallery_data, // image gallery ids
-                altText: `r/${post.data.subreddit} - ${post.data.title}`, // img alt text
+                preview: post.data.preview, // Preview images, and image only posts
+                mediaEmbed: post.data.media_embed, // Embedded videos (iframe)
+                isRedditVideo: post.data.is_video, // Reddit hosted video flag
+                redditVideo: post.data.media?.reddit_video, // Reddit hosted video
+                isGallery: post.data.is_gallery, // Image galleries flag
+                metadata: post.data.media_metadata, // Image gallery images
+                data: post.data.gallery_data, // Image gallery ids
+                altText: `r/${post.data.subreddit} - ${post.data.title}`, // Img alt text
               }}
               postText={post.data.selftext}
               postTextHtml={post.data.selftext_html}
@@ -67,8 +67,8 @@ function Main() {
               handleComments={handleComments}
               collapseStates={collapseStates}
               setCollapseStates={setCollapseStates}
-              // postText={'#######LAYOUT####BREAKER##########################################################################################################################################################################################################################################'}
-              // postTextHtml={'#######LAYOUT####BREAKER##########################################################################################################################################################################################################################################'}
+              // postText={'#######LAYOUT####BREAKER####FOR####TESTING####LAYOUT##############################################################################################################################################################################################################################'}
+              // postTextHtml={'#######LAYOUT####BREAKER####FOR####TESTING####LAYOUT##############################################################################################################################################################################################################################'}
             />
           );
         })}
