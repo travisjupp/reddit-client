@@ -43,7 +43,7 @@ function Post(props) {
   const dispatch = useDispatch();
   const avatars = useSelector(selectUserAvatars);
 
-  // get user avatar
+  // Get user avatar
   useEffect(() => {
     const promise = dispatch(getUserAvatar(postAuthor));
     return () => {
@@ -55,8 +55,10 @@ function Post(props) {
   const commentsStatus = useSelector(selectSubredditCommentsStatus);
   const commentsErrorState = useSelector(selectSubredditCommentsError);
   const commentsRequestedPostId = useSelector(selectSubredditCommentsPostId);
-  const commentsDispatchedPost = postId === commentsRequestedPostId; // isolate the post that comments were requested for
-  const commentsFailedPost = postId === commentsErrorState?.meta.arg.postId; // isolate the post that a comments request errored
+  // Isolate the post that comments were requested for
+  const commentsDispatchedPost = postId === commentsRequestedPostId;
+  // Isolate the post that a comments request errored
+  const commentsFailedPost = postId === commentsErrorState?.meta.arg.postId;
 
   const nonRedditPostUrlLink = postUrl.search(
     /(www\.reddit\.com)|(redd\.it)/g,
@@ -68,7 +70,8 @@ function Post(props) {
 
   const handleCollapse = postId => {
     const updatedStates = { ...collapseStates };
-    // make sure all comments are collapsed before expanding (avoid a dead comment button)
+    // Make sure all comments are collapsed before expanding
+    // (avoid a dead comment button)
     for (let post in updatedStates) {
       if (post === postId) continue;
       updatedStates[post] = false;
@@ -78,14 +81,15 @@ function Post(props) {
   };
 
   const toggleComments = () => {
-    !collapseStates[postId] && // only fetch comments if comments not already expanded
+    // Only fetch comments if comments not already expanded
+    !collapseStates[postId] &&
       handleComments({ permalink: postPermalink, postId });
     // !collapseStates[postId] && handleComments({ permalink: 'INTENTIONALLY ERROR THIS OUT FOR TESTING', postId })
     handleCollapse(postId);
   };
 
   const renderComments = () => {
-    // render comments (only for the post that dispatched)
+    // Render comments (only for the post that dispatched)
     return (
       <>
         {commentsDispatchedPost ?
@@ -141,7 +145,7 @@ function Post(props) {
           )
         }
         <Card.Body
-          /* remove top border radius if Media component is used (card-img-top) */
+          /* Remove top border radius if Media component is used (card-img-top) */
           style={
             (
               postMedia.mediaEmbed?.content ||
@@ -160,7 +164,8 @@ function Post(props) {
           />{' '}
           {postAuthor}
           <Card.Text as='div' className='pt-3'>
-            {/* Render as 'div' to avoid <pre> nesting; <pre> cannot appear as a descendant of <p>. */}
+            {/* Render as 'div' to avoid <pre> nesting; 
+            <pre> cannot appear as a descendant of <p>. */}
             <Container fluid className='p-0'>
               {
                 /* MOBILE POSTTEXT show on xs and sm screen size only */
@@ -319,13 +324,15 @@ function Post(props) {
             </pre>
           </Card.Text>
         </Card.Body>
-        {/* Make Card a hyperlink, all other links contained in card need a higher z-index */}
+        {/* Make Card a hyperlink, all other links
+        contained in card need a higher z-index */}
         {/* <a href={postPermalink} className='stretched-link' /> */}
       </Card>
 
-      {/* Render Comments */}
+      {/* RENDER COMMENTS */}
 
-      {/* If fetching comments failed pop toast only for the post for which it was originally requested */}
+      {/* If fetching comments failed, pop toast only
+      for the post for which it was originally requested */}
       {commentsStatus === 'failed' && commentsFailedPost ?
         <Toaster
           header={`Get Comments ${commentsErrorState.message}`}
@@ -334,8 +341,7 @@ function Post(props) {
           <pre>
             {commentsErrorState.payload}
             <br />
-            <br />
-            - Post Title: {postTitle}
+            <br />- Post Title: {postTitle}
             <hr />
             <strong>{`${commentsErrorState.type}`}</strong>
             <br />
@@ -343,11 +349,8 @@ function Post(props) {
             {JSON.stringify(commentsErrorState)}
           </pre>
           <Button
-            // data-bs-toggle="collapse"
-            // data-bs-target={`#comments-wrapper-${postId}`}
             aria-controls={`comments-wrapper-${postId}`}
             aria-expanded={collapseStates[postId]}
-            // className=''
             onClick={() => handleComments({ permalink: postPermalink, postId })}
           >
             Retry
