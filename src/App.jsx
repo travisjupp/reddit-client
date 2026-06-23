@@ -5,10 +5,9 @@ import Sidebar from './features/Sidebar/Sidebar.jsx';
 
 import Main from './features/Main/Main.jsx';
 import BSScreenSize from './utils/BSScreenSize/BSScreenSize.js';
-import {Container, Row, Col} from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 function App() {
-
   return (
     <>
       <BSScreenSize />
@@ -19,8 +18,12 @@ function App() {
         </Row>
         <Row>
           {/* SIDEBAR show on md and larger */}
-          <Col as='aside' md={3} className='d-none d-md-block position-sticky overflow-y-auto p-0 top-0'
-            style={{height: "100vh"}}>
+          <Col
+            as='aside'
+            md={3}
+            className='d-none d-md-block position-sticky overflow-y-auto p-0 top-0'
+            style={{ height: '100vh' }}
+          >
             <Sidebar />
           </Col>
           {/* MAIN */}

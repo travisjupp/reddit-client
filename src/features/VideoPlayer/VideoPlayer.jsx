@@ -1,8 +1,7 @@
-import dashjs from "dashjs";
-import {useEffect, useRef} from "react";
+import dashjs from 'dashjs';
+import { useEffect, useRef } from 'react';
 
-function VideoPlayer({redditVideoURL, postId}) {
-
+function VideoPlayer({ redditVideoURL, postId }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -17,12 +16,12 @@ function VideoPlayer({redditVideoURL, postId}) {
     return () => {
       // player.off(dashjs.MediaPlayer.events.CAN_PLAY, () => {console.log('CAN_PLAY')});
       player.destroy();
-    }
+    };
   }, [redditVideoURL, ref]);
 
   return (
     <>
-      <video ref={ref} id={'video-' + postId} controls className="card-img-top">
+      <video ref={ref} id={'video-' + postId} controls className='card-img-top'>
         <source src={redditVideoURL} />
       </video>
     </>
