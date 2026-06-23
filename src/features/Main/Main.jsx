@@ -75,10 +75,10 @@ function Main() {
                 <Toaster header={`Get Posts ${postsErrorState.message}`} variant='light'>
                     {/* {console.error('postsErrorState', postsErrorState)} */}
                     <pre>
-                        {postsErrorState.payload}<br />
+                        {postsErrorState.payload}<br /><br />
                         <hr />
                         <strong>{`${postsErrorState.type}`}</strong>
-                        {/* <code>{errorStr}</code> */}
+                        {/* <pre>{errorStr}</pre> */}
                     </pre>
                     <Button className='' onClick={() => dispatch(getSubredditPosts(postsCurrent))}>Retry</Button>
                 </Toaster>
