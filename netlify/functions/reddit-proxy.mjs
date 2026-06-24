@@ -14,6 +14,8 @@ export default async function handler(request, context) {
   let data;
   if (params.has('listing')) {
     redditUrl = `https://www.reddit.com/subreddits.json`;
+    // TODO Manage mockData conditionally from Redux store
+    // We're just shoe-horning it in here
     data = await import('../../src/mockData/subreddits.json');
     return new Response(JSON.stringify(data), {
       status: 200,
@@ -22,13 +24,13 @@ export default async function handler(request, context) {
         'Access-Control-Allow-Origin': '*',
       },
     });
-    console.log('Setting redditUrl for listing:', redditUrl);
   }
 
   if (params.has('subreddit')) {
     const subreddit = params.get('subreddit');
     redditUrl = `https://www.reddit.com/r/${subreddit}.json`;
-    console.log('subreddit', subreddit);
+    // TODO Manage mockData conditionally from Redux store
+    // We're just shoe-horning it in here
     data = await import(`../../src/mockData/subreddits/${subreddit}.json`);
     return new Response(JSON.stringify(data), {
       status: 200,
@@ -37,12 +39,12 @@ export default async function handler(request, context) {
         'Access-Control-Allow-Origin': '*',
       },
     });
-    console.log('Setting redditUrl for subreddit:', redditUrl);
   }
 
   if (params.has('comments')) {
     const permalink = params.get('comments');
     redditUrl = `https://www.reddit.com${permalink}.json`;
+    // TODO Setup mockData for Comments
     console.log('Setting redditUrl for comments:', redditUrl);
   }
 
