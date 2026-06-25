@@ -16,12 +16,12 @@ const Media = ({ postMedia, postId, postIdx }) => {
   const previewResolutions = preview?.images[0].resolutions || [];
   const sortedPreviewResolutions = [...previewResolutions].sort(
     (a, b) => b.width - a.width,
-  ); // sort for DOM (largest image first)
-  const previewId = preview?.images[0].id; // get preview id
-  const previewSource = preview?.images[0].source; // get preview source
-  const postMediaDomElement = he.decode(mediaEmbed.content || ''); // embedded iframes
+  ); // Sort for DOM (largest image first)
+  const previewId = preview?.images[0].id; // Get preview id
+  const previewSource = preview?.images[0].source; // Get preview source
+  const postMediaDomElement = he.decode(mediaEmbed.content || ''); // Embedded iframes
   const redditVideoURL = he.decode(redditVideo?.dash_url || '');
-
+  console.log('postMedia -------->', postMedia, '\npostId', postId);
   try {
     // REDDIT VIDEO CHECKER check for reddit hosted video (MPEG-DASH)
     if (redditVideoURL) {
@@ -29,11 +29,11 @@ const Media = ({ postMedia, postId, postIdx }) => {
     }
     // PREVIEW CHECKER check for previews, or image only posts
     if (preview) {
-      // return picture with source elements
+      // Return picture with source elements
       return (
         <picture id={previewId} style={{ padding: 0 }}>
           {
-            // build srcset from `preview.images[0].resolutions`
+            // Build srcset from `preview.images[0].resolutions`
             sortedPreviewResolutions.map(image => {
               return (
                 <source
@@ -48,7 +48,7 @@ const Media = ({ postMedia, postId, postIdx }) => {
           }
           {
             // MEDIA CHECKER check for embedded media (iframe DOM elements)
-            // media preview image opens media source in modal on click
+            // Media preview image opens media source in modal on click
             typeof mediaEmbed.content === 'string' ?
               <>
                 <img
@@ -68,7 +68,7 @@ const Media = ({ postMedia, postId, postIdx }) => {
                   </Modal.Body>
                 </Modal>
               </>
-              // if post media is not DOM element render image
+              // If post media is not DOM element render image
             : <>
                 <img
                   onClick={handleShow}
@@ -96,45 +96,85 @@ const Media = ({ postMedia, postId, postIdx }) => {
     // GALLERY CHECKER check for image galleries
     if (isGallery) {
       const reactElements = [];
-      // unpack preview images
+      // Unpack preview images
       for (const key in metadata) {
         let image = metadata[key];
         const previewResolutions = image.p;
         const sortedPreviewResolutions = [...previewResolutions].sort(
           (a, b) => b.x - a.x,
-        ); // sort for DOM
+        ); // Sort for DOM
         const previewSource = image.s;
         const previewId = image.id;
-        // save as picture with source elements
-        reactElements.unshift(
-          <Carousel.Item key={previewId + 'carouselItem'}>
-            <picture id={previewId} style={{ padding: 0 }}>
-              {
-                // build srcset from `image.p`
-                sortedPreviewResolutions.map(image => {
-                  return (
-                    <source
-                      key={previewId + '@' + image.x}
-                      srcSet={he.decode(image.u)}
-                      media={`(min-width: ${image.x}px)`}
-                      width={image.x}
-                      height={image.y}
-                    />
-                  );
-                })
-              }
-              <img
-                src={he.decode(previewSource.u)}
-                width={previewSource.x}
-                height={previewSource.y}
-                className='card-img-top'
-                alt={altText}
-                loading={postIdx > 3 ? 'lazy' : 'eager'}
-                data-postidx={postIdx}
-              />
-            </picture>
-          </Carousel.Item>,
-        );
+        const isAnimatedImage = image.e === 'AnimatedImage';
+        console.log('Animated Image? ====> ', isAnimatedImage);
+        if (isAnimatedImage) {
+          // Save AnimatedImage as video with source elements
+          reactElements.unshift(
+            <Carousel.Item key={previewId + 'carouselItem'}>
+              <video
+                height={'100%'}
+                width={'100%'}
+                autoPlay={true}
+                playsInline={true}
+                loop={true}
+                id={previewId}
+                style={{ padding: 0, width: '100%', height: '100%' }}
+              >
+                <source
+                  src={he.decode(previewSource.mp4 || '')}
+                  width={previewSource.x}
+                  height={previewSource.y}
+                  className='card-img-top'
+                  alt={altText}
+                  loading={postIdx > 3 ? 'lazy' : 'eager'}
+                  type='video/mp4'
+                  data-postidx={postIdx}
+                />
+              </video>
+            </Carousel.Item>,
+          );
+        } else {
+          // Save standard Image as picture with source elements
+          reactElements.unshift(
+            <Carousel.Item key={previewId + 'carouselItem'}>
+              <picture
+                width={'100%'}
+                height={'100%'}
+                id={previewId}
+                style={{ padding: 0, width: '100%', height: '100%' }}
+              >
+                {
+                  // Build srcset from `image.p`
+                  sortedPreviewResolutions.map(image => {
+                    return (
+                      <source
+                        key={previewId + '@' + image.x}
+                        srcSet={he.decode(image.u)}
+                        media={`(min-width: ${image.x}px)`}
+                        width={image.x}
+                        height={image.y}
+                      />
+                    );
+                  })
+                }
+                <img
+                  src={he.decode(
+                    previewSource.u ||
+                      previewSource.gif ||
+                      previewSource.mp4 ||
+                      '',
+                  )}
+                  width={previewSource.x}
+                  height={previewSource.y}
+                  className='card-img-top'
+                  alt={altText}
+                  loading={postIdx > 3 ? 'lazy' : 'eager'}
+                  data-postidx={postIdx}
+                />
+              </picture>
+            </Carousel.Item>,
+          );
+        }
       }
       return (
         <Carousel interval={null} touch>
