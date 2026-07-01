@@ -5,6 +5,7 @@ const initialState = {
   status: 'unitialized',
   subreddits: [],
   error: null,
+  isMockedData: true,
 };
 
 const subredditSlice = createSlice({
@@ -37,3 +38,4 @@ export const selectPopSubredditsListStatus = state => {
 };
 
 export const selectPopSubredditsListError = state => state.subreddits.error;
+export const selectPopSubredditsListIsMockedData = state => state.subreddits.isMockedData;

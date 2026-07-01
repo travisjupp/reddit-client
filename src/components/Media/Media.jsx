@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-// import StatusLoader from '../../components/StatusLoader/StatusLoader';
+import { useState } from 'react';
+
 import Modal from 'react-bootstrap/Modal';
 import Carousel from 'react-bootstrap/Carousel';
 import VideoPlayer from '../../features/VideoPlayer/VideoPlayer';
@@ -21,7 +21,7 @@ const Media = ({ postMedia, postId, postIdx }) => {
   const previewSource = preview?.images[0].source; // Get preview source
   const postMediaDomElement = he.decode(mediaEmbed.content || ''); // Embedded iframes
   const redditVideoURL = he.decode(redditVideo?.dash_url || '');
-  console.log('postMedia -------->', postMedia, '\npostId', postId);
+
   try {
     // REDDIT VIDEO CHECKER check for reddit hosted video (MPEG-DASH)
     if (redditVideoURL) {
@@ -106,7 +106,7 @@ const Media = ({ postMedia, postId, postIdx }) => {
         const previewSource = image.s;
         const previewId = image.id;
         const isAnimatedImage = image.e === 'AnimatedImage';
-        console.log('Animated Image? ====> ', isAnimatedImage);
+ 
         if (isAnimatedImage) {
           // Save AnimatedImage as video with source elements
           reactElements.unshift(

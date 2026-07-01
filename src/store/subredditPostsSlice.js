@@ -7,6 +7,7 @@ const initialState = {
   avatarsDisabled: true,
   posts: {},
   isFiltered: false,
+  isMockedData: true,
   postsTemp: [],
   avatars: {},
   postsErrorState: null,
@@ -93,6 +94,9 @@ export const selectSubredditAvatarsError = state =>
 export const selectUserAvatars = state => state.subredditPosts.avatars;
 
 export const selectIsPostsFiltered = state => state.subredditPosts.isFiltered;
+
+export const selectSubredditPostsIsMockedData = state =>
+  state.subredditPosts.isMockedData;
 
 export const selectSubredditPostsCurrent = state =>
   state.subredditPosts.posts.current;

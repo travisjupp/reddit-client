@@ -1,0 +1,4 @@
+[functions]
+  # Bundle folder onto the server disk at runtime
+  included_files = ["src/mockData/**"]
+

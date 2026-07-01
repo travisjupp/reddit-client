@@ -6,6 +6,7 @@ const initialState = {
   comments: [],
   postId: null,
   error: null,
+  isMockedData: false,
 };
 
 const subredditCommentsSlice = createSlice({
@@ -44,3 +45,6 @@ export const selectSubredditCommentsPostId = state =>
 
 export const selectSubredditCommentsError = state =>
   state.subredditComments.error;
+
+export const selectSubredditCommentsIsMockedData = state =>
+  state.subredditComments.isMockedData;

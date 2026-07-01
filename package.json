@@ -4,17 +4,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dicebear/collection": "^7.1.2",
+    "@dicebear/core": "^7.1.2",
     "@reduxjs/toolkit": "^2.2.3",
     "@testing-library/react": "^13.4.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "dashjs": "^4.7.4",
-    "@dicebear/collection": "^7.1.2",
-    "@dicebear/core": "^7.1.2",
     "he": "^1.2.0",
     "html-react-parser": "^5.1.10",
     "luxon": "^3.4.4",
     "node-fetch": "^3.3.2",
+    "playwright": "^1.61.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
@@ -33,7 +34,9 @@
       "^.+\\.(svg)$": "<rootDir>/__mocks__/svgTransform.js",
       "^.+\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
     },
-    "setupFiles": ["jest-localstorage-mock"]
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
   },
   "babel": {
     "presets": [
