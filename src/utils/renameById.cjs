@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const TARGET_DIR =
-  '/Users/travisjupp/Documents/projects/reddit-client/src/mockData/comments/raw/';
+  '/Users/travisjupp/Documents/projects/reddit-client/src/mockData/comments/';
 
 const files = fs.readdirSync(TARGET_DIR);
 

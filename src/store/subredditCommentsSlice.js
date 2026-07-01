@@ -6,7 +6,7 @@ const initialState = {
   comments: [],
   postId: null,
   error: null,
-  isMockedData: false,
+  isMockedData: true,
 };
 
 const subredditCommentsSlice = createSlice({
