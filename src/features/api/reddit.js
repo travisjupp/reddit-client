@@ -17,7 +17,7 @@ async function fetchThrottle(
   isMockedData = isMockedData.toString();
   // We mainly throttle requests for user avatars since this hits the endpoint the most frequently. Since user avatars aren't integral (any avatars not loaded with be shimmed with an identicon), a _pseudo_ fetch-queue delays each request. Each call to `fetchThrottle` from `getUserAvatar` adds its delay to the `delayTime` which is ultimately cleared out with `rateLimitReset` and any other session storage items.
 
-  const delayTime = Number(sessionStorage.getItem('delayTime'));
+  let delayTime = Number(sessionStorage.getItem('delayTime'));
   const delay = ms => new Promise(res => setTimeout(res, ms));
   let numRequests = Number(sessionStorage.getItem('numRequests'));
 
