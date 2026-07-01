@@ -1,0 +1,2 @@
+# Don't calculate diffs on comment json files (performance)
+src/mockData/comments/**/*.json linquist-generated=true
