@@ -1,3 +1,14 @@
+[dev]
+  # Force CRA to run on all network cards
+  command = "npm start"
+
+  # Help Netlify find CRA frontend
+  targetport = 3000
+
+  # Help Netlify bind its proxy gateway to network devices
+  port = 8888
+  host = "192.168.0.3"
+
 [functions]
   # Bundle folder onto the server disk at runtime
   included_files = ["src/mockData/**"]
