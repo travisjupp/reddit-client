@@ -32,3 +32,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Raw comment JSON files
+src/mockData/comments/raw
